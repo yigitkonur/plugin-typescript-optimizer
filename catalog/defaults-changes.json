@@ -1,0 +1,276 @@
+{
+  "schema": "ts-optimize/defaults-changes@1",
+  "checked_on": "2026-10-20",
+  "about": "Options whose DEFAULT changed in TypeScript 7 (most of them already changed in 6.0 (see flipped_in_basis per entry), so a project whose authoritative compiler is >= 6.0 sees no delta). Used by rule tc-03 and lib/tsgo/fit.mjs. Detection is not a text match: a key absent from the resolved tsconfig chain is `null`; the fit probe (authoritative vs native diagnostics) shows the effect, and `diagnostic_codes` attribute the extra native diagnostics to the flipped default. The source skill listed none of these (doc 08 defect 7).",
+  "applies_below_authoritative": "6.0",
+  "applies_below_authoritative_note": "Observed 2026-10-20: the same scratch config (strict/types/module/rootDir unset) produced identical diagnostics on tsc 7.0.2 and tsc 6.0.3 (TS1202, TS2591, TS2882, TS7006, TS5011) and none of them on tsc 5.9.3, so the flips arrived in 6.0.",
+  "entries": [
+    {
+      "id": "strict",
+      "option": "strict",
+      "old_default": false,
+      "new_default": true,
+      "flipped_in": "6.0",
+      "requires_absent": [
+        "strict"
+      ],
+      "conditions": [],
+      "diagnostic_codes": [
+        "TS2564",
+        "TS2531",
+        "TS2532",
+        "TS2533",
+        "TS2345",
+        "TS18046",
+        "TS18047",
+        "TS18048",
+        "TS18049",
+        "TS2454",
+        "TS2683",
+        "TS2722",
+        "TS2769"
+      ],
+      "diagnostic_code_prefixes": [
+        "TS7"
+      ],
+      "symptom": "new implicit-any (TS7006/TS7031...), strictNullChecks, strictPropertyInitialization and strictFunctionTypes errors that the authoritative compiler does not report",
+      "remedy": "Set \"strict\" explicitly: true if the code base is ready (fix the new errors), or false plus individual strict flags if it is not. Explicit beats relying on either default.",
+      "rule": "tc-03",
+      "fix_mode": "assisted",
+      "verified": "empirical",
+      "observed": {
+        "code": "TS7006",
+        "message": "Parameter 'a' implicitly has an 'any' type."
+      },
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `strict` is `true` by default",
+        "tsc 7.0.2 / 6.0.3 / 5.9.3 scratch run"
+      ],
+      "flipped_in_basis": "empirical"
+    },
+    {
+      "id": "types",
+      "option": "types",
+      "old_default": "every visible node_modules/@types/* package",
+      "new_default": [],
+      "restore": [
+        "*"
+      ],
+      "flipped_in": "6.0",
+      "requires_absent": [
+        "types"
+      ],
+      "conditions": [
+        "at-types-installed"
+      ],
+      "diagnostic_codes": [
+        "TS2580",
+        "TS2581",
+        "TS2582",
+        "TS2583",
+        "TS2584",
+        "TS2591",
+        "TS2592",
+        "TS2593",
+        "TS2688",
+        "TS2304",
+        "TS2503"
+      ],
+      "diagnostic_code_prefixes": [],
+      "symptom": "ambient globals from @types packages vanish: \"Cannot find name 'process' / 'describe' / 'console'. Do you need to install type definitions for node?\"",
+      "remedy": "List the ambient packages the project really uses: \"types\": [\"node\", \"vitest/globals\", \"@cloudflare/workers-types\"]. \"types\": [\"*\"] restores the old behaviour but keeps the implicit global surface.",
+      "rule": "tc-03",
+      "fix_mode": "assisted",
+      "verified": "empirical",
+      "observed": {
+        "code": "TS2591",
+        "message": "Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node` and then add 'node' to the types field in your tsconfig."
+      },
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `types` now defaults to `[]`, restore with `[\"*\"]`",
+        "tsc 7.0.2 / 6.0.3 / 5.9.3 scratch run"
+      ],
+      "flipped_in_basis": "empirical"
+    },
+    {
+      "id": "module",
+      "option": "module",
+      "old_default": "commonjs (target ES5/ES3) or es2015 (higher targets)",
+      "new_default": "esnext",
+      "flipped_in": "6.0",
+      "requires_absent": [
+        "module"
+      ],
+      "conditions": [],
+      "diagnostic_codes": [
+        "TS1202",
+        "TS1203",
+        "TS1259",
+        "TS1479",
+        "TS1286",
+        "TS1287",
+        "TS1288",
+        "TS5095"
+      ],
+      "diagnostic_code_prefixes": [],
+      "symptom": "CommonJS-only constructs fail under ES-module semantics (`import x = require()` -> TS1202, `export =` -> TS1203)",
+      "remedy": "Set \"module\" explicitly (esnext/preserve for bundled apps, nodenext for Node packages, commonjs where the output is CJS).",
+      "rule": "tc-03",
+      "fix_mode": "assisted",
+      "verified": "empirical",
+      "observed": {
+        "code": "TS1202",
+        "message": "Import assignment cannot be used when targeting ECMAScript modules. Consider using 'import * as ns from \"mod\"', 'import {a} from \"mod\"', 'import d from \"mod\"', or another module format instead."
+      },
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `module` defaults to `esnext`",
+        "tsc 7.0.2 / 6.0.3 / 5.9.3 scratch run"
+      ],
+      "flipped_in_basis": "empirical"
+    },
+    {
+      "id": "rootDir",
+      "option": "rootDir",
+      "old_default": "longest common directory of the input files",
+      "new_default": "./ (the directory of the tsconfig)",
+      "flipped_in": "6.0",
+      "requires_absent": [
+        "rootDir"
+      ],
+      "conditions": [
+        "emit-layout"
+      ],
+      "diagnostic_codes": [
+        "TS5011",
+        "TS6059",
+        "TS6307"
+      ],
+      "diagnostic_code_prefixes": [],
+      "symptom": "emit layout changes (dist/src/a.js instead of dist/a.js) and TS5011 \"The common source directory ... 'rootDir' setting must be explicitly set\"; TS6059 when sources sit outside the tsconfig directory",
+      "remedy": "Set \"rootDir\" explicitly (usually \"./src\") wherever outDir/declaration output layout matters.",
+      "rule": "tc-03",
+      "fix_mode": "assisted",
+      "verified": "empirical",
+      "observed": {
+        "code": "TS5011",
+        "message": "The common source directory of 'tsconfig.json' is './src'. The 'rootDir' setting must be explicitly set to this or another path to adjust your output's file layout."
+      },
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `rootDir` now defaults to `./`",
+        "tsc 7.0.2 / 6.0.3 / 5.9.3 scratch run (dist/src/a.js vs dist/a.js)"
+      ],
+      "flipped_in_basis": "empirical"
+    },
+    {
+      "id": "target",
+      "option": "target",
+      "old_default": "ES5 (TS <= 5.x)",
+      "new_default": "the current stable ECMAScript version immediately preceding esnext",
+      "flipped_in": "6.0",
+      "requires_absent": [
+        "target"
+      ],
+      "conditions": [],
+      "diagnostic_codes": [
+        "TS2550",
+        "TS2339"
+      ],
+      "diagnostic_code_prefixes": [],
+      "symptom": "the default lib/emit level rises, so newer built-ins type-check (fewer errors on 7) and emitted syntax is no longer downlevelled",
+      "remedy": "Set \"target\" explicitly (ES2022 for applications, ES2020 for libraries).",
+      "rule": "tc-03",
+      "fix_mode": "assisted",
+      "verified": "docs",
+      "observed": null,
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `target` defaults to the current stable ECMAScript version immediately preceding `esnext`",
+        "tsc 7.0.2 TS6046 value list ends at es2025 before esnext (inferred es2025)"
+      ],
+      "flipped_in_basis": "inferred"
+    },
+    {
+      "id": "noUncheckedSideEffectImports",
+      "option": "noUncheckedSideEffectImports",
+      "old_default": false,
+      "new_default": true,
+      "flipped_in": "6.0",
+      "requires_absent": [
+        "noUncheckedSideEffectImports"
+      ],
+      "conditions": [],
+      "diagnostic_codes": [
+        "TS2882"
+      ],
+      "diagnostic_code_prefixes": [],
+      "symptom": "`import \"./styles.css\"` without a module declaration now errors (TS2882)",
+      "remedy": "Add a `declare module \"*.css\"` shim (or the framework's client types), or set the option to false explicitly.",
+      "rule": "tc-03",
+      "fix_mode": "assisted",
+      "verified": "empirical",
+      "observed": {
+        "code": "TS2882",
+        "message": "Cannot find module or type declarations for side-effect import of './missing.css'."
+      },
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `noUncheckedSideEffectImports` is `true` by default",
+        "tsc 7.0.2 / 6.0.3 scratch run"
+      ],
+      "flipped_in_basis": "empirical"
+    },
+    {
+      "id": "libReplacement",
+      "option": "libReplacement",
+      "old_default": true,
+      "new_default": false,
+      "flipped_in": "6.0",
+      "requires_absent": [
+        "libReplacement"
+      ],
+      "conditions": [
+        "lib-replacement-packages"
+      ],
+      "diagnostic_codes": [],
+      "diagnostic_code_prefixes": [],
+      "symptom": "@typescript/lib-* replacement packages are no longer looked up unless the option is enabled",
+      "remedy": "Set \"libReplacement\": true if the project installs @typescript/lib-* packages.",
+      "rule": "tc-03",
+      "fix_mode": "assisted",
+      "verified": "docs",
+      "observed": null,
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `libReplacement` is `false` by default"
+      ],
+      "flipped_in_basis": "inferred"
+    },
+    {
+      "id": "stableTypeOrdering",
+      "option": "stableTypeOrdering",
+      "old_default": false,
+      "new_default": true,
+      "flipped_in": "7.0",
+      "requires_absent": [],
+      "conditions": [],
+      "diagnostic_codes": [],
+      "diagnostic_code_prefixes": [],
+      "symptom": "union/intersection member ORDER in diagnostics and declaration output can differ from the authoritative compiler (wording drift, not a new error); cannot be turned off",
+      "remedy": "Nothing to configure. Compare diagnostics by code and file (the fit probe reports wording-only differences separately); never compare .d.ts text byte for byte. On TS 6 the opt-in flag \"stableTypeOrdering\": true previews the 7 ordering.",
+      "rule": "tc-03",
+      "fix_mode": "flag-only",
+      "verified": "docs",
+      "observed": "tsc 7.0.2 accepted \"stableTypeOrdering\": false without any diagnostic (ignored), contrary to the announcement's 'cannot be turned off' only in that it is not rejected",
+      "checked_on": "2026-10-20",
+      "source": [
+        "TS 7.0 announcement: `stableTypeOrdering` is `true` by default, and cannot be turned off",
+        "tsc 7.0.2 scratch run"
+      ],
+      "flipped_in_basis": "docs"
+    }
+  ]
+}

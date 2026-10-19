@@ -1,0 +1,18 @@
+{
+ "name": "H6 defers ts-opt commit",
+ "handler": "cli-allow",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "ts-opt commit F-0001"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "maxMs": 250,
+  "stdout": ""
+ }
+}

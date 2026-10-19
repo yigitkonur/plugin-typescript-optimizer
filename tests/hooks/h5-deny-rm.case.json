@@ -1,0 +1,21 @@
+{
+ "name": "H5 denies a triager's Bash call (rm)",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "rm -rf src"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "maxMs": 250
+ }
+}

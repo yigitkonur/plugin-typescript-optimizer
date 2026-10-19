@@ -1,0 +1,21 @@
+{
+ "name": "H5 pre-approves (allow decision for) a triager's rg search",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "rg -nw deadHelper src --glob '!src/barrel/b.ts'"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "allow"
+  },
+  "maxMs": 250
+ }
+}

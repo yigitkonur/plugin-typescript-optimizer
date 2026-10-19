@@ -39,7 +39,7 @@ Tier 3, gate evidence, happens at fix time, not in triage. Know it so you can wr
 
 Record it in `--codify` in this order of preference:
 
-1. Knip: `entry`, `project` negation glob, `ignoreDependencies`, `ignoreBinaries`, `ignoreExportsUsedInFile`, plugin enablement.
+1. Knip: `entry`, `project` negation glob, `ignoreDependencies`, `ignoreBinaries`, `ignoreExportsUsedInFile`, plugin enablement. Write it as `--codify "knip: <key> <value>"`, for example `knip: entry lib/widgets/*.ts` or `knip: ignoreDependencies postcss`, so `ts-opt knip-overlay --from-verdicts` can turn it into the overlay config. Any other form is kept as free text for the reviewer and not applied.
 2. The project's lint engine: the `_` prefix convention (`argsIgnorePattern`, `caughtErrorsIgnorePattern`).
 3. `tsconfig`.
 4. The coverage engine's ignore-files list.

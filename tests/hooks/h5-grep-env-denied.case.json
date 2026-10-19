@@ -1,0 +1,3 @@
+{ "name": "H5 denies a triager's Grep aimed at .env", "handler": "agent-guard", "cwd": "{WORK}/F01",
+  "stdin": { "hook_event_name": "PreToolUse", "tool_name": "Grep", "agent_type": "ts-optimize:ts-triager", "cwd": "{WORK}/F01", "tool_input": { "pattern": "KEY", "path": ".env" } },
+  "expect": { "exitCode": 0, "stdoutJson": { "hookSpecificOutput.permissionDecision": "deny" }, "maxMs": 250 } }

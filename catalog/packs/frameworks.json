@@ -1,0 +1,1258 @@
+{
+ "schema": "ts-optimize/pack-frameworks@1",
+ "description": "Framework entry conventions (doc 05 s6; source FPT s2-s7). Facts here come from the source skill plus author knowledge; none re-verified against live docs (checked_on null, verified false) except where stated.",
+ "checked_on": null,
+ "packs": {
+  "next": {
+   "detect": {
+    "deps": [
+     "next"
+    ],
+    "files": [
+     "next.config.js",
+     "next.config.mjs",
+     "next.config.ts",
+     "next.config.cjs"
+    ]
+   },
+   "entry_globs": [
+    "app/**/{page,layout,loading,error,global-error,not-found,route,default,template}.{js,jsx,ts,tsx}",
+    "src/app/**/{page,layout,loading,error,global-error,not-found,route,default,template}.{js,jsx,ts,tsx}",
+    "pages/**/*.{js,jsx,ts,tsx}",
+    "src/pages/**/*.{js,jsx,ts,tsx}",
+    "middleware.{js,ts}",
+    "src/middleware.{js,ts}",
+    "proxy.{js,ts}",
+    "src/proxy.{js,ts}",
+    "instrumentation.{js,ts}",
+    "src/instrumentation.{js,ts}",
+    "instrumentation-client.{js,ts}",
+    "next.config.{js,mjs,cjs,ts}",
+    "app/**/{opengraph-image,twitter-image,icon,apple-icon,sitemap,robots,manifest}.{js,jsx,ts,tsx}"
+   ],
+   "special_exports": {
+    "app/**/page.*": [
+     "default",
+     "generateMetadata",
+     "generateStaticParams",
+     "metadata",
+     "dynamic",
+     "dynamicParams",
+     "revalidate",
+     "fetchCache",
+     "runtime",
+     "preferredRegion",
+     "maxDuration",
+     "viewport",
+     "generateViewport"
+    ],
+    "app/**/layout.*": [
+     "default",
+     "generateMetadata",
+     "generateStaticParams",
+     "metadata",
+     "viewport",
+     "generateViewport",
+     "dynamic",
+     "revalidate",
+     "runtime"
+    ],
+    "app/**/route.*": [
+     "GET",
+     "POST",
+     "PUT",
+     "DELETE",
+     "PATCH",
+     "HEAD",
+     "OPTIONS",
+     "dynamic",
+     "revalidate",
+     "runtime",
+     "maxDuration",
+     "generateStaticParams"
+    ],
+    "pages/**": [
+     "default",
+     "getStaticProps",
+     "getServerSideProps",
+     "getStaticPaths",
+     "getInitialProps",
+     "config"
+    ],
+    "middleware.*": [
+     "default",
+     "middleware",
+     "config"
+    ],
+    "proxy.*": [
+     "default",
+     "proxy",
+     "config"
+    ],
+    "instrumentation.*": [
+     "register",
+     "onRequestError"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "next",
+    "@next/*",
+    "eslint-config-next"
+   ],
+   "route_like_globs": [
+    "app/**/page.*",
+    "app/**/route.*",
+    "app/**/layout.*",
+    "app/**/{loading,error,global-error,not-found,default,template}.*",
+    "src/app/**/page.*",
+    "src/app/**/route.*",
+    "src/app/**/layout.*",
+    "src/app/**/{loading,error,global-error,not-found,default,template}.*",
+    "pages/**",
+    "src/pages/**",
+    "middleware.*",
+    "src/middleware.*",
+    "proxy.*",
+    "src/proxy.*",
+    "instrumentation.*",
+    "src/instrumentation.*"
+   ],
+   "protected_globs": [
+    "next-env.d.ts",
+    "next.config.*"
+   ],
+   "sources": [
+    "https://nextjs.org/docs/app/api-reference/file-conventions",
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "remix": {
+   "detect": {
+    "deps": [
+     "@remix-run/react",
+     "@remix-run/node"
+    ],
+    "files": [
+     "remix.config.js",
+     "vite.config.ts"
+    ]
+   },
+   "entry_globs": [
+    "app/routes/**/*.{ts,tsx,js,jsx}",
+    "app/routes.{ts,js}",
+    "app/root.{tsx,jsx}",
+    "app/entry.client.{tsx,jsx,ts,js}",
+    "app/entry.server.{tsx,jsx,ts,js}",
+    "react-router.config.{ts,js}",
+    "remix.config.js"
+   ],
+   "special_exports": {
+    "app/routes/**": [
+     "default",
+     "loader",
+     "action",
+     "clientLoader",
+     "clientAction",
+     "headers",
+     "meta",
+     "links",
+     "handle",
+     "ErrorBoundary",
+     "HydrateFallback",
+     "shouldRevalidate"
+    ],
+    "app/root.*": [
+     "default",
+     "Layout",
+     "links",
+     "meta",
+     "loader",
+     "ErrorBoundary"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@remix-run/dev",
+    "@react-router/dev",
+    "@react-router/node"
+   ],
+   "route_like_globs": [
+    "app/routes/**",
+    "app/routes.*",
+    "app/root.*"
+   ],
+   "protected_globs": [
+    "react-router.config.*",
+    "remix.config.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "react-router": {
+   "detect": {
+    "deps": [
+     "react-router",
+     "@react-router/dev"
+    ],
+    "files": [
+     "react-router.config.ts"
+    ]
+   },
+   "entry_globs": [
+    "app/routes/**/*.{ts,tsx,js,jsx}",
+    "app/routes.{ts,js}",
+    "app/root.{tsx,jsx}",
+    "app/entry.client.{tsx,jsx,ts,js}",
+    "app/entry.server.{tsx,jsx,ts,js}",
+    "react-router.config.{ts,js}",
+    "remix.config.js"
+   ],
+   "special_exports": {
+    "app/routes/**": [
+     "default",
+     "loader",
+     "action",
+     "clientLoader",
+     "clientAction",
+     "headers",
+     "meta",
+     "links",
+     "handle",
+     "ErrorBoundary",
+     "HydrateFallback",
+     "shouldRevalidate"
+    ],
+    "app/root.*": [
+     "default",
+     "Layout",
+     "links",
+     "meta",
+     "loader",
+     "ErrorBoundary"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@remix-run/dev",
+    "@react-router/dev",
+    "@react-router/node"
+   ],
+   "route_like_globs": [
+    "app/routes/**",
+    "app/routes.*",
+    "app/root.*"
+   ],
+   "protected_globs": [
+    "react-router.config.*",
+    "remix.config.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "astro": {
+   "detect": {
+    "deps": [
+     "astro"
+    ],
+    "files": [
+     "astro.config.mjs",
+     "astro.config.ts"
+    ]
+   },
+   "entry_globs": [
+    "src/pages/**/*.{astro,md,mdx,ts,js}",
+    "src/content/config.ts",
+    "src/content.config.ts",
+    "src/middleware.{ts,js}",
+    "src/middleware/index.{ts,js}",
+    "src/actions/index.{ts,js}",
+    "astro.config.{mjs,ts,js}"
+   ],
+   "special_exports": {
+    "src/pages/**": [
+     "default",
+     "getStaticPaths",
+     "GET",
+     "POST",
+     "prerender"
+    ],
+    "src/middleware*": [
+     "onRequest"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [],
+   "route_like_globs": [
+    "src/pages/**",
+    "src/middleware*"
+   ],
+   "protected_globs": [
+    "astro.config.*",
+    "src/env.d.ts"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "nuxt": {
+   "detect": {
+    "deps": [
+     "nuxt"
+    ],
+    "files": [
+     "nuxt.config.ts",
+     "nuxt.config.js"
+    ]
+   },
+   "entry_globs": [
+    "pages/**/*.vue",
+    "layouts/*.vue",
+    "middleware/**/*.{ts,js}",
+    "plugins/**/*.{ts,js}",
+    "composables/**/*.{ts,js}",
+    "utils/**/*.{ts,js}",
+    "server/api/**/*.{ts,js}",
+    "server/routes/**/*.{ts,js}",
+    "server/middleware/**/*.{ts,js}",
+    "server/plugins/**/*.{ts,js}",
+    "app.vue",
+    "nuxt.config.{ts,js}"
+   ],
+   "special_exports": {
+    "server/api/**": [
+     "default"
+    ],
+    "middleware/**": [
+     "default"
+    ],
+    "plugins/**": [
+     "default"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@nuxt/*",
+    "nuxt"
+   ],
+   "route_like_globs": [
+    "pages/**",
+    "server/api/**",
+    "server/routes/**",
+    "server/middleware/**",
+    "middleware/**",
+    "layouts/**"
+   ],
+   "protected_globs": [
+    "nuxt.config.*",
+    ".nuxt/**"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "sveltekit": {
+   "detect": {
+    "deps": [
+     "@sveltejs/kit"
+    ],
+    "files": [
+     "svelte.config.js"
+    ]
+   },
+   "entry_globs": [
+    "src/routes/**/+*.{ts,js,svelte}",
+    "src/hooks.server.{ts,js}",
+    "src/hooks.client.{ts,js}",
+    "src/hooks.{ts,js}",
+    "src/params/*.{ts,js}",
+    "svelte.config.js"
+   ],
+   "special_exports": {
+    "src/routes/**/+page.*": [
+     "load",
+     "actions",
+     "prerender",
+     "ssr",
+     "csr",
+     "trailingSlash",
+     "entries"
+    ],
+    "src/routes/**/+layout.*": [
+     "load",
+     "prerender",
+     "ssr",
+     "csr",
+     "trailingSlash"
+    ],
+    "src/routes/**/+server.*": [
+     "GET",
+     "POST",
+     "PUT",
+     "PATCH",
+     "DELETE",
+     "OPTIONS",
+     "HEAD",
+     "fallback",
+     "prerender"
+    ],
+    "src/hooks.server.*": [
+     "handle",
+     "handleError",
+     "handleFetch",
+     "init"
+    ],
+    "src/hooks.client.*": [
+     "handleError",
+     "init"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@sveltejs/adapter-*",
+    "@sveltejs/vite-plugin-svelte"
+   ],
+   "route_like_globs": [
+    "src/routes/**",
+    "src/hooks.*"
+   ],
+   "protected_globs": [
+    "svelte.config.js",
+    "src/app.d.ts"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "nest": {
+   "detect": {
+    "deps": [
+     "@nestjs/core"
+    ],
+    "files": [
+     "nest-cli.json"
+    ]
+   },
+   "entry_globs": [
+    "src/main.ts",
+    "src/**/*.module.ts",
+    "src/**/*.controller.ts",
+    "src/**/*.gateway.ts",
+    "src/**/*.resolver.ts",
+    "src/**/*.guard.ts",
+    "src/**/*.interceptor.ts",
+    "src/**/*.pipe.ts",
+    "src/**/*.filter.ts"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [
+    "@Module",
+    "@Controller",
+    "@Injectable",
+    "@Get",
+    "@Post",
+    "@Put",
+    "@Delete",
+    "@Patch",
+    "@Cron",
+    "@Process",
+    "@MessagePattern",
+    "@EventPattern",
+    "@Resolver",
+    "@Query",
+    "@Mutation",
+    "@WebSocketGateway",
+    "@SubscribeMessage"
+   ],
+   "config_referenced_deps": [
+    "@nestjs/cli",
+    "@nestjs/schematics",
+    "@nestjs/platform-express"
+   ],
+   "route_like_globs": [
+    "src/**/*.controller.ts",
+    "src/main.ts",
+    "src/**/*.module.ts"
+   ],
+   "protected_globs": [
+    "nest-cli.json"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "express": {
+   "detect": {
+    "deps": [
+     "express"
+    ],
+    "files": []
+   },
+   "entry_globs": [
+    "src/index.{ts,js}",
+    "src/server.{ts,js}",
+    "src/app.{ts,js}",
+    "server.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [],
+   "route_like_globs": [
+    "src/routes/**",
+    "routes/**"
+   ],
+   "protected_globs": [],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "fastify": {
+   "detect": {
+    "deps": [
+     "fastify"
+    ],
+    "files": []
+   },
+   "entry_globs": [
+    "src/index.{ts,js}",
+    "src/server.{ts,js}",
+    "src/app.{ts,js}",
+    "server.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [],
+   "route_like_globs": [
+    "src/routes/**",
+    "routes/**"
+   ],
+   "protected_globs": [],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "hono": {
+   "detect": {
+    "deps": [
+     "hono"
+    ],
+    "files": []
+   },
+   "entry_globs": [
+    "src/index.{ts,js}",
+    "src/server.{ts,js}",
+    "src/app.{ts,js}",
+    "server.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [],
+   "route_like_globs": [
+    "src/routes/**"
+   ],
+   "protected_globs": [],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "vite": {
+   "detect": {
+    "deps": [
+     "vite"
+    ],
+    "files": [
+     "vite.config.ts",
+     "vite.config.js",
+     "vite.config.mjs",
+     "vite.config.mts"
+    ]
+   },
+   "entry_globs": [
+    "vite.config.{ts,js,mjs,mts}",
+    "index.html",
+    "src/main.{ts,tsx,js,jsx}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@vitejs/plugin-react",
+    "@vitejs/plugin-react-swc",
+    "@vitejs/plugin-vue",
+    "vite-tsconfig-paths"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "vite.config.*",
+    "src/vite-env.d.ts",
+    "vite-env.d.ts"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "angular": {
+   "detect": {
+    "deps": [
+     "@angular/core"
+    ],
+    "files": [
+     "angular.json"
+    ]
+   },
+   "entry_globs": [
+    "src/main.ts",
+    "src/**/*.component.ts",
+    "src/**/*.module.ts",
+    "src/**/*.routes.ts",
+    "src/app/app.config.ts"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [
+    "@Component",
+    "@Directive",
+    "@Injectable",
+    "@NgModule",
+    "@Pipe",
+    "@Input",
+    "@Output",
+    "@HostListener",
+    "@ViewChild"
+   ],
+   "config_referenced_deps": [
+    "@angular/cli",
+    "@angular-devkit/build-angular",
+    "@angular/compiler-cli"
+   ],
+   "route_like_globs": [
+    "src/**/*.routes.ts",
+    "src/**/*-routing.module.ts",
+    "src/main.ts"
+   ],
+   "protected_globs": [
+    "angular.json"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "expo": {
+   "detect": {
+    "deps": [
+     "expo"
+    ],
+    "files": [
+     "app.json",
+     "app.config.ts",
+     "app.config.js"
+    ]
+   },
+   "entry_globs": [
+    "app/**/*.{ts,tsx,js,jsx}",
+    "app.config.{ts,js}",
+    "index.{ts,js}",
+    "App.{tsx,jsx}",
+    "metro.config.js"
+   ],
+   "special_exports": {
+    "app/**": [
+     "default",
+     "unstable_settings",
+     "ErrorBoundary"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "babel-preset-expo",
+    "expo-router",
+    "expo-dev-client"
+   ],
+   "route_like_globs": [
+    "app/**"
+   ],
+   "protected_globs": [
+    "app.json",
+    "app.config.*",
+    "metro.config.js"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "react-native": {
+   "detect": {
+    "deps": [
+     "react-native"
+    ],
+    "files": [
+     "metro.config.js",
+     "react-native.config.js"
+    ]
+   },
+   "entry_globs": [
+    "index.{js,ts,tsx}",
+    "App.{tsx,jsx}",
+    "metro.config.js",
+    "react-native.config.js"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@react-native/babel-preset",
+    "@react-native/metro-config",
+    "metro-react-native-babel-preset"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "metro.config.js",
+    "react-native.config.js"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "storybook": {
+   "detect": {
+    "deps": [
+     "storybook",
+     "@storybook/react"
+    ],
+    "files": [
+     ".storybook/main.ts",
+     ".storybook/main.js"
+    ]
+   },
+   "entry_globs": [
+    ".storybook/{main,preview,manager}.{ts,tsx,js,jsx}",
+    "**/*.stories.{ts,tsx,js,jsx,mdx}"
+   ],
+   "special_exports": {
+    "**/*.stories.*": [
+     "default",
+     "*"
+    ]
+   },
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@storybook/*",
+    "storybook"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    ".storybook/**"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "vitest": {
+   "detect": {
+    "deps": [
+     "vitest"
+    ],
+    "files": [
+     "vitest.config.ts",
+     "vitest.workspace.ts",
+     "vitest.config.mts",
+     "vitest.config.js"
+    ]
+   },
+   "entry_globs": [
+    "vitest.config.{ts,mts,js,mjs}",
+    "vitest.workspace.{ts,js}",
+    "**/*.{test,spec}.{ts,tsx,js,jsx}",
+    "vitest.setup.{ts,js}",
+    "**/test/setup.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@vitest/coverage-v8",
+    "@vitest/coverage-istanbul",
+    "@vitest/ui",
+    "jsdom",
+    "happy-dom",
+    "@cloudflare/vitest-pool-workers"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "vitest.config.*",
+    "vitest.workspace.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "jest": {
+   "detect": {
+    "deps": [
+     "jest"
+    ],
+    "files": [
+     "jest.config.js",
+     "jest.config.ts",
+     "jest.config.cjs",
+     "jest.config.mjs"
+    ]
+   },
+   "entry_globs": [
+    "jest.config.{js,ts,cjs,mjs}",
+    "jest.setup.{ts,js}",
+    "**/*.{test,spec}.{ts,tsx,js,jsx}",
+    "**/__tests__/**/*.{ts,tsx,js,jsx}",
+    "**/__mocks__/**/*.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "ts-jest",
+    "@swc/jest",
+    "babel-jest",
+    "jest-environment-jsdom",
+    "@types/jest"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "jest.config.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "mocha": {
+   "detect": {
+    "deps": [
+     "mocha"
+    ],
+    "files": [
+     ".mocharc.json",
+     ".mocharc.js",
+     ".mocharc.cjs",
+     ".mocharc.yml"
+    ]
+   },
+   "entry_globs": [
+    ".mocharc.{js,cjs,json,yml}",
+    "test/**/*.{ts,js}",
+    "**/*.{test,spec}.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "ts-node",
+    "tsx",
+    "chai",
+    "@types/mocha"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    ".mocharc.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "playwright": {
+   "detect": {
+    "deps": [
+     "@playwright/test"
+    ],
+    "files": [
+     "playwright.config.ts",
+     "playwright.config.js"
+    ]
+   },
+   "entry_globs": [
+    "playwright.config.{ts,js}",
+    "e2e/**/*.{ts,js}",
+    "tests/**/*.spec.{ts,js}",
+    "**/*.spec.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@playwright/test"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "playwright.config.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "cypress": {
+   "detect": {
+    "deps": [
+     "cypress"
+    ],
+    "files": [
+     "cypress.config.ts",
+     "cypress.config.js"
+    ]
+   },
+   "entry_globs": [
+    "cypress.config.{ts,js,mjs}",
+    "cypress/e2e/**/*.{ts,js}",
+    "cypress/support/**/*.{ts,js}",
+    "cypress/**/*.cy.{ts,js}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "cypress"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "cypress.config.*",
+    "cypress/support/**"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "tailwind": {
+   "detect": {
+    "deps": [
+     "tailwindcss"
+    ],
+    "files": [
+     "tailwind.config.js",
+     "tailwind.config.ts",
+     "tailwind.config.cjs",
+     "tailwind.config.mjs"
+    ]
+   },
+   "entry_globs": [
+    "tailwind.config.{js,ts,cjs,mjs}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "@tailwindcss/typography",
+    "@tailwindcss/forms",
+    "@tailwindcss/postcss",
+    "@tailwindcss/vite",
+    "autoprefixer",
+    "tailwindcss-animate",
+    "prettier-plugin-tailwindcss"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "tailwind.config.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "postcss": {
+   "detect": {
+    "deps": [
+     "postcss"
+    ],
+    "files": [
+     "postcss.config.js",
+     "postcss.config.cjs",
+     "postcss.config.mjs",
+     "postcss.config.ts"
+    ]
+   },
+   "entry_globs": [
+    "postcss.config.{js,cjs,mjs,ts}"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "autoprefixer",
+    "postcss-preset-env",
+    "cssnano",
+    "postcss-import",
+    "postcss-nested",
+    "@tailwindcss/postcss"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "postcss.config.*"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "prisma": {
+   "detect": {
+    "deps": [
+     "@prisma/client",
+     "prisma"
+    ],
+    "files": [
+     "prisma/schema.prisma"
+    ]
+   },
+   "entry_globs": [
+    "prisma/seed.{ts,js}",
+    "prisma.config.ts",
+    "prisma/migrations/**"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "prisma",
+    "@prisma/client",
+    "tsx",
+    "ts-node"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "prisma/schema.prisma",
+    "prisma/migrations/**",
+    "prisma.config.ts"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "typeorm": {
+   "detect": {
+    "deps": [
+     "typeorm"
+    ],
+    "files": [
+     "ormconfig.json",
+     "data-source.ts"
+    ]
+   },
+   "entry_globs": [
+    "src/**/*.entity.ts",
+    "src/**/migrations/**/*.ts",
+    "src/**/*.subscriber.ts",
+    "src/data-source.ts",
+    "**/data-source.ts"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [
+    "@Entity",
+    "@Column",
+    "@PrimaryGeneratedColumn",
+    "@PrimaryColumn",
+    "@ManyToOne",
+    "@OneToMany",
+    "@ManyToMany",
+    "@OneToOne",
+    "@JoinColumn",
+    "@Index",
+    "@CreateDateColumn",
+    "@UpdateDateColumn",
+    "@EventSubscriber"
+   ],
+   "config_referenced_deps": [
+    "pg",
+    "mysql2",
+    "sqlite3",
+    "better-sqlite3",
+    "reflect-metadata"
+   ],
+   "route_like_globs": [
+    "src/**/migrations/**"
+   ],
+   "protected_globs": [
+    "src/**/migrations/**"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "mikro-orm": {
+   "detect": {
+    "deps": [
+     "@mikro-orm/core"
+    ],
+    "files": [
+     "mikro-orm.config.ts"
+    ]
+   },
+   "entry_globs": [
+    "mikro-orm.config.{ts,js}",
+    "src/**/*.entity.ts",
+    "src/**/migrations/**/*.ts"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [
+    "@Entity",
+    "@Property",
+    "@PrimaryKey",
+    "@ManyToOne",
+    "@OneToMany",
+    "@ManyToMany",
+    "@OneToOne",
+    "@Embeddable",
+    "@Embedded"
+   ],
+   "config_referenced_deps": [
+    "@mikro-orm/*",
+    "reflect-metadata"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "src/**/migrations/**"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "drizzle": {
+   "detect": {
+    "deps": [
+     "drizzle-orm"
+    ],
+    "files": [
+     "drizzle.config.ts",
+     "drizzle.config.js"
+    ]
+   },
+   "entry_globs": [
+    "drizzle.config.{ts,js,mjs}",
+    "src/**/schema.ts",
+    "src/db/schema/**/*.ts",
+    "drizzle/**/*.ts"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [
+    "drizzle-kit",
+    "drizzle-orm",
+    "pg",
+    "postgres",
+    "mysql2",
+    "@libsql/client",
+    "better-sqlite3"
+   ],
+   "route_like_globs": [],
+   "protected_globs": [
+    "drizzle.config.*",
+    "drizzle/**"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "trpc": {
+   "detect": {
+    "deps": [
+     "@trpc/server"
+    ],
+    "files": []
+   },
+   "entry_globs": [
+    "src/**/trpc.ts",
+    "src/**/routers/**/*.ts",
+    "src/server/api/**/*.ts",
+    "src/pages/api/trpc/**/*.ts",
+    "app/api/trpc/**/*.ts"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [
+    "router({",
+    "publicProcedure",
+    "protectedProcedure"
+   ],
+   "config_referenced_deps": [
+    "@trpc/client",
+    "@trpc/react-query",
+    "@trpc/next",
+    "@tanstack/react-query"
+   ],
+   "route_like_globs": [
+    "src/pages/api/trpc/**",
+    "app/api/trpc/**",
+    "src/server/api/**"
+   ],
+   "protected_globs": [],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  },
+  "msw": {
+   "detect": {
+    "deps": [
+     "msw"
+    ],
+    "files": [
+     "mockServiceWorker.js"
+    ]
+   },
+   "entry_globs": [
+    "src/mocks/**/*.{ts,js}",
+    "mocks/**/*.{ts,js}",
+    "**/handlers.{ts,js}",
+    "public/mockServiceWorker.js"
+   ],
+   "special_exports": {},
+   "reflection_patterns": [],
+   "config_referenced_deps": [],
+   "route_like_globs": [],
+   "protected_globs": [
+    "public/mockServiceWorker.js"
+   ],
+   "sources": [
+    "run-ts-cleanup/references/detection/false-positive-triage.md"
+   ],
+   "checked_on": null,
+   "verified": false
+  }
+ }
+}

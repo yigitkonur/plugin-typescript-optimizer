@@ -1,0 +1,502 @@
+{
+  "schema": "ts-optimize/ecosystem-compat@1",
+  "checked_on": "2026-10-20",
+  "about": "How common tools behave on a TypeScript 7 project (doc 05 §7). `basis`: v = verified in the sources listed in `source` (doc 08 §5), i = inferred, re-verify with fixtures. `broken` entries make the fit verdict at least ready-with-bridge. `rule` is the finding rule that reports a hit (tc-04 incompatible tooling, tc-05 transpile-runner hygiene, null = informational). `leg` is the gate leg that stops working (tc-04 severity hard when that leg exists in the repository, warn when the tool only runs ad hoc). `imports` are module specifiers searched in source files, `packages` are dependency names, `script_patterns` are regexes searched in package.json scripts and config files.",
+  "alias_scheme": {
+    "dependencies": {
+      "typescript": "npm:@typescript/typescript6@^6",
+      "@typescript/native": "npm:typescript@^7"
+    },
+    "source": "TS 7.0 announcement (side-by-side install)",
+    "basis": "v"
+  },
+  "entries": [
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": "lint",
+      "rule": "tc-04",
+      "bridge": "alias-scheme",
+      "checked_on": "2026-10-20",
+      "id": "typescript-eslint",
+      "tool": "typescript-eslint",
+      "packages": [
+        "typescript-eslint",
+        "@typescript-eslint/parser",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/typescript-estree"
+      ],
+      "status": "throws",
+      "broken": true,
+      "status_text": "throws at startup on TS 7 (\"typescript-eslint does not support TS 7.0\"; no JS API until 7.1)",
+      "remedy": "alias scheme: \"typescript\": \"npm:@typescript/typescript6@^6\" plus \"@typescript/native\": \"npm:typescript@^7\" (tsc becomes native, tsc6 and every require(\"typescript\") stay TS 6), or move lint to Oxlint/Biome",
+      "basis": "v",
+      "source": [
+        "TS 7.0 announcement (tools like typescript-eslint rely on the 6.0 API)",
+        "typescript-eslint issue #12518",
+        "doc 05 §7",
+        "fixture F07: typescript-eslint 8.72.0 refuses to load on TS 7.0.2"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": "lint",
+      "rule": "tc-04",
+      "bridge": "alias-scheme",
+      "checked_on": "2026-10-20",
+      "id": "eslint-config-next",
+      "tool": "eslint-config-next",
+      "packages": [
+        "eslint-config-next"
+      ],
+      "status": "throws",
+      "broken": true,
+      "status_text": "throws at startup (pulls in typescript-eslint)",
+      "remedy": "alias scheme: \"typescript\": \"npm:@typescript/typescript6@^6\" plus \"@typescript/native\": \"npm:typescript@^7\" (tsc becomes native, tsc6 and every require(\"typescript\") stay TS 6), or move lint to Oxlint/Biome",
+      "basis": "v",
+      "source": [
+        "doc 05 §7",
+        "typescript-eslint issue #12518"
+      ]
+    },
+    {
+      "imports": [
+        "ts-morph"
+      ],
+      "script_patterns": [],
+      "leg": null,
+      "rule": "tc-04",
+      "bridge": "alias-scheme",
+      "checked_on": "2026-10-20",
+      "id": "ts-morph",
+      "tool": "ts-morph",
+      "packages": [
+        "ts-morph",
+        "@ts-morph/common",
+        "@ts-morph/bootstrap"
+      ],
+      "status": "breaks",
+      "broken": true,
+      "status_text": "breaks (wraps the JS compiler API)",
+      "remedy": "alias scheme: \"typescript\": \"npm:@typescript/typescript6@^6\" plus \"@typescript/native\": \"npm:typescript@^7\" (tsc becomes native, tsc6 and every require(\"typescript\") stay TS 6); scripts that import \"typescript\" directly can import \"@typescript/typescript6\" instead",
+      "basis": "v",
+      "source": [
+        "TS 7.0 announcement (no JS API in 7.0)",
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [
+        "typescript"
+      ],
+      "script_patterns": [],
+      "leg": null,
+      "rule": "tc-04",
+      "bridge": "alias-scheme",
+      "checked_on": "2026-10-20",
+      "id": "typescript-js-api",
+      "tool": "typescript (JavaScript compiler API)",
+      "packages": [],
+      "status": "breaks",
+      "broken": true,
+      "status_text": "breaks: TS 7.0 ships no JavaScript compiler API (a new API is expected in 7.1)",
+      "remedy": "alias scheme: \"typescript\": \"npm:@typescript/typescript6@^6\" plus \"@typescript/native\": \"npm:typescript@^7\" (tsc becomes native, tsc6 and every require(\"typescript\") stay TS 6), or import \"@typescript/typescript6\" in your own scripts",
+      "basis": "v",
+      "source": [
+        "TS 7.0 announcement: \"it does not ship with an API\""
+      ]
+    },
+    {
+      "imports": [
+        "ts-node"
+      ],
+      "script_patterns": [
+        "\\bts-node(?:-dev)?\\b"
+      ],
+      "leg": null,
+      "rule": "tc-05",
+      "bridge": "replace",
+      "checked_on": "2026-10-20",
+      "id": "ts-node",
+      "tool": "ts-node",
+      "packages": [
+        "ts-node",
+        "ts-node-dev"
+      ],
+      "status": "crashes",
+      "broken": true,
+      "status_text": "crashes (requires the JS compiler API)",
+      "remedy": "replace with `tsx`, or `node --experimental-strip-types` (Node >= 22.6) for erasable-syntax-only code",
+      "basis": "v",
+      "source": [
+        "doc 05 §7",
+        "rule tc-05"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": "tc-05",
+      "bridge": "alias-scheme",
+      "checked_on": "2026-10-20",
+      "id": "ts-loader",
+      "tool": "ts-loader",
+      "packages": [
+        "ts-loader"
+      ],
+      "status": "likely-breaks",
+      "broken": true,
+      "status_text": "likely breaks (webpack loader on the JS API; custom transformers need getCustomTransformers)",
+      "remedy": "use a transpiler loader (swc-loader/esbuild-loader) and type-check with tsc --noEmit; or the alias scheme: \"typescript\": \"npm:@typescript/typescript6@^6\" plus \"@typescript/native\": \"npm:typescript@^7\" (tsc becomes native, tsc6 and every require(\"typescript\") stay TS 6)",
+      "basis": "i",
+      "source": [
+        "rule tc-05",
+        "inferred: ts-loader calls the TypeScript JS API"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [
+        "\\bttsc\\b"
+      ],
+      "leg": null,
+      "rule": "tc-05",
+      "bridge": "replace",
+      "checked_on": "2026-10-20",
+      "id": "ttypescript",
+      "tool": "ttypescript",
+      "packages": [
+        "ttypescript"
+      ],
+      "status": "likely-breaks",
+      "broken": true,
+      "status_text": "likely breaks (patches the JS compiler)",
+      "remedy": "drop compiler plugins (transformers belong in the bundler) or keep TS 6 for that build via the alias scheme",
+      "basis": "i",
+      "source": [
+        "rule tc-05",
+        "inferred: patches the typescript package"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [
+        "\\btspc\\b"
+      ],
+      "leg": null,
+      "rule": "tc-05",
+      "bridge": "replace",
+      "checked_on": "2026-10-20",
+      "id": "ts-patch",
+      "tool": "ts-patch",
+      "packages": [
+        "ts-patch"
+      ],
+      "status": "likely-breaks",
+      "broken": true,
+      "status_text": "likely breaks (patches the JS compiler)",
+      "remedy": "drop compiler plugins or keep TS 6 for that build via the alias scheme",
+      "basis": "i",
+      "source": [
+        "rule tc-05",
+        "inferred: patches the typescript package"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": "test",
+      "rule": "tc-04",
+      "bridge": "replace",
+      "checked_on": "2026-10-20",
+      "id": "ts-jest",
+      "tool": "ts-jest",
+      "packages": [
+        "ts-jest"
+      ],
+      "status": "breaks",
+      "broken": true,
+      "status_text": "breaks (jest transformer on the JS API)",
+      "remedy": "@swc/jest or vitest, or the alias scheme",
+      "basis": "v",
+      "source": [
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": "tc-04",
+      "bridge": "toolbox",
+      "checked_on": "2026-10-20",
+      "id": "type-coverage",
+      "tool": "type-coverage",
+      "packages": [
+        "type-coverage"
+      ],
+      "status": "crashes",
+      "broken": true,
+      "status_text": "crashes unless given a TS 6",
+      "remedy": "run it from the toolbox (private TS 6), or use the proxy metric escape-hatch@1",
+      "basis": "v",
+      "source": [
+        "type-coverage PR #152",
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": "tc-04",
+      "bridge": "replace",
+      "checked_on": "2026-10-20",
+      "id": "madge",
+      "tool": "madge",
+      "packages": [
+        "madge"
+      ],
+      "status": "crashes",
+      "broken": true,
+      "status_text": "crashes (parses with typescript-estree)",
+      "remedy": "Knip --cycles",
+      "basis": "v",
+      "source": [
+        "madge issue #462",
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": "tc-04",
+      "bridge": "replace",
+      "checked_on": "2026-10-20",
+      "id": "dpdm",
+      "tool": "dpdm",
+      "packages": [
+        "dpdm"
+      ],
+      "status": "likely-breaks",
+      "broken": true,
+      "status_text": "likely breaks (parses with TypeScript)",
+      "remedy": "Knip --cycles",
+      "basis": "i",
+      "source": [
+        "doc 05 §7 (inferred)"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": "tc-04",
+      "bridge": "upgrade",
+      "checked_on": "2026-10-20",
+      "id": "knip",
+      "tool": "Knip",
+      "packages": [
+        "knip"
+      ],
+      "status": "version-dependent",
+      "broken": false,
+      "version_rules": [
+        {
+          "range": "<6",
+          "status": "breaks",
+          "broken": true,
+          "status_text": "v5 uses the TypeScript JS API and breaks on TS 7 (inferred from the v6 announcement; verify with a fixture)",
+          "remedy": "upgrade to Knip 6 (oxc based; needs Node >= 20.19)",
+          "basis": "i"
+        },
+        {
+          "range": ">=6",
+          "status": "ok",
+          "broken": false,
+          "status_text": "v6 is oxc based and runs on TS 7 (fixture F07: knip 6.42.1 reports on TS 7.0.2)",
+          "remedy": null,
+          "basis": "v"
+        }
+      ],
+      "status_text": "version dependent",
+      "remedy": "upgrade to Knip 6",
+      "basis": "i",
+      "source": [
+        "knip.dev/blog/knip-v6",
+        "doc 05 §7",
+        "fixture F07"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": null,
+      "bridge": "none",
+      "checked_on": "2026-10-20",
+      "id": "biome",
+      "tool": "Biome",
+      "packages": [
+        "@biomejs/biome",
+        "ultracite"
+      ],
+      "status": "ok",
+      "broken": false,
+      "status_text": "fine (no JS compiler API)",
+      "remedy": null,
+      "basis": "v",
+      "source": [
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": null,
+      "bridge": "none",
+      "checked_on": "2026-10-20",
+      "id": "oxlint",
+      "tool": "Oxlint (+ tsgolint v7)",
+      "packages": [
+        "oxlint",
+        "oxlint-tsgolint"
+      ],
+      "status": "ok",
+      "broken": false,
+      "status_text": "fine (tsgolint v7 needs TS >= 7 and no baseUrl)",
+      "remedy": null,
+      "basis": "v",
+      "source": [
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": null,
+      "bridge": "none",
+      "checked_on": "2026-10-20",
+      "id": "prettier",
+      "tool": "Prettier",
+      "packages": [
+        "prettier"
+      ],
+      "status": "ok",
+      "broken": false,
+      "status_text": "fine",
+      "remedy": null,
+      "basis": "v",
+      "source": [
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": null,
+      "bridge": "none",
+      "checked_on": "2026-10-20",
+      "id": "transpilers",
+      "tool": "Vite / esbuild / SWC / Rolldown / tsx / Bun / Deno",
+      "packages": [
+        "vite",
+        "esbuild",
+        "@swc/core",
+        "rolldown",
+        "tsx",
+        "bun-types",
+        "@types/bun"
+      ],
+      "status": "ok",
+      "broken": false,
+      "status_text": "fine (transpile only, no type checking)",
+      "remedy": null,
+      "basis": "v",
+      "source": [
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": null,
+      "rule": null,
+      "bridge": "none",
+      "checked_on": "2026-10-20",
+      "id": "checker-via-resolved-typescript",
+      "tool": "vite-plugin-checker, next build type-check",
+      "packages": [
+        "vite-plugin-checker",
+        "next"
+      ],
+      "status": "note",
+      "broken": false,
+      "status_text": "type-check with whichever \"typescript\" resolves; with the alias scheme that is TS 6",
+      "remedy": "note the divergence between tsc (7) and the framework check (6) until their 7.1 support lands",
+      "basis": "v",
+      "source": [
+        "doc 05 §7",
+        "doc 05 §8.4 T2 caveat"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": "lint",
+      "rule": "tc-04",
+      "bridge": "keep-ts6",
+      "checked_on": "2026-10-20",
+      "id": "template-checkers",
+      "tool": "vue-tsc, svelte-check, Astro/Angular template checking, MDX",
+      "packages": [
+        "vue-tsc",
+        "svelte-check",
+        "@astrojs/check",
+        "@angular/compiler-cli",
+        "@mdx-js/typescript-plugin"
+      ],
+      "status": "needs-ts6",
+      "broken": true,
+      "status_text": "needs TS 6 for editor/template support",
+      "remedy": "keep TS 6 for those tools (alias scheme)",
+      "basis": "v",
+      "source": [
+        "doc 05 §7"
+      ]
+    },
+    {
+      "imports": [],
+      "script_patterns": [],
+      "leg": "build",
+      "rule": "tc-04",
+      "bridge": "alias-scheme",
+      "checked_on": "2026-10-20",
+      "id": "dts-bundlers",
+      "tool": "tsup/tsdown dts, rollup-plugin-dts, api-extractor, typedoc, ts-json-schema-generator",
+      "packages": [
+        "tsup",
+        "tsdown",
+        "rollup-plugin-dts",
+        "@microsoft/api-extractor",
+        "typedoc",
+        "ts-json-schema-generator",
+        "vite-plugin-dts"
+      ],
+      "status": "likely-breaks",
+      "broken": true,
+      "status_text": "use the JS API for declaration bundling/doc generation (inferred)",
+      "remedy": "alias scheme: \"typescript\": \"npm:@typescript/typescript6@^6\" plus \"@typescript/native\": \"npm:typescript@^7\" (tsc becomes native, tsc6 and every require(\"typescript\") stay TS 6)",
+      "basis": "i",
+      "source": [
+        "doc 05 §7 (inferred)"
+      ]
+    }
+  ]
+}

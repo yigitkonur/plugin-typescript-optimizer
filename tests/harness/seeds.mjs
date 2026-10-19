@@ -3,6 +3,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fixtureDir, workDir } from './fixture.mjs';
+import { loadRules } from '../../lib/catalog/index.mjs';
 
 export function compareSeeds(id, runId = null, { tolerance = 0 } = {}) {
   const seeds = JSON.parse(readFileSync(join(fixtureDir(id), 'SEEDS.json'), 'utf8'));
@@ -11,9 +12,15 @@ export function compareSeeds(id, runId = null, { tolerance = 0 } = {}) {
   const cands = readFileSync(join(work, run, 'raw', 'candidates.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
   const withheldFile = join(work, run, 'raw', 'withheld.jsonl');
   const withheld = existsSync(withheldFile) ? readFileSync(withheldFile, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
-  const hit = (s, list) => list.filter((c) => c.rule === s.rule && c.file === s.file && (s.line === undefined || Math.abs(c.line - s.line) <= tolerance));
+  const rules = loadRules();
+  const mode = JSON.parse(readFileSync(join(work, run, 'run.json'), 'utf8')).mode;
+  const inMode = (s) => s.rule === '*' || (rules.get(s.rule)?.modes || []).includes(mode); // a seed for a deep/tsgo rule is not expected in a standard scan
+  // file/package/project-grain candidates sit on the first line of the file; the seed's line is where a human would point
+  const lineFree = (s) => ['file', 'package', 'project'].includes(rules.get(s.rule)?.grain);
+  const hit = (s, list) => list.filter((c) => c.rule === s.rule && c.file === s.file && (s.line === undefined || lineFree(s) || Math.abs(c.line - s.line) <= tolerance));
   const missing = []; const wrongLine = []; const violations = [];
-  for (const s of seeds.must_fire || []) {
+  const skipped = (seeds.must_fire || []).filter((s) => !inMode(s));
+  for (const s of (seeds.must_fire || []).filter(inMode)) {
     if (hit(s, cands).length) continue;
     const near = cands.filter((c) => c.rule === s.rule && c.file === s.file);
     (near.length ? wrongLine : missing).push({ ...s, found_lines: near.map((c) => c.line), withheld: hit(s, withheld).length > 0 });
@@ -26,7 +33,7 @@ export function compareSeeds(id, runId = null, { tolerance = 0 } = {}) {
     if (precision.length) violations.push({ ...s, found: precision.map((c) => `${c.rule}@${c.line}`) });
     else if (h.length) triageDismiss.push({ ...s, found: h.map((c) => `${c.rule}@${c.line}`) });
   }
-  return { fixture: id, run, candidates: cands.length, must_fire: (seeds.must_fire || []).length, missing, wrongLine, violations, triageDismiss, seeds };
+  return { fixture: id, run, candidates: cands.length, must_fire: (seeds.must_fire || []).length - skipped.length, skipped_other_modes: skipped.length, missing, wrongLine, violations, triageDismiss, seeds };
 }
 
 if (process.argv[1] && import.meta.url.endsWith(process.argv[1].split('/').pop())) {

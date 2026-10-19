@@ -1,0 +1,53 @@
+{
+  "schema": "ts-optimize/pack-workerd@1",
+  "name": "workerd",
+  "description": "Cloudflare Workers runtime pack (doc 05 s6, doc 03 s4, doc 06 s9).",
+  "sources": [
+    "https://developers.cloudflare.com/workers/configuration/compatibility-flags/",
+    "https://developers.cloudflare.com/workers/runtime-apis/nodejs/process/",
+    "run-ts-cleanup/references/runtimes/cloudflare-workers.md (corrected: process.env is populated under conditions, see process_env)"
+  ],
+  "detect": {
+    "wrangler_files": ["wrangler.json", "wrangler.jsonc", "wrangler.toml"],
+    "deps": ["wrangler", "@cloudflare/workers-types", "@cloudflare/vitest-pool-workers"]
+  },
+  "handlers": { "names": ["fetch", "scheduled", "queue", "email", "tail"], "default_export_required": true, "checked_on": null, "verified": false, "basis": "source FPT/cloudflare-workers.md 5.1; also trace/tailStream exist upstream and are not listed" },
+  "rpc_base_classes": ["DurableObject", "WorkerEntrypoint", "WorkflowEntrypoint"],
+  "rpc_import_module": "cloudflare:workers",
+  "test_import_module": "cloudflare:test",
+  "wrangler_keys": {
+    "main": "main",
+    "compatibility_date": "compatibility_date",
+    "compatibility_flags": "compatibility_flags",
+    "durable_object_classes": "durable_objects.bindings[].class_name",
+    "workflow_classes": "workflows[].class_name",
+    "other_read": ["services", "queues.consumers", "migrations"]
+  },
+  "ambient_files": ["worker-configuration.d.ts", "env.d.ts"],
+  "protected_globs": ["worker-configuration.d.ts", "**/worker-configuration.d.ts", "env.d.ts", "**/env.d.ts", "wrangler.json", "wrangler.jsonc", "wrangler.toml", "**/wrangler.json", "**/wrangler.jsonc", "**/wrangler.toml"],
+  "config_referenced_deps": ["@cloudflare/workers-types", "@cloudflare/vitest-pool-workers", "wrangler"],
+  "protected_edit_patterns": [
+    { "id": "waituntil-count-decrease", "match": "ctx.waitUntil(", "rule": "occurrence count in a file must not decrease without an equal increase" },
+    { "id": "handler-or-default-export-removed", "rule": "removed `export default` or handler method (fetch|scheduled|queue|email|tail) in an entry file" },
+    { "id": "process-env-added", "match": "process.env", "rule": "added process.env in a worker file when process_env_populated != true" },
+    { "id": "cloudflare-import-removed", "rule": "removal of an import from cloudflare:workers or cloudflare:test" }
+  ],
+  "process_env": {
+    "node_compat_flag": "nodejs_compat",
+    "node_compat_disable_flags": ["no_nodejs_compat"],
+    "node_compat_default_date": "2026-08-04",
+    "populate_flag": "nodejs_compat_populate_process_env",
+    "populate_default_date": "2025-04-01",
+    "populate_opt_out_flag": "nodejs_compat_do_not_populate_process_env",
+    "v2_flag": "nodejs_compat_v2",
+    "unknown_flag_heuristic": "any other flag containing 'process_env' and ('not' or 'no') => process_env_populated 'unknown'",
+    "contents_note": "populated from bindings with text or JSON values (vars, secrets); not KV/D1/R2 bindings",
+    "facts": [
+      { "fact": "nodejs_compat is enabled by default for compatibility_date >= 2026-08-04 (together with nodejs_compat_v2); disable with no_nodejs_compat (+ no_nodejs_compat_v2)", "checked_on": "2026-10-20", "verified": true },
+      { "fact": "nodejs_compat_populate_process_env is default for compatibility_date >= 2025-04-01", "checked_on": "2026-10-20", "verified": true },
+      { "fact": "opt-out flag name is nodejs_compat_do_not_populate_process_env", "checked_on": "2026-10-20", "verified": true, "note": "stated on the compatibility-flags page; the process page does not name it" },
+      { "fact": "the compat-flags page was read only to character 100000 of 120343", "checked_on": "2026-10-20", "verified": false }
+    ]
+  },
+  "checked_on": "2026-10-20"
+}

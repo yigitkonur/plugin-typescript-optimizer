@@ -1,0 +1,20 @@
+{
+ "name": "H6 pre-approves ts-opt findings ingest",
+ "handler": "cli-allow",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "ts-opt findings ingest --json"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "maxMs": 250,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "allow"
+  }
+ }
+}

@@ -1,0 +1,3 @@
+{ "name": "H5 ignores other plugins' subagents", "handler": "agent-guard", "cwd": "{WORK}/F01",
+  "stdin": { "hook_event_name": "PreToolUse", "tool_name": "Bash", "agent_type": "general-purpose", "cwd": "{WORK}/F01", "tool_input": { "command": "rm -rf build" } },
+  "expect": { "exitCode": 0, "stdout": "", "maxMs": 40 } }

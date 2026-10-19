@@ -1,0 +1,21 @@
+{
+ "name": "H5 pre-approves (allow decision for) ts-opt verdict add with an evidence string that mentions .env",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "ts-opt verdict add --chunk C01 --candidate c-0001 --verdict confirmed --evidence \"rg x .env \u2192 0 hits\""
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "allow"
+  },
+  "maxMs": 250
+ }
+}

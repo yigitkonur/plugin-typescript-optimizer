@@ -1,0 +1,21 @@
+{
+ "name": "H5 pre-approves (allow decision for) a triager's Read of a source file",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Read",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "file_path": "{WORK}/F01/src/internal.ts"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "allow"
+  },
+  "maxMs": 250
+ }
+}

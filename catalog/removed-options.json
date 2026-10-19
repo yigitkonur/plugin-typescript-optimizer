@@ -1,0 +1,695 @@
+{
+  "schema": "ts-optimize/removed-options@1",
+  "checked_on": "2026-10-20",
+  "about": "Compiler options (and option values) that the TypeScript 7 native compiler rejects. Used by lib/tsgo/fit.mjs for rules tc-01 (and tc-02 for baseUrl). Every entry was run against tsc 7.0.2 (native) on 2026-10-20; `ts7.code` / `ts7.message` are the observed diagnostic. `ts6` is the same option on tsc 6.0.3, `ts5_9` on tsc 5.9.3 where it differs in a way that matters. Attribution matters (doc 08 defect 7): the group `removed-in-5.5` was removed by TypeScript 5.5, not by TS 7. `scratch_override` is the value fit writes into a temporary tsconfig (under .ts-optimize/fit/, deleted afterwards, `null` = unset the inherited option) so the native compiler can type-check a project whose configuration it otherwise refuses to look past: tsc 7.0.2 stops after the TS51xx/TS5023 configuration errors without type-checking (observed on fixture F08). Timings and diagnostics taken from that scratch run are labelled as such; the project's files are never modified.",
+  "match_semantics": "`match.values`: option value compared case-insensitively as a string; `match.value`: strict equality (booleans); `match.any`: the key being present at all is the error. Option names are matched case-insensitively.",
+  "ignore_deprecations": {
+    "ts6": "On TS 6.0 `\"ignoreDeprecations\": \"6.0\"` silences the TS5101/TS5107 deprecation errors (observed on 6.0.3: no output for target=es5 with it set).",
+    "ts7": "TS 7.0.2 accepts `ignoreDeprecations` (\"6.0\" and \"7.0\" produced no diagnostic of their own) but it no longer silences anything: TS5102/TS5108 are still reported for the same options (observed).",
+    "removed_in_5_5": "The `removed-in-5.5` options already fail on tsc 5.9.3 and 6.0.3 with TS5102; no ignoreDeprecations value silences them (observed).",
+    "verified": "empirical"
+  },
+  "entries": [
+    {
+      "id": "target-es5",
+      "option": "target",
+      "match": {
+        "values": [
+          "es5"
+        ]
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5108",
+        "message": "Option 'target=ES5' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message": "Option 'target=ES5' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "Set \"target\" to ES2022 (applications) or ES2020 (libraries that must reach older runtimes). Legacy-browser output belongs to a transpiler (SWC, esbuild, Babel), not tsc.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run",
+        "TS 7.0 announcement: `target: es5` is no longer supported",
+        "UG removed-compiler-options.md"
+      ],
+      "scratch_override": "es2022"
+    },
+    {
+      "id": "target-es3",
+      "option": "target",
+      "match": {
+        "values": [
+          "es3"
+        ]
+      },
+      "kind": "removed-in-7",
+      "removed_in": "6.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS6046",
+        "message": "Argument for '--target' option must be: 'es6', 'es2015', 'es2016', 'es2017', 'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'es2024', 'es2025', 'esnext'."
+      },
+      "ts6": {
+        "code": "TS5108",
+        "message": "Option 'target=ES3' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Set \"target\" to ES2022 or ES2020. ES3 is not a valid value in TS 7 (invalid-argument error, not a deprecation).",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 and 6.0.3 run"
+      ],
+      "scratch_override": "es2022"
+    },
+    {
+      "id": "downlevelIteration",
+      "option": "downlevelIteration",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "auto",
+      "ts7": {
+        "code": "TS5102",
+        "message": "Option 'downlevelIteration' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5101",
+        "message": "Option 'downlevelIteration' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "Delete the key (it is an error for both `true` and `false`). It only mattered for target ES5/ES3, which no longer exist; the source skill's table omitted it.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run (true and false)",
+        "TS 7.0 announcement: `downlevelIteration` is no longer supported"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "moduleResolution-node10",
+      "option": "moduleResolution",
+      "match": {
+        "values": [
+          "node",
+          "node10"
+        ]
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5108",
+        "message": "Option 'moduleResolution=node10' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message": "Option 'moduleResolution=node10' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "\"bundler\" for bundled applications (with module esnext/preserve); \"nodenext\" (with module nodenext) for Node ESM/CJS libraries, which requires explicit .js extensions in relative imports. `node` is an alias of `node10` and is reported the same way.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run (node, node10, Node)",
+        "TS 7.0 announcement"
+      ],
+      "scratch_override": "bundler"
+    },
+    {
+      "id": "moduleResolution-classic",
+      "option": "moduleResolution",
+      "match": {
+        "values": [
+          "classic"
+        ]
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5108",
+        "message": "Option 'moduleResolution=Classic' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message": "Option 'moduleResolution=classic' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "\"bundler\" or \"nodenext\" as for node10. The source skill omitted `classic`.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run",
+        "TS 7.0 announcement: `moduleResolution: classic` is no longer supported"
+      ],
+      "scratch_override": "bundler"
+    },
+    {
+      "id": "baseUrl",
+      "option": "baseUrl",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01",
+        "tc-02"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5102",
+        "message": "Option 'baseUrl' has been removed. Please remove it from your configuration.",
+        "hint": "Use '\"paths\": {\"*\": [\"./*\"]}' instead."
+      },
+      "ts6": {
+        "code": "TS5101",
+        "message": "Option 'baseUrl' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "Remove `baseUrl`; make every `paths` value relative to the tsconfig (\"./src/*\"); give bare imports that only resolved through baseUrl an explicit `paths` alias (tc-02).",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run",
+        "TS 7.0 announcement: `baseUrl` is no longer supported"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "module-amd-umd-system",
+      "option": "module",
+      "match": {
+        "values": [
+          "amd",
+          "umd",
+          "system"
+        ]
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5108",
+        "message": "Option 'module=AMD' has been removed. Please remove it from your configuration.",
+        "message_note": "AMD, UMD, System in the message; TS5095 (moduleResolution 'bundler' implied by the new default module setting) may accompany it when moduleResolution is unset."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message": "Option 'module=AMD' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "\"module\": \"esnext\" (or \"preserve\" for bundlers) for applications, \"nodenext\" for Node packages.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run (amd, umd, system)",
+        "TS 7.0 announcement"
+      ],
+      "scratch_override": "esnext"
+    },
+    {
+      "id": "module-systemjs-none",
+      "option": "module",
+      "match": {
+        "values": [
+          "systemjs",
+          "none"
+        ]
+      },
+      "kind": "invalid-value",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS6046",
+        "message": "Argument for '--module' option must be: 'commonjs', 'es6', 'es2015', 'es2020', 'es2022', 'esnext', 'node16', 'node18', 'node20', 'nodenext', 'preserve'."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message_note": "`none` is deprecated on 6.0.3 (TS5107); `systemjs` was never a valid value (TS6046 on both; the valid name is `system`)."
+      },
+      "remedy": "Same as module amd/umd/system. These values are now rejected as invalid arguments (TS6046), not as removals.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 and 6.0.3 run",
+        "TS 7.0 announcement: `module: amd, umd, systemjs, none` are no longer supported"
+      ],
+      "scratch_override": "esnext"
+    },
+    {
+      "id": "alwaysStrict-false",
+      "option": "alwaysStrict",
+      "match": {
+        "value": false
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5108",
+        "message": "Option 'alwaysStrict=false' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message": "Option 'alwaysStrict=false' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "Delete the key (strict-mode emit is always on; `true` is still accepted). Assisted because emitted files gain \"use strict\" semantics.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run (false errors, true is silent)",
+        "TS 7.0 announcement: `alwaysStrict` can no longer be set to `false`"
+      ],
+      "scratch_override": true
+    },
+    {
+      "id": "esModuleInterop-false",
+      "option": "esModuleInterop",
+      "match": {
+        "value": false
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5108",
+        "message": "Option 'esModuleInterop=false' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message": "Option 'esModuleInterop=false' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "Remove the key or set it to true, then fix `import x = require()` / namespace-import call sites the interop semantics change. Not in the source skill's table or in doc 05 §8.3's list; found by running tsc 7.0.2.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run",
+        "TS 7.0 announcement: esModuleInterop cannot be set to false"
+      ],
+      "scratch_override": true
+    },
+    {
+      "id": "allowSyntheticDefaultImports-false",
+      "option": "allowSyntheticDefaultImports",
+      "match": {
+        "value": false
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5108",
+        "message": "Option 'allowSyntheticDefaultImports=false' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5107",
+        "message": "Option 'allowSyntheticDefaultImports=false' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "Remove the key or set it to true.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 run",
+        "TS 7.0 announcement"
+      ],
+      "scratch_override": true
+    },
+    {
+      "id": "outFile",
+      "option": "outFile",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-7",
+      "removed_in": "7.0",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5102",
+        "message": "Option 'outFile' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5101",
+        "message": "Option 'outFile' is deprecated and will stop functioning in TypeScript 7.0. Specify compilerOption '\"ignoreDeprecations\": \"6.0\"' to silence this error."
+      },
+      "remedy": "Bundle with a bundler (esbuild, Rolldown, Vite) and let tsc only type-check or emit declarations. Not named in the source table or the announcement's list; found by running tsc 7.0.2. Often accompanies module amd/system.",
+      "verified": "empirical",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2 and 6.0.3 run"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "noImplicitUseStrict",
+      "option": "noImplicitUseStrict",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "auto",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'noImplicitUseStrict'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'noImplicitUseStrict' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'noImplicitUseStrict' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Delete the key. It already fails on TypeScript 5.5 and later, so a config that still has it is either not loaded by any tool in this repository or loaded by a pre-5.5 compiler.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes (removal of options deprecated in 5.0)",
+        "doc 08 defect 7"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "keyofStringsOnly",
+      "option": "keyofStringsOnly",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "auto",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'keyofStringsOnly'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'keyofStringsOnly' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'keyofStringsOnly' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Delete the key; `keyof` includes number and symbol keys, so a few `Extract<keyof T, string>` narrowings may be needed.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes",
+        "doc 08 defect 7"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "suppressExcessPropertyErrors",
+      "option": "suppressExcessPropertyErrors",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "auto",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'suppressExcessPropertyErrors'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'suppressExcessPropertyErrors' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'suppressExcessPropertyErrors' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Delete the key; excess-property checks are always on.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes",
+        "doc 08 defect 7"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "suppressImplicitAnyIndexErrors",
+      "option": "suppressImplicitAnyIndexErrors",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "auto",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'suppressImplicitAnyIndexErrors'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'suppressImplicitAnyIndexErrors' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'suppressImplicitAnyIndexErrors' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Delete the key; add explicit index signatures or Record<string, unknown> where implicit-any index errors appear.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes",
+        "doc 08 defect 7"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "out",
+      "option": "out",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'out'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'out' has been removed. Please remove it from your configuration.",
+        "hint": "Use 'outFile' instead."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'out' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Delete the key; `outFile` itself is also removed in 7 (see the outFile entry), so bundle with a bundler.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes",
+        "doc 08 defect 7"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "charset",
+      "option": "charset",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "auto",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'charset'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'charset' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'charset' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Delete the key; UTF-8 is the only supported encoding.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes",
+        "doc 08 defect 7"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "importsNotUsedAsValues",
+      "option": "importsNotUsedAsValues",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'importsNotUsedAsValues'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'importsNotUsedAsValues' has been removed. Please remove it from your configuration.",
+        "hint": "Use 'verbatimModuleSyntax' instead."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'importsNotUsedAsValues' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Replace with \"verbatimModuleSyntax\": true (then use `import type` where needed). Not in the source table; found by running tsc.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "preserveValueImports",
+      "option": "preserveValueImports",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "assisted",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'preserveValueImports'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'preserveValueImports' has been removed. Please remove it from your configuration.",
+        "hint": "Use 'verbatimModuleSyntax' instead."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'preserveValueImports' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Replace with \"verbatimModuleSyntax\": true. Not in the source table; found by running tsc.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes"
+      ],
+      "scratch_override": null
+    },
+    {
+      "id": "noStrictGenericChecks",
+      "option": "noStrictGenericChecks",
+      "match": {
+        "any": true
+      },
+      "kind": "removed-in-5.5",
+      "removed_in": "5.5",
+      "rules": [
+        "tc-01"
+      ],
+      "fix_mode": "auto",
+      "ts7": {
+        "code": "TS5023",
+        "message": "Unknown compiler option 'noStrictGenericChecks'."
+      },
+      "ts5_9": {
+        "code": "TS5102",
+        "message": "Option 'noStrictGenericChecks' has been removed. Please remove it from your configuration."
+      },
+      "ts6": {
+        "code": "TS5102",
+        "message": "Option 'noStrictGenericChecks' has been removed. Please remove it from your configuration."
+      },
+      "remedy": "Delete the key. Not in the source table; found by running tsc.",
+      "verified": "empirical",
+      "attribution_verified": "docs",
+      "checked_on": "2026-10-20",
+      "source": [
+        "tsc 7.0.2, 6.0.3 and 5.9.3 run",
+        "TypeScript 5.5 release notes"
+      ],
+      "scratch_override": null
+    }
+  ]
+}
