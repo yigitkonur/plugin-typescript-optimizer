@@ -116,7 +116,7 @@ test('ecosystem: dependency lines, script lines, imports, version rules, severit
   const hits = matchEcosystem({
     manifests: [{ file: 'package.json', text: pkg, package: '.' }],
     sources: [{ file: 'scripts/r.ts', text: 'import { Project } from "ts-morph";\nimport ts from "typescript";\n', package: '.' }],
-    data: ECO, versionOf: () => null, legs: new Set(['lint']),
+    data: ECO, versionOf: (name) => { assert.ok(name, 'versionOf is never asked about an unnamed dependency'); return null; }, legs: new Set(['lint']),
   });
   const by = Object.fromEntries(hits.map((h) => [h.id, h]));
   assert.deepEqual(by['typescript-eslint'].evidence.map((e) => [e.kind, e.line]), [['dependency', 11]]);
