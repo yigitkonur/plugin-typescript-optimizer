@@ -1,0 +1,243 @@
+id: struct-03-passthrough-wrapper
+language: TypeScript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  Shallow passthrough wrapper: the body only forwards its parameters, unchanged and in order, to one
+  call. Candidate for the Deletion Test (inline when single consumer, no seam).
+note: >-
+  Exported function declarations and exported const arrow functions with 1-4 plain identifier parameters
+  (no defaults, destructuring or rest) whose body is exactly one call receiving those identifiers in the
+  same order and nothing else. Seam, consumer count and hidden policy are judged by the agent
+  (catalog/rules/struct-03-shallow-passthrough-wrapper.md).
+utils:
+  call-1:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}]
+      - not: {has: {field: arguments, has: {nthChild: 2}}}
+  forwards-1:
+    any:
+      - matches: call-1
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-1}}
+          - not: {has: {nthChild: 2}}
+  wrapper-1:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 2}}}
+      - has: {field: body, matches: forwards-1}
+  call-2:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}, {has: {nthChild: 2, kind: identifier, pattern: $A2}}]
+      - not: {has: {field: arguments, has: {nthChild: 3}}}
+  forwards-2:
+    any:
+      - matches: call-2
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-2}}
+          - not: {has: {nthChild: 2}}
+  wrapper-2:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 2, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A2}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 3}}}
+      - has: {field: body, matches: forwards-2}
+  call-3:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}, {has: {nthChild: 2, kind: identifier, pattern: $A2}}, {has: {nthChild: 3, kind: identifier, pattern: $A3}}]
+      - not: {has: {field: arguments, has: {nthChild: 4}}}
+  forwards-3:
+    any:
+      - matches: call-3
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-3}}
+          - not: {has: {nthChild: 2}}
+  wrapper-3:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 2, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A2}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 3, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A3}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 4}}}
+      - has: {field: body, matches: forwards-3}
+  call-4:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}, {has: {nthChild: 2, kind: identifier, pattern: $A2}}, {has: {nthChild: 3, kind: identifier, pattern: $A3}}, {has: {nthChild: 4, kind: identifier, pattern: $A4}}]
+      - not: {has: {field: arguments, has: {nthChild: 5}}}
+  forwards-4:
+    any:
+      - matches: call-4
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-4}}
+          - not: {has: {nthChild: 2}}
+  wrapper-4:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 2, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A2}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 3, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A3}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 4, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A4}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 5}}}
+      - has: {field: body, matches: forwards-4}
+rule:
+  all:
+    - any:
+        - kind: function_declaration
+          inside: {kind: export_statement}
+        - kind: arrow_function
+          inside: {kind: variable_declarator, inside: {kind: lexical_declaration, inside: {kind: export_statement}}}
+    - any:
+        - matches: wrapper-1
+        - matches: wrapper-2
+        - matches: wrapper-3
+        - matches: wrapper-4
+---
+id: struct-03-passthrough-wrapper-tsx
+language: Tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  Shallow passthrough wrapper: the body only forwards its parameters, unchanged and in order, to one
+  call. Candidate for the Deletion Test (inline when single consumer, no seam).
+note: >-
+  Exported function declarations and exported const arrow functions with 1-4 plain identifier parameters
+  (no defaults, destructuring or rest) whose body is exactly one call receiving those identifiers in the
+  same order and nothing else. Seam, consumer count and hidden policy are judged by the agent
+  (catalog/rules/struct-03-shallow-passthrough-wrapper.md).
+utils:
+  call-1:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}]
+      - not: {has: {field: arguments, has: {nthChild: 2}}}
+  forwards-1:
+    any:
+      - matches: call-1
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-1}}
+          - not: {has: {nthChild: 2}}
+  wrapper-1:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 2}}}
+      - has: {field: body, matches: forwards-1}
+  call-2:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}, {has: {nthChild: 2, kind: identifier, pattern: $A2}}]
+      - not: {has: {field: arguments, has: {nthChild: 3}}}
+  forwards-2:
+    any:
+      - matches: call-2
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-2}}
+          - not: {has: {nthChild: 2}}
+  wrapper-2:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 2, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A2}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 3}}}
+      - has: {field: body, matches: forwards-2}
+  call-3:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}, {has: {nthChild: 2, kind: identifier, pattern: $A2}}, {has: {nthChild: 3, kind: identifier, pattern: $A3}}]
+      - not: {has: {field: arguments, has: {nthChild: 4}}}
+  forwards-3:
+    any:
+      - matches: call-3
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-3}}
+          - not: {has: {nthChild: 2}}
+  wrapper-3:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 2, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A2}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 3, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A3}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 4}}}
+      - has: {field: body, matches: forwards-3}
+  call-4:
+    kind: call_expression
+    all:
+      - has:
+          field: arguments
+          kind: arguments
+          all: [{has: {nthChild: 1, kind: identifier, pattern: $A1}}, {has: {nthChild: 2, kind: identifier, pattern: $A2}}, {has: {nthChild: 3, kind: identifier, pattern: $A3}}, {has: {nthChild: 4, kind: identifier, pattern: $A4}}]
+      - not: {has: {field: arguments, has: {nthChild: 5}}}
+  forwards-4:
+    any:
+      - matches: call-4
+      - kind: statement_block
+        all:
+          - has: {nthChild: 1, kind: return_statement, has: {matches: call-4}}
+          - not: {has: {nthChild: 2}}
+  wrapper-4:
+    all:
+      - any: [{kind: arrow_function}, {kind: function_declaration}]
+      - has:
+          field: parameters
+          kind: formal_parameters
+          all: [{has: {nthChild: 1, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A1}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 2, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A2}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 3, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A3}, not: {has: {field: value, pattern: $_V}}}}, {has: {nthChild: 4, any: [{kind: required_parameter}, {kind: optional_parameter}], has: {field: pattern, kind: identifier, pattern: $A4}, not: {has: {field: value, pattern: $_V}}}}]
+      - not: {has: {field: parameters, has: {nthChild: 5}}}
+      - has: {field: body, matches: forwards-4}
+rule:
+  all:
+    - any:
+        - kind: function_declaration
+          inside: {kind: export_statement}
+        - kind: arrow_function
+          inside: {kind: variable_declarator, inside: {kind: lexical_declaration, inside: {kind: export_statement}}}
+    - any:
+        - matches: wrapper-1
+        - matches: wrapper-2
+        - matches: wrapper-3
+        - matches: wrapper-4

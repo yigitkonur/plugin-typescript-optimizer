@@ -1,0 +1,414 @@
+{
+  "order": [
+    "R0",
+    "R",
+    "1",
+    "2",
+    "3",
+    "B",
+    "4",
+    "5",
+    "P"
+  ],
+  "tsgo_order": [
+    "T1",
+    "T2",
+    "T3",
+    "T4"
+  ],
+  "waves": [
+    {
+      "id": "R0",
+      "name": "Mechanical lint autofix",
+      "batches": [],
+      "rules": [
+        "slop-01",
+        "slop-03"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "modes": [
+        "sweep",
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck",
+        "test"
+      ],
+      "blast": "low: lint-engine autofix limited to files changed in this run; unsafe fixes are denied (lint-denylist.json)"
+    },
+    {
+      "id": "R",
+      "name": "Root cause (deep mode only)",
+      "batches": [],
+      "rules": [
+        "plat-01",
+        "plat-02",
+        "reach-11",
+        "type-03",
+        "type-05",
+        "struct-03",
+        "struct-04",
+        "struct-05",
+        "struct-06",
+        "struct-07",
+        "struct-08",
+        "struct-10",
+        "struct-11",
+        "slop-02",
+        "slop-04",
+        "slop-05"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "modes": [
+        "deep"
+      ],
+      "needs": [
+        "typecheck",
+        "test"
+      ],
+      "blast": "medium: structural and semantic-invariance rules; at most 5 files per refactor unit (doc 06 section 6)"
+    },
+    {
+      "id": "1",
+      "name": "Dead files",
+      "batches": [
+        2
+      ],
+      "rules": [
+        "reach-01"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "modes": [
+        "sweep",
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck",
+        "test"
+      ],
+      "blast": "high: a green gate proves static death only; framework-routed files are quarantined, never deleted"
+    },
+    {
+      "id": "2",
+      "name": "Barrels and import cycles",
+      "batches": [
+        3,
+        9
+      ],
+      "rules": [
+        "reach-02",
+        "reach-09",
+        "struct-01",
+        "struct-02"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build",
+        "cycles"
+      ],
+      "modes": [
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck",
+        "test"
+      ],
+      "blast": "high: barrel pruning orphans modules (cascade to wave 1); cycle repair is structural"
+    },
+    {
+      "id": "3",
+      "name": "Encapsulation (test-only leaks, internal exports)",
+      "batches": [
+        4,
+        5
+      ],
+      "rules": [
+        "reach-03",
+        "reach-04"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build",
+        "declaration-emit"
+      ],
+      "gate_if": {
+        "declaration-emit": "declaration_signal"
+      },
+      "modes": [
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck",
+        "test"
+      ],
+      "blast": "medium: test-only leaks need a relocation (test leg catches); internal exports are low (typecheck catches); un-export residue is cleared by wave B"
+    },
+    {
+      "id": "B",
+      "name": "Bridge: unused locals and dangling imports",
+      "batches": [
+        7
+      ],
+      "rules": [
+        "reach-06"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build"
+      ],
+      "modes": [
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck"
+      ],
+      "blast": "low: lint autofix scoped to files changed since the run base; created at wave start, not at audit time"
+    },
+    {
+      "id": "4",
+      "name": "Types (unused types, type safety)",
+      "batches": [
+        6,
+        8
+      ],
+      "rules": [
+        "reach-05",
+        "type-01",
+        "type-02",
+        "type-04",
+        "type-06",
+        "type-07",
+        "type-08",
+        "type-10",
+        "type-11"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build",
+        "declaration-emit",
+        "coverage"
+      ],
+      "gate_if": {
+        "declaration-emit": "declaration_signal"
+      },
+      "modes": [
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck"
+      ],
+      "blast": "low: erased types, zero runtime impact; declaration emit and the coverage ratchet catch mistakes"
+    },
+    {
+      "id": "5",
+      "name": "Dependencies and lockfile",
+      "batches": [
+        1
+      ],
+      "rules": [
+        "reach-07"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build",
+        "install-frozen"
+      ],
+      "modes": [
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck",
+        "test"
+      ],
+      "blast": "medium: build catches config-referenced packages; production dependencies are high risk"
+    },
+    {
+      "id": "P",
+      "name": "Post-flight",
+      "batches": [],
+      "rules": [
+        "type-06"
+      ],
+      "gate": [
+        "typecheck",
+        "test",
+        "build",
+        "declaration-emit",
+        "coverage",
+        "cycles",
+        "knip",
+        "diff-accounting"
+      ],
+      "gate_if": {
+        "declaration-emit": "declaration_signal"
+      },
+      "modes": [
+        "sweep",
+        "standard",
+        "deep"
+      ],
+      "needs": [
+        "typecheck"
+      ],
+      "blast": "none: verification only (cycles no new fingerprints, coverage not below baseline, knip zero remaining in scope, diff accounting)"
+    },
+    {
+      "id": "T1",
+      "name": "Config modernisation",
+      "batches": [],
+      "rules": [
+        "tc-01",
+        "tc-02",
+        "tc-03",
+        "tc-09"
+      ],
+      "gate": [
+        "typecheck",
+        "build-refs",
+        "declaration-emit",
+        "lint",
+        "test",
+        "build"
+      ],
+      "gate_if": {
+        "build-refs": "composite",
+        "declaration-emit": "declaration_signal",
+        "lint": "lint_script",
+        "test": "test_script",
+        "build": "build_script"
+      },
+      "modes": [
+        "tsgo"
+      ],
+      "needs": [
+        "typecheck"
+      ],
+      "blast": "medium: tsconfig edits change every extender; must stay valid on the authoritative compiler"
+    },
+    {
+      "id": "T2",
+      "name": "Tooling bridge",
+      "batches": [],
+      "rules": [
+        "tc-04",
+        "tc-05"
+      ],
+      "gate": [
+        "typecheck",
+        "build-refs",
+        "declaration-emit",
+        "lint",
+        "test",
+        "build"
+      ],
+      "gate_if": {
+        "build-refs": "composite",
+        "declaration-emit": "declaration_signal",
+        "lint": "lint_script",
+        "test": "test_script",
+        "build": "build_script"
+      },
+      "modes": [
+        "tsgo"
+      ],
+      "needs": [
+        "typecheck"
+      ],
+      "blast": "medium: alias scheme and runner replacement; attach the bridge before TS 6 is removed"
+    },
+    {
+      "id": "T3",
+      "name": "Engine switch",
+      "batches": [],
+      "rules": [
+        "tc-10"
+      ],
+      "gate": [
+        "typecheck",
+        "build-refs",
+        "declaration-emit",
+        "lint",
+        "test",
+        "build"
+      ],
+      "gate_if": {
+        "build-refs": "composite",
+        "declaration-emit": "declaration_signal",
+        "lint": "lint_script",
+        "test": "test_script",
+        "build": "build_script"
+      },
+      "modes": [
+        "tsgo"
+      ],
+      "needs": [
+        "typecheck"
+      ],
+      "blast": "medium: compiler dependency and script switch; declaration-emit parity is checked by diagnostics, never byte-for-byte"
+    },
+    {
+      "id": "T4",
+      "name": "CI and IDE alignment",
+      "batches": [],
+      "rules": [
+        "tc-06",
+        "tc-07",
+        "tc-08"
+      ],
+      "gate": [
+        "typecheck",
+        "build-refs",
+        "declaration-emit",
+        "lint",
+        "test",
+        "build"
+      ],
+      "gate_if": {
+        "build-refs": "composite",
+        "declaration-emit": "declaration_signal",
+        "lint": "lint_script",
+        "test": "test_script",
+        "build": "build_script"
+      },
+      "modes": [
+        "tsgo"
+      ],
+      "needs": [
+        "typecheck"
+      ],
+      "blast": "low-medium: CI and editor files are not exercised by the local gate; project references change build topology"
+    }
+  ],
+  "unscheduled": [
+    "reach-08",
+    "reach-10",
+    "reach-12",
+    "struct-09",
+    "type-09",
+    "tc-11"
+  ]
+}

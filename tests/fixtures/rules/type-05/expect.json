@@ -1,0 +1,12 @@
+{
+  "rule": "type-05",
+  "fire": [
+    {"file": "must-fire.ts", "line": 3, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 6, "tell": "t2"},
+    {"file": "must-fire.ts", "line": 7, "tell": "t3"},
+    {"file": "must-fire.ts", "line": 11, "tell": "t2"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": [],
+  "notes": "must-not-fire.ts holds the doc 06 section 11 case: a 3+ link optional chain on parsed external JSON (fetch .json(), JSON.parse). The tells carry a file-level boundary exemption (lookbehind) so chains after a JSON/DOM/WebSocket/SQL-row boundary are not candidates."
+}

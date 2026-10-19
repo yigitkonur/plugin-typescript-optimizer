@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/suppressions@1",
+  "title": "suppressions.json",
+  "type": "object",
+  "required": [
+    "schema",
+    "entries"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/suppressions@1",
+      "description": "Schema identifier"
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "fingerprint",
+          "rule",
+          "reason",
+          "by",
+          "confirmed_by_user",
+          "date"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^S-\\d+$"
+          },
+          "fingerprint": {
+            "type": "string",
+            "pattern": "^sha1:.+"
+          },
+          "rule": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "by": {
+            "type": "string"
+          },
+          "confirmed_by_user": {
+            "type": "boolean"
+          },
+          "date": {
+            "type": "string"
+          },
+          "expires": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "codified_in": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

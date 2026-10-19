@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/proposal@1",
+  "title": "Proposal appended by `proposal add` (field names beyond origin are a best guess)",
+  "type": "object",
+  "required": [
+    "schema",
+    "origin"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/proposal@1",
+      "description": "Schema identifier"
+    },
+    "origin": {
+      "enum": [
+        "architect",
+        "fixer"
+      ]
+    },
+    "rule": {
+      "type": "string"
+    },
+    "file": {
+      "type": "string"
+    },
+    "line": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "recommendation": {
+      "enum": [
+        "STRONG",
+        "WORTH_EXPLORING",
+        "SPECULATIVE",
+        null
+      ]
+    },
+    "deletion_test": {
+      "type": "string"
+    },
+    "seam_test": {
+      "type": "string"
+    },
+    "touches": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "plan_step": {
+      "type": "string"
+    },
+    "mermaid": {
+      "type": "string"
+    },
+    "parent": {
+      "type": "string",
+      "pattern": "^F-\\d{4,}$"
+    },
+    "reason": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": true
+}

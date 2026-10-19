@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/rule@1",
+  "title": "Rule file front matter (catalog/rules/<id>-<slug>.md)",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "version",
+    "name",
+    "domain",
+    "severity",
+    "fix_risk",
+    "fix_mode",
+    "grain",
+    "triage"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/rule@1",
+      "description": "Schema identifier"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]+-\\d{2}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "domain": {
+      "enum": [
+        "platform",
+        "reachability",
+        "types",
+        "structure",
+        "slop",
+        "toolchain"
+      ]
+    },
+    "batch": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "wave": {
+      "enum": [
+        "R0",
+        "R",
+        "1",
+        "2",
+        "3",
+        "B",
+        "4",
+        "5",
+        "P",
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        null
+      ],
+      "description": "always a string or null"
+    },
+    "severity": {
+      "enum": [
+        "hard",
+        "warn",
+        "advisory"
+      ]
+    },
+    "fix_risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "fix_mode": {
+      "enum": [
+        "auto",
+        "assisted",
+        "flag-only"
+      ]
+    },
+    "grain": {
+      "enum": [
+        "symbol",
+        "file",
+        "package",
+        "cycle",
+        "project"
+      ]
+    },
+    "triage": {
+      "enum": [
+        "agent",
+        "deterministic"
+      ]
+    },
+    "semantic_invariance": {
+      "type": "boolean"
+    },
+    "modes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "sweep",
+          "standard",
+          "deep",
+          "tsgo"
+        ]
+      }
+    },
+    "engines": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "adapter": {
+      "type": "string"
+    },
+    "requires": {
+      "type": "object"
+    },
+    "tells": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "regex"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "regex": {
+            "type": "string"
+          },
+          "glob": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "exclude": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "astgrep": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "downgrade_in": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "hard",
+          "warn",
+          "advisory"
+        ]
+      }
+    },
+    "primary_over": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

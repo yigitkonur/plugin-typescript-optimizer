@@ -1,0 +1,12 @@
+{
+  "name": "ts-optimize-toolbox",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pinned engines for ts-optimize, installed on demand into $TS_OPT_HOME/toolbox with consent. Never touches the audited project.",
+  "dependencies": {
+    "@ast-grep/cli": "0.51.0",
+    "knip": "6.42.1",
+    "type-coverage": "2.30.4",
+    "typescript": "6.0.3"
+  }
+}

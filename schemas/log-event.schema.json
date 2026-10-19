@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/log-event@1",
+  "title": "One line of apply/log.jsonl",
+  "type": "object",
+  "required": [
+    "t",
+    "ev"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/log-event@1",
+      "description": "Schema identifier"
+    },
+    "t": {
+      "type": "string"
+    },
+    "ev": {
+      "enum": [
+        "run-begin",
+        "wave-begin",
+        "wave-end",
+        "finding-begin",
+        "check",
+        "commit",
+        "gate",
+        "bisect",
+        "revert",
+        "divergence",
+        "rescan",
+        "amend",
+        "protected-override",
+        "abort",
+        "finish"
+      ]
+    },
+    "wave": {
+      "type": "string"
+    },
+    "pass": {
+      "type": "integer"
+    },
+    "tag": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^F-\\d{4,}$"
+    },
+    "ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^F-\\d{4,}$"
+      }
+    },
+    "result": {
+      "type": "string"
+    },
+    "engine": {
+      "type": "string"
+    },
+    "ms": {
+      "type": "number"
+    },
+    "new_errors": {
+      "type": "integer"
+    },
+    "sha": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "fingerprint": {
+      "type": "string"
+    },
+    "legs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "flaky": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "culprit": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "fast": {},
+    "auth": {},
+    "new_cascades": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stale": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "by": {
+      "type": "string"
+    },
+    "rule": {
+      "type": "string"
+    },
+    "why": {
+      "type": "string"
+    },
+    "ledger": {
+      "type": "string"
+    },
+    "outcome": {
+      "type": "object"
+    },
+    "branch": {
+      "type": "string"
+    },
+    "base": {
+      "type": "string"
+    },
+    "baseline": {}
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/candidate@1",
+  "title": "Scan candidate (raw/candidates.jsonl line)",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "rule",
+    "domain",
+    "file"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/candidate@1",
+      "description": "Schema identifier"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^c-\\d{4,}$"
+    },
+    "rule": {
+      "type": "string"
+    },
+    "domain": {
+      "enum": [
+        "platform",
+        "reachability",
+        "types",
+        "structure",
+        "slop",
+        "toolchain"
+      ]
+    },
+    "engine": {
+      "type": "string"
+    },
+    "package": {
+      "type": "string"
+    },
+    "file": {
+      "type": "string"
+    },
+    "line": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "col": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "symbol": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "grain": {
+      "enum": [
+        "symbol",
+        "file",
+        "package",
+        "cycle",
+        "project"
+      ]
+    },
+    "snippet": {
+      "type": "string",
+      "maxLength": 400
+    },
+    "raw_ref": {
+      "type": "string"
+    },
+    "severity_hint": {
+      "enum": [
+        "hard",
+        "warn",
+        "advisory"
+      ]
+    },
+    "batch": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "wave": {
+      "enum": [
+        "R0",
+        "R",
+        "1",
+        "2",
+        "3",
+        "B",
+        "4",
+        "5",
+        "P",
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        null
+      ],
+      "description": "always a string or null"
+    },
+    "fix_mode_hint": {
+      "enum": [
+        "auto",
+        "assisted",
+        "flag-only"
+      ]
+    },
+    "consumers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "triage": {
+      "enum": [
+        "agent",
+        "deterministic"
+      ]
+    },
+    "origin": {
+      "type": "string"
+    },
+    "parent": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,94 @@
+{
+  "rule": "slop-01",
+  "fire": [
+    {
+      "file": "must-fire.ts",
+      "line": 4,
+      "tell": "t1"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 9,
+      "tell": "t1"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 14,
+      "tell": "t1"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 20,
+      "tell": "t2"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 23,
+      "tell": "t2"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 29,
+      "tell": "t3"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 32,
+      "tell": "t3"
+    },
+    {
+      "file": "must-fire.tsx",
+      "line": 4,
+      "tell": "t1"
+    }
+  ],
+  "silent": [
+    "must-not-fire.ts"
+  ],
+  "silent_astgrep_only": [],
+  "astgrep_fire": [
+    {
+      "file": "must-fire.ts",
+      "line": 4,
+      "rule": "slop-01-catch-passthrough"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 9,
+      "rule": "slop-01-catch-passthrough"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 14,
+      "rule": "slop-01-catch-passthrough"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 20,
+      "rule": "slop-01-catch-swallow"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 23,
+      "rule": "slop-01-catch-swallow"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 29,
+      "rule": "slop-01-catch-empty"
+    },
+    {
+      "file": "must-fire.ts",
+      "line": 32,
+      "rule": "slop-01-catch-empty"
+    },
+    {
+      "file": "must-fire.tsx",
+      "line": 4,
+      "rule": "slop-01-catch-passthrough-tsx"
+    }
+  ],
+  "astgrep_silent": [
+    "must-not-fire.ts"
+  ]
+}

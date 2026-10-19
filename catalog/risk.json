@@ -1,0 +1,178 @@
+{
+  "scale": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "note": "fix_risk is the blast radius of applying the fix (independent of severity). Rows from doc 06 section 4; default_fix_risk is the per-rule default written to rule files; overrides refine it by path class or case.",
+  "batches": [
+    {
+      "batch": 2,
+      "kind": "unused files",
+      "blast": "high",
+      "runtime_impact": "med-high",
+      "rollback": "low",
+      "rollback_how": "git checkout <file>",
+      "gate_leg": "typecheck, test, build",
+      "note": "nothing catches a dynamically/framework-routed file: a green gate proves static death, never runtime death; quarantine or verify in a preview deployment"
+    },
+    {
+      "batch": 3,
+      "kind": "barrels",
+      "blast": "high",
+      "runtime_impact": "low",
+      "rollback": "low",
+      "rollback_how": "git diff",
+      "gate_leg": "typecheck"
+    },
+    {
+      "batch": 9,
+      "kind": "cycles",
+      "blast": "high",
+      "runtime_impact": "med",
+      "rollback": "med",
+      "rollback_how": "structural revert",
+      "gate_leg": "test, build"
+    },
+    {
+      "batch": 4,
+      "kind": "test leaks",
+      "blast": "med",
+      "runtime_impact": "zero",
+      "rollback": "low",
+      "rollback_how": "git revert",
+      "gate_leg": "test"
+    },
+    {
+      "batch": 5,
+      "kind": "internal exports",
+      "blast": "low",
+      "runtime_impact": "zero",
+      "rollback": "lowest",
+      "rollback_how": "git revert",
+      "gate_leg": "typecheck"
+    },
+    {
+      "batch": 7,
+      "kind": "locals/imports",
+      "blast": "low",
+      "runtime_impact": "zero",
+      "rollback": "lowest",
+      "rollback_how": "git revert",
+      "gate_leg": "typecheck"
+    },
+    {
+      "batch": 6,
+      "kind": "unused types",
+      "blast": "lowest",
+      "runtime_impact": "zero (erased)",
+      "rollback": "lowest",
+      "rollback_how": "git revert",
+      "gate_leg": "typecheck + declaration-emit"
+    },
+    {
+      "batch": 8,
+      "kind": "type safety",
+      "blast": "low",
+      "runtime_impact": "zero",
+      "rollback": "lowest",
+      "rollback_how": "git revert",
+      "gate_leg": "declaration-emit, coverage delta"
+    },
+    {
+      "batch": 1,
+      "kind": "dependencies",
+      "blast": "med",
+      "runtime_impact": "low-med",
+      "rollback": "low",
+      "rollback_how": "git checkout package.json <lockfile> + install",
+      "gate_leg": "build"
+    }
+  ],
+  "default_fix_risk": {
+    "plat-01": "medium",
+    "plat-02": "medium",
+    "reach-01": "medium",
+    "reach-02": "low",
+    "reach-03": "medium",
+    "reach-04": "low",
+    "reach-05": "low",
+    "reach-06": "low",
+    "reach-07": "medium",
+    "reach-08": "low",
+    "reach-09": "low",
+    "reach-10": "high",
+    "reach-11": "high",
+    "reach-12": "low",
+    "type-01": "medium",
+    "type-02": "medium",
+    "type-03": "medium",
+    "type-04": "medium",
+    "type-05": "medium",
+    "type-06": "low",
+    "type-07": "medium",
+    "type-08": "medium",
+    "type-09": "low",
+    "type-10": "low",
+    "type-11": "low",
+    "struct-01": "medium",
+    "struct-02": "medium",
+    "struct-03": "medium",
+    "struct-04": "medium",
+    "struct-05": "low",
+    "struct-06": "low",
+    "struct-07": "medium",
+    "struct-08": "medium",
+    "struct-09": "medium",
+    "struct-10": "high",
+    "struct-11": "high",
+    "slop-01": "low",
+    "slop-02": "low",
+    "slop-03": "low",
+    "slop-04": "low",
+    "slop-05": "low",
+    "tc-01": "medium",
+    "tc-02": "medium",
+    "tc-03": "medium",
+    "tc-04": "medium",
+    "tc-05": "low",
+    "tc-06": "low",
+    "tc-07": "low",
+    "tc-08": "medium",
+    "tc-09": "medium",
+    "tc-10": "medium",
+    "tc-11": "low"
+  },
+  "placeholder_rules": {
+    "note": "doc 06 lists fix risk as \"-\" for these flag-only rules (nothing is applied); a nominal value is recorded so rule files validate.",
+    "rules": [
+      "reach-08",
+      "type-06",
+      "type-09",
+      "struct-09",
+      "tc-11"
+    ]
+  },
+  "overrides": [
+    {
+      "rule": "reach-01",
+      "when": "route-like path (framework pack route names)",
+      "fix_risk": "high"
+    },
+    {
+      "rule": "reach-01",
+      "when": "test, story or fixture file",
+      "fix_risk": "low"
+    },
+    {
+      "rule": "reach-07",
+      "when": "production dependency",
+      "fix_risk": "high"
+    },
+    {
+      "rule": "type-10",
+      "when": "parallel representation or union restructuring",
+      "fix_risk": "medium"
+    }
+  ]
+}

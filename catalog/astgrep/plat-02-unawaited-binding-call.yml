@@ -1,0 +1,44 @@
+# plat-02 (workerd async boundary): an expression-statement call on a Cloudflare binding that is neither
+# awaited, returned, assigned, `void`ed nor passed to ctx.waitUntil(...), inside a function that receives an
+# ExecutionContext (a parameter named `ctx` or typed `ExecutionContext`; handler params are often untyped
+# under `satisfies ExportedHandler<Env>`). `ctx.waitUntil(...)` calls are protected and never match.
+# Not applicable inside Durable Object classes (their lifetime is not tied to the response).
+# Structural only (no type information): the finding is advisory unless tsgolint no-floating-promises confirms it.
+id: plat-02-unawaited-binding-call
+language: typescript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "Binding call result is dropped inside a handler: workerd may suspend the isolate once the response settles. Register it with ctx.waitUntil(...) or await it."
+note: "Rule plat-02. Never auto-fix: whether the work must finish, or may be dropped, is a product decision."
+rule:
+  all:
+    - kind: expression_statement
+    - has:
+        any:
+          - pattern: env.$B.$M($$$A)
+          - pattern: this.env.$B.$M($$$A)
+          - pattern: env.$B.$M($$$A).catch($$$C)
+          - pattern: env.$B.$M($$$A).then($$$C)
+          - pattern: this.env.$B.$M($$$A).catch($$$C)
+          - pattern: env.$B.prepare($$$P).run()
+          - pattern: env.$B.prepare($$$P).bind($$$Q).run()
+    - inside:
+        stopBy: end
+        any:
+          - kind: arrow_function
+          - kind: function_declaration
+          - kind: function_expression
+          - kind: method_definition
+        has:
+          field: parameters
+          regex: '\b(ctx|ExecutionContext)\b'
+    - not:
+        inside:
+          stopBy: end
+          kind: class_declaration
+          has:
+            kind: class_heritage
+            regex: 'DurableObject'
+constraints:
+  M:
+    regex: '^(send|sendBatch|put|delete|run|batch)$'

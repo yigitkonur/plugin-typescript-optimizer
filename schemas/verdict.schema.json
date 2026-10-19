@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/verdict@1",
+  "title": "Triager verdict (raw/verdicts/Cnn.jsonl line)",
+  "type": "object",
+  "required": [
+    "schema",
+    "candidate",
+    "verdict",
+    "confidence",
+    "evidence",
+    "reason"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/verdict@1",
+      "description": "Schema identifier"
+    },
+    "candidate": {
+      "type": "string",
+      "pattern": "^c-\\d{4,}$"
+    },
+    "verdict": {
+      "enum": [
+        "confirmed",
+        "false-positive",
+        "deferred"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "certain",
+        "likely",
+        "speculative"
+      ]
+    },
+    "q1": {
+      "enum": [
+        "yes",
+        "no",
+        "unknown",
+        null
+      ]
+    },
+    "q2": {
+      "enum": [
+        "yes",
+        "no",
+        "unknown",
+        null
+      ]
+    },
+    "q3": {
+      "enum": [
+        "yes",
+        "no",
+        "unknown",
+        null
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      },
+      "maxItems": 8
+    },
+    "reason": {
+      "type": "string"
+    },
+    "touches": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommendation": {
+      "enum": [
+        "STRONG",
+        "WORTH_EXPLORING",
+        "SPECULATIVE",
+        null
+      ]
+    },
+    "codify": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

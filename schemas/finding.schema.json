@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/finding@1",
+  "title": "Finding file front matter",
+  "type": "object",
+  "required": [
+    "schema",
+    "id",
+    "fingerprint",
+    "run",
+    "rule",
+    "rule_version",
+    "domain",
+    "severity",
+    "fix_risk",
+    "confidence",
+    "verdict",
+    "state",
+    "fix_mode",
+    "package",
+    "location",
+    "touches"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/finding@1",
+      "description": "Schema identifier"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^F-\\d{4,}$"
+    },
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha1:.+"
+    },
+    "run": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{4}Z-[0-9a-f]{4}$",
+      "description": "UTC minute + 4 hex chars"
+    },
+    "rule": {
+      "type": "string"
+    },
+    "rule_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "domain": {
+      "enum": [
+        "platform",
+        "reachability",
+        "types",
+        "structure",
+        "slop",
+        "toolchain"
+      ]
+    },
+    "batch": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "wave": {
+      "enum": [
+        "R0",
+        "R",
+        "1",
+        "2",
+        "3",
+        "B",
+        "4",
+        "5",
+        "P",
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        null
+      ],
+      "description": "always a string or null"
+    },
+    "severity": {
+      "enum": [
+        "hard",
+        "warn",
+        "advisory"
+      ]
+    },
+    "fix_risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "certain",
+        "likely",
+        "speculative"
+      ]
+    },
+    "recommendation": {
+      "enum": [
+        "STRONG",
+        "WORTH_EXPLORING",
+        "SPECULATIVE",
+        null
+      ]
+    },
+    "verdict": {
+      "enum": [
+        "candidate",
+        "confirmed",
+        "false-positive",
+        "deferred"
+      ]
+    },
+    "state": {
+      "enum": [
+        "open",
+        "approved",
+        "rejected",
+        "applied",
+        "reverted",
+        "skipped",
+        "stale",
+        "suppressed",
+        "superseded"
+      ]
+    },
+    "fix_mode": {
+      "enum": [
+        "auto",
+        "assisted",
+        "flag-only"
+      ]
+    },
+    "engines": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "package": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "required": [
+        "file"
+      ],
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "line": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "symbol": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "line": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "symbol": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "maxItems": 50
+    },
+    "touches": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^F-\\d{4,}$"
+      }
+    },
+    "origin": {
+      "type": "string",
+      "pattern": "^(scan|architect|cascade:F-\\d+|fixer:F-\\d+)$"
+    },
+    "triage": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "framework_lifecycle": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "dynamic_invocation": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "public_contract": {
+          "enum": [
+            "yes",
+            "no",
+            "unknown"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "suppressed_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "superseded_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "applied": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string"
+        },
+        "gate": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string"
+        }
+      }
+    },
+    "verified_on": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

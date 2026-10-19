@@ -1,0 +1,9 @@
+{
+  "name": "ts-optimize-toolbox-native",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TypeScript 7 (native tsc) for fit probes and the fast check, installed into $TS_OPT_HOME/toolbox-native. Separate prefix so its tsc bin cannot collide with the TypeScript 6 in toolbox/.",
+  "dependencies": {
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "rule": "type-11",
+  "fire": [
+    {"file": "must-fire.ts", "line": 3, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 6, "tell": "t2"},
+    {"file": "must-fire.ts", "line": 8, "tell": "t3"},
+    {"file": "must-fire.ts", "line": 10, "tell": "t2"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": [],
+  "notes": "lines 6 and 10 also match type-01 t1 (seam: both rules report the same location)"
+}

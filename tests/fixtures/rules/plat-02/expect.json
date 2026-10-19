@@ -1,0 +1,14 @@
+{
+  "rule": "plat-02",
+  "fire": [],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": [],
+  "astgrep_fire": [
+    {"file": "must-fire.ts", "line": 3, "rule": "plat-02-unawaited-binding-call"},
+    {"file": "must-fire.ts", "line": 4, "rule": "plat-02-unawaited-binding-call"},
+    {"file": "must-fire.ts", "line": 5, "rule": "plat-02-unawaited-binding-call"},
+    {"file": "must-fire.ts", "line": 6, "rule": "plat-02-unawaited-binding-call"},
+    {"file": "must-fire.ts", "line": 10, "rule": "plat-02-unawaited-binding-call"}
+  ],
+  "astgrep_silent": ["must-not-fire.ts"]
+}

@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/baseline@1",
+  "title": "baseline.json",
+  "type": "object",
+  "required": [
+    "schema",
+    "captured",
+    "head",
+    "roots"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/baseline@1",
+      "description": "Schema identifier"
+    },
+    "captured": {
+      "type": "string"
+    },
+    "head": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "roots": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "typecheck": {
+            "type": "object",
+            "required": [],
+            "properties": {
+              "engine": {
+                "type": "string"
+              },
+              "errors": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "diag_hash": {
+                "type": "string"
+              },
+              "ms": {
+                "type": "number"
+              }
+            },
+            "additionalProperties": true
+          },
+          "declaration_emit": {
+            "type": "object",
+            "required": [],
+            "properties": {
+              "status": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          },
+          "type_soundness": {
+            "type": "object",
+            "required": [],
+            "properties": {
+              "metric": {
+                "type": "string"
+              },
+              "value": {
+                "type": "number"
+              },
+              "detail_hash": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          },
+          "escape_hatch": {
+            "type": "object",
+            "required": [],
+            "properties": {
+              "metric": {
+                "type": "string"
+              },
+              "as_any": {
+                "type": "integer"
+              },
+              "as_unknown_as": {
+                "type": "integer"
+              },
+              "colon_any": {
+                "type": "integer"
+              },
+              "ts_ignore": {
+                "type": "integer"
+              },
+              "ts_expect_error": {
+                "type": "integer"
+              },
+              "non_null_chain": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": true
+          },
+          "cycles": {
+            "type": "object",
+            "required": [],
+            "properties": {
+              "engine": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer"
+              },
+              "ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          "knip": {
+            "type": "object",
+            "required": [],
+            "properties": {
+              "files": {
+                "type": "integer"
+              },
+              "exports": {
+                "type": "integer"
+              },
+              "types": {
+                "type": "integer"
+              },
+              "dependencies": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "tests": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "cmd": {
+          "type": "string"
+        },
+        "exit": {
+          "type": "integer"
+        },
+        "collected": {
+          "type": "integer"
+        },
+        "ms": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    },
+    "build": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "cmd": {
+          "type": "string"
+        },
+        "exit": {
+          "type": "integer"
+        },
+        "ms": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

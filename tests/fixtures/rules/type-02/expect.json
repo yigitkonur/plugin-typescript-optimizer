@@ -1,0 +1,11 @@
+{
+  "rule": "type-02",
+  "fire": [
+    {"file": "must-fire.ts", "line": 2, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 3, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 4, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 5, "tell": "t1"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": []
+}

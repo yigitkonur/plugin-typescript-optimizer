@@ -1,0 +1,20 @@
+{
+  "rule": "type-04",
+  "fire": [
+    {"file": "must-fire.ts", "line": 2, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 5, "tell": "t2"},
+    {"file": "must-fire.ts", "line": 6, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 9, "tell": "t1"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": [
+    {"file": "commented-out.ts", "why": "an anemic guard inside a block comment: the body regex scans raw text (it needs the 'object' string literal), only the ast-grep tier ignores comments"}
+  ],
+  "astgrep_fire": [
+    {"file": "must-fire.ts", "line": 2, "rule": "type-04-anemic-guard"},
+    {"file": "must-fire.ts", "line": 5, "rule": "type-04-anemic-guard"},
+    {"file": "must-fire.ts", "line": 6, "rule": "type-04-anemic-guard"},
+    {"file": "must-fire.ts", "line": 9, "rule": "type-04-anemic-guard"}
+  ],
+  "astgrep_silent": ["must-not-fire.ts", "commented-out.ts"]
+}

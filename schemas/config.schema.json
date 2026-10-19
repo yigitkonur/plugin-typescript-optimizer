@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/config@1",
+  "title": "config.json (unknown keys are ignored with a doctor warning)",
+  "type": "object",
+  "required": [
+    "schema"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/config@1",
+      "description": "Schema identifier"
+    },
+    "scope": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "include": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "protected": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "typecheck": {
+          "oneOf": [
+            {
+              "const": "auto"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "test": {
+          "type": "string"
+        },
+        "build": {
+          "type": "string"
+        },
+        "timeout_s": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 1
+          }
+        },
+        "scope": {
+          "enum": [
+            "full",
+            "affected"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "commit": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "granularity": {
+          "enum": [
+            "finding",
+            "batched"
+          ]
+        },
+        "batch_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "no_verify": {
+          "type": "boolean"
+        },
+        "branch_prefix": {
+          "type": "string"
+        },
+        "artifacts": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "hooks": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "fast_check": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "network": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "npx": {
+          "enum": [
+            "ask",
+            "allow",
+            "never"
+          ]
+        },
+        "toolbox": {
+          "enum": [
+            "ask",
+            "allow",
+            "never"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "keep_runs": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": true
+}

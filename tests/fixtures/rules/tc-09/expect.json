@@ -1,0 +1,21 @@
+{
+  "rule": "tc-09",
+  "fire": [
+    {"file": "must-fire.js", "line": 2, "tell": "t1"},
+    {"file": "must-fire.js", "line": 6, "tell": "t2"},
+    {"file": "must-fire.js", "line": 7, "tell": "t3"},
+    {"file": "must-fire.js", "line": 9, "tell": "t5"},
+    {"file": "must-fire.js", "line": 10, "tell": "t4"},
+    {"file": "must-fire.js", "line": 12, "tell": "t3"},
+    {"file": "must-fire.js", "line": 13, "tell": "t3"},
+    {"file": "must-fire.js", "line": 14, "tell": "t3"},
+    {"file": "must-fire.js", "line": 15, "tell": "t3"},
+    {"file": "must-fire.js", "line": 16, "tell": "t3"},
+    {"file": "must-fire.js", "line": 17, "tell": "t3"},
+    {"file": "must-fire.js", "line": 20, "tell": "t6"},
+    {"file": "must-fire.mjs", "line": 1, "tell": "t2"},
+    {"file": "must-fire.mjs", "line": 3, "tell": "t6"}
+  ],
+  "silent": ["must-not-fire.js", "pure-cjs.js", "pure-esm.mjs"],
+  "silent_astgrep_only": []
+}

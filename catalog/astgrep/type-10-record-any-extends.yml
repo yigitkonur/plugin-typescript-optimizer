@@ -1,0 +1,30 @@
+# type-10 (type tidying): `interface X extends Record<string, any>` (also `Record<PropertyKey, any>`).
+# The index signature of `any` turns off checking for every property of the interface; typos compile.
+# Mixed `extends A, Record<string, any>` lists match too. Comments and strings never match.
+id: type-10-record-any-extends
+language: typescript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: "Interface extends Record<string, any>: every nonexistent property resolves silently. Drop the index signature and isolate dynamic keys in a `metadata?: Record<string, unknown>` field."
+note: "Rule type-10 (advisory)."
+rule:
+  kind: generic_type
+  regex: '^Record\s*<\s*(string|number|symbol|PropertyKey|keyof any)\s*,\s*any\s*>$'
+  inside:
+    kind: extends_type_clause
+    inside:
+      kind: interface_declaration
+---
+id: type-10-record-any-extends-tsx
+language: tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: "Interface extends Record<string, any>: every nonexistent property resolves silently. Drop the index signature and isolate dynamic keys in a `metadata?: Record<string, unknown>` field."
+note: "Rule type-10 (advisory; tsx grammar)."
+rule:
+  kind: generic_type
+  regex: '^Record\s*<\s*(string|number|symbol|PropertyKey|keyof any)\s*,\s*any\s*>$'
+  inside:
+    kind: extends_type_clause
+    inside:
+      kind: interface_declaration

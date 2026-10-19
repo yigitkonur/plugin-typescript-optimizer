@@ -1,0 +1,91 @@
+# type-04 (anemic type guard): a `x is T` predicate whose whole body is an object-ness test
+# (`typeof x === 'object' && x !== null`, either order, `==`/`!=` allowed) or a constant `true`.
+# Targets that legitimately mean "some object" (Record<..>, object, unknown, any, {..}) are skipped.
+# Comments and strings never match. Covers function declarations, expressions, arrows and methods.
+id: type-04-anemic-guard
+language: typescript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "Type predicate `x is T` checks only that the value is an object (or returns true); it never verifies T's required fields. Delegate to schema.safeParse(x).success or check every mandatory field."
+note: "Rule type-04. The agent decides whether T is a real shape; the match only locates the shallow body."
+utils:
+  object-null-conjunction:
+    kind: binary_expression
+    regex: '^\s*(typeof\s+[\w$]+\s*===?\s*["''`]object["''`]\s*&&\s*[\w$]+\s*!==?\s*null|[\w$]+\s*!==?\s*null\s*&&\s*typeof\s+[\w$]+\s*===?\s*["''`]object["''`])\s*$'
+rule:
+  all:
+    - any:
+        - kind: function_declaration
+        - kind: function_expression
+        - kind: generator_function_declaration
+        - kind: arrow_function
+        - kind: method_definition
+    - has:
+        field: return_type
+        kind: type_predicate_annotation
+        has:
+          kind: type_predicate
+          has:
+            field: type
+            not:
+              regex: '^(Record\s*<|Readonly<Record|object$|unknown$|any$|\{)'
+    - has:
+        field: body
+        any:
+          - matches: object-null-conjunction
+          - kind: "true"
+          - kind: statement_block
+            has:
+              kind: return_statement
+              nthChild: 1
+              has:
+                any:
+                  - matches: object-null-conjunction
+                  - kind: "true"
+            not:
+              has:
+                nthChild: 2
+---
+id: type-04-anemic-guard-tsx
+language: tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "Type predicate `x is T` checks only that the value is an object (or returns true); it never verifies T's required fields. Delegate to schema.safeParse(x).success or check every mandatory field."
+note: "Rule type-04 (tsx grammar)."
+utils:
+  object-null-conjunction:
+    kind: binary_expression
+    regex: '^\s*(typeof\s+[\w$]+\s*===?\s*["''`]object["''`]\s*&&\s*[\w$]+\s*!==?\s*null|[\w$]+\s*!==?\s*null\s*&&\s*typeof\s+[\w$]+\s*===?\s*["''`]object["''`])\s*$'
+rule:
+  all:
+    - any:
+        - kind: function_declaration
+        - kind: function_expression
+        - kind: generator_function_declaration
+        - kind: arrow_function
+        - kind: method_definition
+    - has:
+        field: return_type
+        kind: type_predicate_annotation
+        has:
+          kind: type_predicate
+          has:
+            field: type
+            not:
+              regex: '^(Record\s*<|Readonly<Record|object$|unknown$|any$|\{)'
+    - has:
+        field: body
+        any:
+          - matches: object-null-conjunction
+          - kind: "true"
+          - kind: statement_block
+            has:
+              kind: return_statement
+              nthChild: 1
+              has:
+                any:
+                  - matches: object-null-conjunction
+                  - kind: "true"
+            not:
+              has:
+                nthChild: 2

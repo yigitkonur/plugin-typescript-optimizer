@@ -1,0 +1,128 @@
+{
+  "note": "Rules and flags that are never autofixed during a run (doc 06 section 13). A denied rule may still be reported read-only. Biome and Oxlint names are the engines' equivalents of the ESLint rules in the source list; verify against the installed engine version.",
+  "rules": [
+    {
+      "engine": "eslint",
+      "rule": "import/no-default-export",
+      "why": "Rewrites export style between named and default; breaks framework routers (Next.js, Remix, Astro) and Knip dynamic entry tracking."
+    },
+    {
+      "engine": "eslint",
+      "rule": "import/prefer-default-export",
+      "why": "Rewrites export style between named and default; breaks framework routers (Next.js, Remix, Astro) and Knip dynamic entry tracking."
+    },
+    {
+      "engine": "eslint",
+      "rule": "@typescript-eslint/no-explicit-any",
+      "why": "Replaces any with unknown or casts; breaks generic constraints and downstream consumers expecting permissive types."
+    },
+    {
+      "engine": "eslint",
+      "rule": "@typescript-eslint/no-non-null-assertion",
+      "why": "Removes non-null assertions; changes compiler error states and runtime execution paths."
+    },
+    {
+      "engine": "eslint",
+      "rule": "@typescript-eslint/no-floating-promises",
+      "why": "Prefixes promises with void; silences unhandled asynchronous errors instead of awaiting them."
+    },
+    {
+      "engine": "eslint",
+      "rule": "prefer-const",
+      "why": "Converts let to const; variables reassigned across async callbacks or closures can throw \"Assignment to constant variable\". Allowed only when the scope is provably local."
+    },
+    {
+      "engine": "eslint",
+      "rule": "no-param-reassign",
+      "why": "Rewrites parameter assignments into local copies; alters mutation contracts in libraries and state managers."
+    },
+    {
+      "engine": "eslint",
+      "rule": "react-hooks/exhaustive-deps",
+      "why": "Adds variables to hook dependency arrays automatically; can trigger re-renders or infinite loops."
+    },
+    {
+      "engine": "biome",
+      "rule": "style/noDefaultExport",
+      "why": "Rewrites export style between named and default; breaks framework routers (Next.js, Remix, Astro) and Knip dynamic entry tracking."
+    },
+    {
+      "engine": "biome",
+      "rule": "suspicious/noExplicitAny",
+      "why": "Replaces any with unknown or casts; breaks generic constraints and downstream consumers expecting permissive types."
+    },
+    {
+      "engine": "biome",
+      "rule": "style/noNonNullAssertion",
+      "why": "Removes non-null assertions; changes compiler error states and runtime execution paths."
+    },
+    {
+      "engine": "biome",
+      "rule": "nursery/noFloatingPromises",
+      "why": "Prefixes promises with void; silences unhandled asynchronous errors instead of awaiting them."
+    },
+    {
+      "engine": "biome",
+      "rule": "suspicious/noFloatingPromises",
+      "why": "Prefixes promises with void; silences unhandled asynchronous errors instead of awaiting them."
+    },
+    {
+      "engine": "biome",
+      "rule": "style/useConst",
+      "why": "Converts let to const; variables reassigned across async callbacks or closures can throw \"Assignment to constant variable\". Allowed only when the scope is provably local."
+    },
+    {
+      "engine": "biome",
+      "rule": "correctness/useExhaustiveDependencies",
+      "why": "Adds variables to hook dependency arrays automatically; can trigger re-renders or infinite loops."
+    },
+    {
+      "engine": "oxlint",
+      "rule": "import/no-default-export",
+      "why": "Rewrites export style between named and default; breaks framework routers (Next.js, Remix, Astro) and Knip dynamic entry tracking."
+    },
+    {
+      "engine": "oxlint",
+      "rule": "typescript/no-explicit-any",
+      "why": "Replaces any with unknown or casts; breaks generic constraints and downstream consumers expecting permissive types."
+    },
+    {
+      "engine": "oxlint",
+      "rule": "typescript/no-non-null-assertion",
+      "why": "Removes non-null assertions; changes compiler error states and runtime execution paths."
+    },
+    {
+      "engine": "oxlint",
+      "rule": "typescript/no-floating-promises",
+      "why": "Prefixes promises with void; silences unhandled asynchronous errors instead of awaiting them."
+    },
+    {
+      "engine": "oxlint",
+      "rule": "prefer-const",
+      "why": "Converts let to const; variables reassigned across async callbacks or closures can throw \"Assignment to constant variable\". Allowed only when the scope is provably local."
+    },
+    {
+      "engine": "oxlint",
+      "rule": "no-param-reassign",
+      "why": "Rewrites parameter assignments into local copies; alters mutation contracts in libraries and state managers."
+    },
+    {
+      "engine": "oxlint",
+      "rule": "react-hooks/exhaustive-deps",
+      "why": "Adds variables to hook dependency arrays automatically; can trigger re-renders or infinite loops."
+    }
+  ],
+  "flags": [
+    "--unsafe",
+    "--fix-dangerously"
+  ],
+  "flag_notes": {
+    "--unsafe": "Biome: may remove code with side effects; only with an explicit per-finding approval and a diff-shape review.",
+    "--fix-dangerously": "Oxlint: same constraint as Biome --unsafe."
+  },
+  "bridge_scope": [
+    "files changed in this run only",
+    "linter and formatter in one commit",
+    "never let autofix remove an export"
+  ]
+}

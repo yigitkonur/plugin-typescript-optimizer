@@ -1,0 +1,20 @@
+{
+  "rule": "type-08",
+  "fire": [
+    {"file": "must-fire.ts", "line": 1, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 2, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 3, "tell": "t2"},
+    {"file": "must-fire.ts", "line": 7, "tell": "t3"},
+    {"file": "must-fire.ts", "line": 10, "tell": "t3"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": [],
+  "astgrep_fire": [
+    {"file": "must-fire.ts", "line": 1, "rule": "type-08-non-erasable"},
+    {"file": "must-fire.ts", "line": 2, "rule": "type-08-non-erasable"},
+    {"file": "must-fire.ts", "line": 3, "rule": "type-08-non-erasable"},
+    {"file": "must-fire.ts", "line": 7, "rule": "type-08-non-erasable"},
+    {"file": "must-fire.ts", "line": 10, "rule": "type-08-non-erasable"}
+  ],
+  "astgrep_silent": ["must-not-fire.ts"]
+}

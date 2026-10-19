@@ -1,0 +1,20 @@
+{
+  "rule": "plat-01",
+  "fire": [
+    {"file": "index.ts", "line": 3, "tell": "t1"},
+    {"file": "index.ts", "line": 4, "tell": "t1"},
+    {"file": "index.ts", "line": 5, "tell": "t1"},
+    {"file": "index.ts", "line": 8, "tell": "t1"},
+    {"file": "latest.ts", "line": 1, "tell": "t1"}
+  ],
+  "silent": [
+    "must-not-fire.ts",
+    "scripts/seed.ts",
+    "vite.config.ts",
+    "test/latest.test.ts",
+    "src/__tests__/env.ts",
+    "handler.spec.ts"
+  ],
+  "silent_astgrep_only": [],
+  "notes": "latest.ts is production code whose name merely contains the substring 'test' (the source script skipped any path containing 'test'); test/latest.test.ts is a real test and is excluded by glob segment/file-name class, never by substring. must-fire files are top-level so a non-recursive file listing still sees them; the nested silent files need a recursive listing to be exercised. The tells only run under worker packages (requires.pack: workerd); fixtures test the tell and the path classes."
+}

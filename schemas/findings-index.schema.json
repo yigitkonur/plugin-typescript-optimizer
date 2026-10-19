@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ts-optimize/findings-index@1",
+  "title": "findings/index.json",
+  "type": "object",
+  "required": [
+    "schema",
+    "run",
+    "findings"
+  ],
+  "properties": {
+    "schema": {
+      "const": "ts-optimize/findings-index@1",
+      "description": "Schema identifier"
+    },
+    "run": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{4}Z-[0-9a-f]{4}$",
+      "description": "UTC minute + 4 hex chars"
+    },
+    "generated": {
+      "type": "string"
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "total"
+      ],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_state": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "by_severity": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "rule",
+          "domain",
+          "severity",
+          "state"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^F-\\d{4,}$"
+          },
+          "fingerprint": {
+            "type": "string",
+            "pattern": "^sha1:.+"
+          },
+          "rule": {
+            "type": "string"
+          },
+          "domain": {
+            "enum": [
+              "platform",
+              "reachability",
+              "types",
+              "structure",
+              "slop",
+              "toolchain"
+            ]
+          },
+          "wave": {
+            "enum": [
+              "R0",
+              "R",
+              "1",
+              "2",
+              "3",
+              "B",
+              "4",
+              "5",
+              "P",
+              "T1",
+              "T2",
+              "T3",
+              "T4",
+              null
+            ],
+            "description": "always a string or null"
+          },
+          "severity": {
+            "enum": [
+              "hard",
+              "warn",
+              "advisory"
+            ]
+          },
+          "fix_risk": {
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "fix_mode": {
+            "enum": [
+              "auto",
+              "assisted",
+              "flag-only"
+            ]
+          },
+          "verdict": {
+            "enum": [
+              "candidate",
+              "confirmed",
+              "false-positive",
+              "deferred"
+            ]
+          },
+          "state": {
+            "enum": [
+              "open",
+              "approved",
+              "rejected",
+              "applied",
+              "reverted",
+              "skipped",
+              "stale",
+              "suppressed",
+              "superseded"
+            ]
+          },
+          "package": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "line": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^F-\\d{4,}$"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "dismissed": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "rule": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "codify": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "suppressed": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "additionalProperties": true
+}

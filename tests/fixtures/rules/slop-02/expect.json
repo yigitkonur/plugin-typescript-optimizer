@@ -1,0 +1,14 @@
+{
+  "rule": "slop-02",
+  "fire": [
+    {"file": "must-fire.ts", "line": 1, "tell": "t2"},
+    {"file": "must-fire.ts", "line": 5, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 7, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 9, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 11, "tell": "t2"},
+    {"file": "must-fire.ts", "line": 13, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 15, "tell": "t2"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": []
+}

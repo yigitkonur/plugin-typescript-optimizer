@@ -1,0 +1,15 @@
+{
+  "rule": "struct-01",
+  "fire": [
+    {"file": "must-fire.ts", "line": 2, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 3, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 4, "tell": "t1"},
+    {"file": "must-fire-internal.ts", "line": 2, "tell": "t2"},
+    {"file": "must-fire-internal.ts", "line": 3, "tell": "t2"},
+    {"file": "must-fire-internal.ts", "line": 7, "tell": "t2"},
+    {"file": "must-fire-internal.ts", "line": 8, "tell": "t2"},
+    {"file": "must-fire-internal.ts", "line": 9, "tell": "t2"}
+  ],
+  "silent": ["must-not-fire.ts", "index.ts"],
+  "silent_astgrep_only": []
+}

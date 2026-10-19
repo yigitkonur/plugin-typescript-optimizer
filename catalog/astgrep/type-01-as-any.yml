@@ -1,0 +1,22 @@
+# type-01 (type laundering): `x as any` and the legacy angle-bracket form `<any>x`.
+# Structural tier: comments, strings and JSX text never match (tier-1 regex cannot tell JSX text from code).
+# Two documents because ast-grep binds one grammar per rule: `typescript` (.ts/.mts/.cts) and `tsx` (.tsx).
+id: type-01-as-any
+language: typescript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "`as any` disables type checking for every downstream use; replace along the ladder (infer, unknown + guard, Record<string, unknown>, explicit signature, alias/union, schema safeParse)."
+note: "Rule type-01. Judge in context: the agent decides, the match only locates."
+rule:
+  any:
+    - pattern: $E as any
+    - pattern: <any>$E
+---
+id: type-01-as-any-tsx
+language: tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "`as any` disables type checking for every downstream use; replace along the ladder (infer, unknown + guard, Record<string, unknown>, explicit signature, alias/union, schema safeParse)."
+note: "Rule type-01 (tsx grammar: the angle-bracket form is JSX there, so only `as any`)."
+rule:
+  pattern: $E as any

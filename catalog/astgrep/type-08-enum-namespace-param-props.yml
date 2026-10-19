@@ -1,0 +1,83 @@
+# type-08 (non-erasable syntax): enum / const enum, runtime namespace, constructor parameter properties.
+# These are exactly the constructs `erasableSyntaxOnly` (TS 5.8+) rejects and type-stripping runtimes cannot run.
+# Ambient forms (`declare enum`, `declare namespace`, `declare module "x"`) are erased and never match.
+# `constructor(opts: { readonly a: string })` is a plain object type, not a parameter property: no match.
+id: type-08-non-erasable
+language: typescript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "Non-erasable TypeScript syntax: replace enum with a string-literal union or `as const` object, namespace with an ES module, constructor parameter properties with explicit fields."
+note: "Rule type-08. Severity of the finding comes from the project signal, not from this rule file."
+rule:
+  any:
+    # enum / const enum (ambient `declare enum` is erased and is skipped)
+    - kind: enum_declaration
+      not:
+        inside:
+          kind: ambient_declaration
+    # runtime namespace (`namespace N {}` / legacy `module N {}`); `declare namespace` and
+    # `declare module "x"` are ambient augmentations and are skipped
+    - kind: internal_module
+      not:
+        inside:
+          kind: ambient_declaration
+    - kind: module
+      has:
+        field: name
+        kind: identifier
+      not:
+        inside:
+          kind: ambient_declaration
+    # constructor parameter property: accessibility / readonly / override modifier on a constructor parameter
+    - all:
+        - any:
+            - kind: required_parameter
+            - kind: optional_parameter
+        - regex: '^(@[\w$.]+(\([^)]*\))?\s*)*(public|private|protected|override|readonly)\s'
+        - inside:
+            kind: formal_parameters
+            inside:
+              kind: method_definition
+              has:
+                field: name
+                regex: '^constructor$'
+---
+id: type-08-non-erasable-tsx
+language: tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "Non-erasable TypeScript syntax: replace enum with a string-literal union or `as const` object, namespace with an ES module, constructor parameter properties with explicit fields."
+note: "Rule type-08 (tsx grammar)."
+rule:
+  any:
+    # enum / const enum (ambient `declare enum` is erased and is skipped)
+    - kind: enum_declaration
+      not:
+        inside:
+          kind: ambient_declaration
+    # runtime namespace (`namespace N {}` / legacy `module N {}`); `declare namespace` and
+    # `declare module "x"` are ambient augmentations and are skipped
+    - kind: internal_module
+      not:
+        inside:
+          kind: ambient_declaration
+    - kind: module
+      has:
+        field: name
+        kind: identifier
+      not:
+        inside:
+          kind: ambient_declaration
+    # constructor parameter property: accessibility / readonly / override modifier on a constructor parameter
+    - all:
+        - any:
+            - kind: required_parameter
+            - kind: optional_parameter
+        - regex: '^(@[\w$.]+(\([^)]*\))?\s*)*(public|private|protected|override|readonly)\s'
+        - inside:
+            kind: formal_parameters
+            inside:
+              kind: method_definition
+              has:
+                field: name
+                regex: '^constructor$'

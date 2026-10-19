@@ -1,0 +1,11 @@
+{
+  "rule": "struct-04",
+  "fire": [
+    {"file": "must-fire.ts", "line": 2, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 10, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 14, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 17, "tell": "t1"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": []
+}

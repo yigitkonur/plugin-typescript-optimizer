@@ -1,0 +1,19 @@
+{
+  "rule": "type-10",
+  "fire": [
+    {"file": "must-fire.ts", "line": 1, "tell": "t4"},
+    {"file": "must-fire.ts", "line": 4, "tell": "t4"},
+    {"file": "must-fire.ts", "line": 6, "tell": "t3"},
+    {"file": "must-fire.ts", "line": 7, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 8, "tell": "t1"},
+    {"file": "must-fire.ts", "line": 9, "tell": "t2"},
+    {"file": "must-fire.ts", "line": 10, "tell": "t5"}
+  ],
+  "silent": ["must-not-fire.ts"],
+  "silent_astgrep_only": [],
+  "astgrep_fire": [
+    {"file": "must-fire.ts", "line": 1, "rule": "type-10-record-any-extends"},
+    {"file": "must-fire.ts", "line": 4, "rule": "type-10-record-any-extends"}
+  ],
+  "astgrep_silent": ["must-not-fire.ts"]
+}

@@ -1,0 +1,77 @@
+id: struct-05-unused-generic-default
+language: TypeScript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  Type parameter is declared but never referenced by the signature, body, heritage or other type parameters
+  (speculative generic). Phantom/brand parameters are a keep-when judged by the agent.
+note: >-
+  Reports the unused type_parameter node itself (defaults included, e.g. <T = unknown, E = Error> with E
+  unused). Constraints and defaults of sibling parameters count as references. See
+  catalog/rules/struct-05-speculative-generics.md.
+rule:
+  kind: type_parameter
+  all:
+    - has: {field: name, pattern: $N}
+    - inside:
+        stopBy: end
+        any:
+          - kind: function_declaration
+          - kind: generator_function_declaration
+          - kind: function_expression
+          - kind: function_signature
+          - kind: arrow_function
+          - kind: method_definition
+          - kind: method_signature
+          - kind: abstract_method_signature
+          - kind: call_signature
+          - kind: construct_signature
+          - kind: interface_declaration
+          - kind: type_alias_declaration
+          - kind: class_declaration
+          - kind: abstract_class_declaration
+        not:
+          has:
+            stopBy: end
+            kind: type_identifier
+            pattern: $N
+            not: {inside: {kind: type_parameter}}
+---
+id: struct-05-unused-generic-default-tsx
+language: Tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  Type parameter is declared but never referenced by the signature, body, heritage or other type parameters
+  (speculative generic). Phantom/brand parameters are a keep-when judged by the agent.
+note: >-
+  Reports the unused type_parameter node itself (defaults included, e.g. <T = unknown, E = Error> with E
+  unused). Constraints and defaults of sibling parameters count as references. See
+  catalog/rules/struct-05-speculative-generics.md.
+rule:
+  kind: type_parameter
+  all:
+    - has: {field: name, pattern: $N}
+    - inside:
+        stopBy: end
+        any:
+          - kind: function_declaration
+          - kind: generator_function_declaration
+          - kind: function_expression
+          - kind: function_signature
+          - kind: arrow_function
+          - kind: method_definition
+          - kind: method_signature
+          - kind: abstract_method_signature
+          - kind: call_signature
+          - kind: construct_signature
+          - kind: interface_declaration
+          - kind: type_alias_declaration
+          - kind: class_declaration
+          - kind: abstract_class_declaration
+        not:
+          has:
+            stopBy: end
+            kind: type_identifier
+            pattern: $N
+            not: {inside: {kind: type_parameter}}

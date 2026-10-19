@@ -1,0 +1,18 @@
+# type-01 (type laundering): `x as unknown as T` double casts. Structural tier; see type-01-as-any.yml.
+id: type-01-double-cast
+language: typescript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "`as unknown as T` launders a value into a type the compiler could not prove; validate at the boundary (schema safeParse) or fix the upstream type."
+note: "Rule type-01. Test files are downgraded to advisory by the rule's downgrade_in."
+rule:
+  pattern: $E as unknown as $T
+---
+id: type-01-double-cast-tsx
+language: tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: warning
+message: "`as unknown as T` launders a value into a type the compiler could not prove; validate at the boundary (schema safeParse) or fix the upstream type."
+note: "Rule type-01 (tsx grammar)."
+rule:
+  pattern: $E as unknown as $T

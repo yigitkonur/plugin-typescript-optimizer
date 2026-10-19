@@ -1,0 +1,167 @@
+# slop-01 (useless try/catch): three structural rules (rethrow-only, blind log-and-return swallow, empty catch),
+# each in a typescript and a tsx document. Multi-line safe; comments are ignored when counting statements.
+id: slop-01-catch-passthrough
+language: TypeScript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  catch clause only rethrows its own binding (no recovery, no context, no cause): useless try/catch.
+note: >-
+  Structural, multi-line safe: the catch body contains exactly one statement (comments ignored) and it is
+  `throw <the catch parameter>`. Enriching rethrows (new Error(..., {cause})) and catches that do any other
+  work do not match. See catalog/rules/slop-01-useless-try-catch.md.
+rule:
+  kind: catch_clause
+  all:
+    - has: {field: parameter, kind: identifier, pattern: $E}
+    - has:
+        field: body
+        kind: statement_block
+        all:
+          - has:
+              nthChild: {position: 1, ofRule: {not: {kind: comment}}}
+              kind: throw_statement
+              has: {kind: identifier, pattern: $E}
+          - not:
+              has:
+                nthChild: {position: 2, ofRule: {not: {kind: comment}}}
+---
+id: slop-01-catch-passthrough-tsx
+language: Tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  catch clause only rethrows its own binding (no recovery, no context, no cause): useless try/catch.
+note: >-
+  Structural, multi-line safe: the catch body contains exactly one statement (comments ignored) and it is
+  `throw <the catch parameter>`. Enriching rethrows (new Error(..., {cause})) and catches that do any other
+  work do not match. See catalog/rules/slop-01-useless-try-catch.md.
+rule:
+  kind: catch_clause
+  all:
+    - has: {field: parameter, kind: identifier, pattern: $E}
+    - has:
+        field: body
+        kind: statement_block
+        all:
+          - has:
+              nthChild: {position: 1, ofRule: {not: {kind: comment}}}
+              kind: throw_statement
+              has: {kind: identifier, pattern: $E}
+          - not:
+              has:
+                nthChild: {position: 2, ofRule: {not: {kind: comment}}}
+---
+id: slop-01-catch-swallow
+language: TypeScript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  catch clause logs the bare error and returns null/undefined/false: a blind swallow that destroys the root
+  cause and the stack. Keep only as an intentional boundary fallback with a real log message.
+note: >-
+  Structural twin of tell t2: exactly two statements (comments ignored), console.<m>(e) (or e.message /
+  e.stack) followed by return null | undefined | false. A log line that carries a context string, a rethrow,
+  or any other work does not match. See catalog/rules/slop-01-useless-try-catch.md.
+rule:
+  kind: catch_clause
+  all:
+    - has: {field: parameter, kind: identifier, pattern: $E}
+    - has:
+        field: body
+        kind: statement_block
+        all:
+          - has:
+              nthChild: {position: 1, ofRule: {not: {kind: comment}}}
+              kind: expression_statement
+              has:
+                any:
+                  - pattern: console.$M($E)
+                  - pattern: console.$M($E.message)
+                  - pattern: console.$M($E.stack)
+          - has:
+              nthChild: {position: 2, ofRule: {not: {kind: comment}}}
+              kind: return_statement
+              any:
+                - has: {kind: "null"}
+                - has: {kind: undefined}
+                - has: {kind: "false"}
+          - not:
+              has:
+                nthChild: {position: 3, ofRule: {not: {kind: comment}}}
+---
+id: slop-01-catch-swallow-tsx
+language: Tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  catch clause logs the bare error and returns null/undefined/false: a blind swallow that destroys the root
+  cause and the stack. Keep only as an intentional boundary fallback with a real log message.
+note: >-
+  Structural twin of tell t2: exactly two statements (comments ignored), console.<m>(e) (or e.message /
+  e.stack) followed by return null | undefined | false. A log line that carries a context string, a rethrow,
+  or any other work does not match. See catalog/rules/slop-01-useless-try-catch.md.
+rule:
+  kind: catch_clause
+  all:
+    - has: {field: parameter, kind: identifier, pattern: $E}
+    - has:
+        field: body
+        kind: statement_block
+        all:
+          - has:
+              nthChild: {position: 1, ofRule: {not: {kind: comment}}}
+              kind: expression_statement
+              has:
+                any:
+                  - pattern: console.$M($E)
+                  - pattern: console.$M($E.message)
+                  - pattern: console.$M($E.stack)
+          - has:
+              nthChild: {position: 2, ofRule: {not: {kind: comment}}}
+              kind: return_statement
+              any:
+                - has: {kind: "null"}
+                - has: {kind: undefined}
+                - has: {kind: "false"}
+          - not:
+              has:
+                nthChild: {position: 3, ofRule: {not: {kind: comment}}}
+---
+id: slop-01-catch-empty
+language: TypeScript
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  Empty catch block: the error is swallowed silently. Delete the try/catch or handle/log the error with
+  context. A catch that contains a comment is treated as a documented intentional swallow and is not reported.
+note: >-
+  Structural twin of tell t3: the catch body has no named child at all (not even a comment). See
+  catalog/rules/slop-01-useless-try-catch.md.
+rule:
+  kind: catch_clause
+  has:
+    field: body
+    kind: statement_block
+    not:
+      has:
+        pattern: $_X
+---
+id: slop-01-catch-empty-tsx
+language: Tsx
+ignores: ['**/*.d.ts', '**/*.d.mts', '**/*.d.cts', '**/generated/**', '**/node_modules/**']
+severity: hint
+message: >-
+  Empty catch block: the error is swallowed silently. Delete the try/catch or handle/log the error with
+  context. A catch that contains a comment is treated as a documented intentional swallow and is not reported.
+note: >-
+  Structural twin of tell t3: the catch body has no named child at all (not even a comment). See
+  catalog/rules/slop-01-useless-try-catch.md.
+rule:
+  kind: catch_clause
+  has:
+    field: body
+    kind: statement_block
+    not:
+      has:
+        pattern: $_X

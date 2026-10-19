@@ -1,0 +1,52 @@
+[
+  {
+    "primary": "reach-03",
+    "superseded": "slop-04",
+    "when": "same file:line; test-only export leak is the primary finding, the relocation fixes both"
+  },
+  {
+    "primary": "struct-02",
+    "superseded": "reach-02",
+    "when": "the same barrel edge is both a dead re-export and a cycle edge; fixing the cycle fixes both, one finding"
+  },
+  {
+    "primary": "reach-01",
+    "superseded": "reach-04",
+    "when": "the symbol lives in a file that is itself unreferenced; deleting the file removes the export"
+  },
+  {
+    "primary": "reach-01",
+    "superseded": "reach-05",
+    "when": "the unused type lives in a file that is itself unreferenced"
+  },
+  {
+    "primary": "type-07",
+    "superseded": "reach-04",
+    "when": "un-exporting the symbol would break declaration emit; the finding becomes \"keep export, register as public\""
+  },
+  {
+    "primary": "type-07",
+    "superseded": "reach-05",
+    "when": "removing the type would break declaration emit; the finding becomes \"keep export, register as public\""
+  },
+  {
+    "primary": "plat-01",
+    "superseded": "type-05",
+    "when": "same location; the process.env platform invariant outranks the optional-chain smell"
+  },
+  {
+    "primary": "struct-07",
+    "superseded": "slop-05",
+    "when": "an inline micro-helper is also a member of a duplicate-utility set; consolidation removes the copy"
+  },
+  {
+    "primary": "type-03",
+    "superseded": "type-10",
+    "when": "a parallel schema/type representation is covered by the schema-type dual declaration"
+  },
+  {
+    "primary": "type-11",
+    "superseded": "type-01",
+    "when": "catch-variable widening on the same line (`(err as any).message` inside a catch): the catch-specific recipe is the more precise one"
+  }
+]
