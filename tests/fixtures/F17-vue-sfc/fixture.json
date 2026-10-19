@@ -1,0 +1,1 @@
+{"id":"F17","name":"vue-sfc","pm":"npm","install":["npm","ci"],"typecheck":["npx","vue-tsc","--noEmit"],"test":null}

@@ -1,0 +1,1 @@
+{"id":"F13","name":"no-tests","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":null}

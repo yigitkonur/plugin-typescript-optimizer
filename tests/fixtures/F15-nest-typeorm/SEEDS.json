@@ -1,0 +1,18 @@
+{
+  "fixture": "F15",
+  "must_fire": [
+    {"rule": "reach-01", "file": "src/common/legacy-slugify.ts", "line": 1, "what": "unreferenced file: legacySlugify is imported nowhere (no decorator, no DI token, no dynamic import)"},
+    {"rule": "reach-05", "file": "src/common/helpers.ts", "line": 1, "what": "interface UnusedCreateUserDto has zero references"},
+    {"rule": "reach-04", "file": "src/common/helpers.ts", "line": 6, "what": "normalizeCase is exported but used only inside helpers.ts"}
+  ],
+  "must_not_fire": [
+    {"rule": "reach-05", "file": "src/users/user.entity.ts", "line": 13, "why": "decorated entity member (@Column displayName) is read by the ORM via metadata, never referenced in code"},
+    {"rule": "reach-05", "file": "src/users/user.entity.ts", "line": 16, "why": "decorated relation member (@OneToMany posts) used by TypeORM"},
+    {"rule": "reach-05", "file": "src/users/post.entity.ts", "line": 13, "why": "decorated relation member (@ManyToOne author) used by TypeORM"},
+    {"rule": "reach-05", "file": "src/users/users.service.ts", "line": 10, "why": "DI constructor parameter property (@InjectRepository users) is injected by Nest"},
+    {"rule": "reach-05", "file": "src/users/users.controller.ts", "line": 9, "why": "DI constructor parameter property (service) is injected by Nest"},
+    {"rule": "reach-01", "file": "src/users/users.guard.ts", "line": 1, "why": "guard class is wired through @UseGuards decorator"},
+    {"rule": "reach-01", "file": "src/users/post.entity.ts", "line": 1, "why": "entity registered through TypeOrmModule entities array and a decorator-metadata relation"}
+  ],
+  "expect": {"typecheck": "pass", "test": "none"}
+}

@@ -1,0 +1,1 @@
+{"id":"F15","name":"nest-typeorm","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":null}

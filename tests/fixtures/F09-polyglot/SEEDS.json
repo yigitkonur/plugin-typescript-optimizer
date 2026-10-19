@@ -1,0 +1,36 @@
+{
+  "fixture": "F09",
+  "must_fire": [
+    {
+      "rule": "reach-04",
+      "file": "web/src/api.ts",
+      "line": 6,
+      "what": "itemUrl is exported but only used inside api.ts (TS-only finding in web/)"
+    },
+    {
+      "rule": "type-01",
+      "file": "web/src/api.ts",
+      "line": 12,
+      "what": "'as any' on parsed JSON response"
+    }
+  ],
+  "must_not_fire": [
+    {
+      "rule": "*",
+      "file": "app/main.py",
+      "line": 1,
+      "what": "no rule may open or report on any Python file (doc 10 row 0.6)"
+    },
+    {
+      "rule": "*",
+      "file": "app/models.py",
+      "line": 1,
+      "what": "Python source; never read"
+    }
+  ],
+  "expect": {
+    "typecheck": "pass",
+    "test": "pass"
+  },
+  "notes": "Exactly one TS package: web/ (npm, own lockfile + tsconfig). Root has no package.json/tsconfig. fixture.json has an extra 'cwd':'web' key (install/typecheck/test run there), added by the fixture author, not in the base schema. web/src/format.ts:7 unusedFormatter is an unused export with no dedicated catalog rule (reach-01 is file-level); it is intentionally unseeded."
+}

@@ -1,0 +1,10 @@
+{
+  "fixture": "F18",
+  "must_fire": [
+    {"rule": "reach-01", "file": "src/dead.ts", "line": 1, "what": "unreferenced module: not imported by main.ts, tests or the imports map"}
+  ],
+  "must_not_fire": [
+    {"rule": "reach-01", "file": "lib/math.ts", "line": 1, "why": "reached through the deno.json imports-map alias @lib/ (not a relative import)"}
+  ],
+  "expect": {"typecheck": "pass", "test": "pass"}
+}

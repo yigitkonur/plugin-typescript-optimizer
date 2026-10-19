@@ -59,7 +59,7 @@ export function ensureFixture(id, { reset = false, clean = false } = {}) {
     rmSync(work, { recursive: true, force: true });
     cpSync(src, work, { recursive: true });
     const meta = JSON.parse(readFileSync(join(src, 'fixture.json'), 'utf8'));
-    if (meta.install) { log(`[fixture ${id}] install: ${meta.install.join(' ')}`); run(meta.install, work); }
+    if (meta.install) { log(`[fixture ${id}] install: ${meta.install.join(' ')}`); run(meta.install, join(work, meta.cwd || '.')); }
     const gi = join(work, '.gitignore');
     const prev = existsSync(gi) ? readFileSync(gi, 'utf8') : '';
     writeFileSync(gi, prev + (prev && !prev.endsWith('\n') ? '\n' : '') + IGNORES.filter((l) => !prev.includes(l)).join('\n') + '\n');
@@ -80,7 +80,7 @@ export function ensureFixture(id, { reset = false, clean = false } = {}) {
   return work;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [id, ...flags] = process.argv.slice(2);
   if (!id) { log('usage: fixture.mjs <Fxx> [--reset] [--clean]'); process.exit(2); }
   try { console.log(ensureFixture(id, { reset: flags.includes('--reset'), clean: flags.includes('--clean') })); }

@@ -1,0 +1,1 @@
+{"id":"F05","name":"next-app","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":null}

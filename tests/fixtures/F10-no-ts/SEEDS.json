@@ -1,0 +1,9 @@
+{
+  "fixture": "F10",
+  "must_fire": [],
+  "must_not_fire": [
+    {"rule": "*", "file": ".", "line": 0, "what": "no rule may fire anywhere; detect --brief prints 'typescript: none' (exit 0); hooks print nothing, exit 0; audit/fix/tsgo print 'No TypeScript found under <root>; nothing to do.' and exit 3"}
+  ],
+  "expect": {"typecheck": "none", "test": "none", "detect": "typescript: none"},
+  "notes": "No .ts/.tsx/.mts/.cts/.js files and no package.json/tsconfig anywhere."
+}

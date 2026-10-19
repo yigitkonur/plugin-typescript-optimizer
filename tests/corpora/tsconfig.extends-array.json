@@ -1,0 +1,10 @@
+{
+  // TS 5.0+: extends may be an array; later entries win
+  "extends": ["./tsconfig.base.json", "@tsconfig/node22/tsconfig.json", "./a",],
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "src",
+    "tsBuildInfoFile": ".tsbuildinfo",
+  },
+  "references": [{ "path": "../shared" }, { "path": "../core" },],
+}

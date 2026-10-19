@@ -1,0 +1,21 @@
+{
+  "name": "f07-ts7-native",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint src test",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "26.6.5",
+    "eslint": "10.13.0",
+    "knip": "6.42.1",
+    "typescript": "7.0.2",
+    "typescript-eslint": "8.72.0",
+    "vitest": "4.1.12"
+  }
+}

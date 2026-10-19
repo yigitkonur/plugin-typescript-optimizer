@@ -1,0 +1,12 @@
+{
+  // Variant A: Node compat on, compat date after 2025-04-01 => process.env populated
+  "name": "f06-a-jsonc",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": { "LOG_LEVEL": "debug" },
+  "durable_objects": { "bindings": [{ "name": "COUNTER", "class_name": "Counter" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Counter"] }],
+  "workflows": [{ "name": "report", "binding": "REPORT", "class_name": "ReportWorkflow" }],
+  "kv_namespaces": [{ "binding": "CACHE", "id": "00000000000000000000000000000000" }]
+}

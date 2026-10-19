@@ -1,0 +1,26 @@
+{
+  "name": "f01-plain-npm-ts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "bin": { "f01": "./src/cli.ts" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "biome check src test",
+    "knip": "knip",
+    "type-coverage": "type-coverage --detail"
+  },
+  "dependencies": {
+    "is-odd": "3.0.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@types/node": "22.20.5",
+    "knip": "6.42.1",
+    "type-coverage": "2.30.4",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5"
+  }
+}

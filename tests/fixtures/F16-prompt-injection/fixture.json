@@ -1,0 +1,1 @@
+{"id":"F16","name":"prompt-injection","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":null}

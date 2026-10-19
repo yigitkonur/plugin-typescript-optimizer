@@ -1,0 +1,12 @@
+{
+  "fixture": "F11",
+  "must_fire": [
+    {"rule": "reach-04", "file": "src/util.ts", "line": 5, "what": "internalHelper is exported but only used inside util.ts and is not re-exported by src/index.ts; stripping export is safe for declaration emit (true positive)"},
+    {"rule": "type-09", "file": "tsconfig.json", "line": 7, "what": "library with declaration emit (composite/declaration true, exports -> dist) lacks isolatedDeclarations; candidate"}
+  ],
+  "must_not_fire": [
+    {"rule": "reach-04", "file": "src/session.ts", "line": 3, "what": "TRAP: Session is only named inside session.ts, but open() in src/api.ts returns it via inference; un-exporting it makes declaration emit fail (TS4058/TS4060 family). Must be reported as type-07 'keep export / register public' or not at all, never as an auto strip-export"}
+  ],
+  "expect": {"typecheck": "pass", "test": "pass"},
+  "notes": "Declaration signal: composite+declaration, package.json types/exports -> dist. open() (src/api.ts:3) and describe() (src/api.ts:7) have no explicit return types: isolatedDeclarations candidates."
+}

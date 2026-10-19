@@ -1,0 +1,24 @@
+# Variant B: compat date before 2025-04-01, no nodejs_compat => process.env not populated
+name = "f06-b-toml"
+main = "src/index.ts"
+compatibility_date = "2024-09-01"
+
+[vars]
+LOG_LEVEL = "debug"
+
+[[durable_objects.bindings]]
+name = "COUNTER"
+class_name = "Counter"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Counter"]
+
+[[workflows]]
+name = "report"
+binding = "REPORT"
+class_name = "ReportWorkflow"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "00000000000000000000000000000000"

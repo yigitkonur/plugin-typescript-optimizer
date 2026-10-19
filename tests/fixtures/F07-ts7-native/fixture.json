@@ -1,0 +1,1 @@
+{"id":"F07","name":"ts7-native","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":["npm","test"]}

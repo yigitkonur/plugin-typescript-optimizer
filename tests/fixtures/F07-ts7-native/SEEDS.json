@@ -1,0 +1,23 @@
+{
+  "fixture": "F07",
+  "must_fire": [
+    {"rule": "tc-04", "file": "package.json", "line": 18, "what": "typescript-eslint 8.72.0 refuses to load on TS 7.0 (peer typescript <6.1.0, runtime guard 'typescript-eslint does not support TS 7.0'); blocks the lint leg; severity hard"}
+  ],
+  "must_not_fire": [
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 1, "why": "no removed/changed compiler option: module esnext, moduleResolution bundler, target ES2022"},
+    {"rule": "tc-02", "file": "tsconfig.json", "line": 1, "why": "no baseUrl and no paths: no alias scheme to rewrite"},
+    {"rule": "tc-03", "file": "tsconfig.json", "line": 1, "why": "strict and types are already explicit; no default-change exposure"},
+    {"rule": "tc-05", "file": "package.json", "line": 1, "why": "no ts-node / ts-loader / ttypescript / ts-patch"},
+    {"rule": "tc-06", "file": "package.json", "line": 1, "why": "no CI or Docker files exist"},
+    {"rule": "tc-04", "file": "package.json", "line": 16, "why": "knip 6 and vitest 4 do not need the TypeScript JS API at runtime (knip runs and reports on TS 7.0.2); eslint itself is fine"}
+  ],
+  "expect": {"typecheck": "pass", "test": "pass"},
+  "notes": [
+    "typescript is 7.0.2 (npm dist-tag latest at fixture creation, 2026-10-20). tsc --version prints 'Version 7.0.2'; authoritative.kind is native.",
+    "Doc 10 test 4.3: fit verdict already-native; fast-check uses tsc; no tsgo script names introduced (scripts here use tsc/vitest/eslint/knip only).",
+    "KNOWN BASELINE FAILURE: 'npm run lint' exits non-zero on purpose. typescript-eslint 8.72.0 throws at load: 'typescript-eslint does not support TS 7.0'. It cannot even be installed without .npmrc legacy-peer-deps=true (peer typescript >=4.8.4 <6.1.0), which is committed so that 'npm ci' works. The lint gate leg is therefore red at baseline and must be recorded as pre-existing, not as a regression.",
+    "Doc 10 test 1.6: type-coverage (uses the JS compiler API) is not installed here; run via the toolbox it is expected to fail its smoke probe on TS 7, giving the escape-hatch@1 proxy metric with coverage table 'degraded'.",
+    "'npx knip' works and reports one unused export (unusedHelper, src/csv.ts:8): a plain dead export for incidental use, not a toolchain seed.",
+    "No alias scheme: typescript is the native 7.x package directly; there is no @typescript/typescript6 alias and no @typescript/native entry."
+  ]
+}

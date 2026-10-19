@@ -1,0 +1,12 @@
+{
+  "fixture": "F17",
+  "must_fire": [
+    {"rule": "type-01", "file": "src/components/Counter.vue", "line": 6, "what": "`as any` inside <script setup lang=\"ts\">; line is file-absolute (block starts at line 1)"},
+    {"rule": "type-01", "file": "src/components/Legacy.vue", "line": 13, "what": "`as any` inside a trailing <script lang=\"ts\"> block after the <template>; line is file-absolute (block-relative would be 8)"}
+  ],
+  "must_not_fire": [
+    {"rule": "reach-01", "file": "src/components/Counter.vue", "line": 1, "why": "consumed only as <Counter /> from App.vue's template (plus its import in script setup); template usage is invisible to a plain importer index"},
+    {"rule": "reach-01", "file": "src/components/Legacy.vue", "line": 1, "why": "consumed only as <Legacy /> from App.vue's template"}
+  ],
+  "expect": {"typecheck": "pass", "test": "none"}
+}

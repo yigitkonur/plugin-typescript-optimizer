@@ -1,0 +1,1 @@
+{"id":"F03","name":"yarn-pnp","pm":"yarn-berry-pnp","install":["{TOOLS}/yarn","install","--immutable"],"typecheck":["{TOOLS}/yarn","run","tsc","--noEmit"],"test":["{TOOLS}/yarn","run","test"]}

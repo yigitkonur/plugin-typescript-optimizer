@@ -1,0 +1,33 @@
+{
+  "fixture": "F08",
+  "must_fire": [
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 3, "what": "target es5 is a hard error in TS 7"},
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 5, "what": "moduleResolution node10 removed in TS 7"},
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 6, "what": "baseUrl removed in TS 7"},
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 7, "what": "downlevelIteration removed in TS 7"},
+    {"rule": "tc-02", "file": "tsconfig.json", "line": 6, "what": "baseUrl: src with no paths; imports rely on it"},
+    {"rule": "tc-02", "file": "src/cli.ts", "line": 1, "what": "bare import 'utils/format' resolves only via baseUrl"},
+    {"rule": "tc-04", "file": "scripts/rename.ts", "line": 1, "what": "imports ts-morph (JS compiler API consumer); needs the alias scheme"},
+    {"rule": "tc-04", "file": "package.json", "line": 17, "what": "ts-morph depends on the TypeScript JS API"},
+    {"rule": "tc-04", "file": "package.json", "line": 20, "what": "typescript-eslint breaks on TS 7 (blocks lint); alias scheme or move lint"},
+    {"rule": "tc-05", "file": "package.json", "line": 6, "what": "dev script runs ts-node; replace with tsx"},
+    {"rule": "tc-05", "file": "package.json", "line": 7, "what": "rename script runs ts-node"},
+    {"rule": "tc-05", "file": "package.json", "line": 18, "what": "ts-node devDependency"},
+    {"rule": "tc-06", "file": ".github/workflows/ci.yml", "line": 5, "what": "NODE_OPTIONS contains --v8-pool-size=4, which breaks native-compiler worker threads; keep --max-old-space-size"}
+  ],
+  "must_not_fire": [
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 4, "why": "module commonjs is still supported"},
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 11, "why": "strict true is already explicit"},
+    {"rule": "tc-01", "file": "tsconfig.json", "line": 14, "why": "outDir is not a removed option"},
+    {"rule": "tc-04", "file": "package.json", "line": 19, "why": "typescript itself is the compiler, not a JS-API consumer"}
+  ],
+  "expect": {"typecheck": "pass", "test": "pass"},
+  "notes": [
+    "typescript 5.9.3 (authoritative.kind js). Typecheck, vitest and eslint (typescript-eslint 8.72.0, flat config eslint.config.mjs) all pass at baseline.",
+    "Doc 10 test 4.1: fit verdict needs-config; each removed option reported with file:line (tsconfig.json lines 3,5,6,7); ts-node, the ts-morph script and typescript-eslint listed; NODE_OPTIONS flag found at ci.yml:5.",
+    "Doc 10 test 4.2: after T1-T4 the residual is lint/ts-morph on TS 6 via the alias scheme; eslint must still run.",
+    "outDir (tsconfig.json:14) without rootDir is a possible tc-03 (rootDir default change) exposure; it is a fit-probe diagnostic delta, so it is not pinned as must_fire.",
+    "src/cli.ts and scripts/rename.ts are typechecked but are not exercised by the test; bare 'utils/format' only resolves through tsc baseUrl (vite/ts-node would not), so tests import ../src/index which uses a relative path.",
+    "package.json scripts.build uses --noEmit false against a noEmit tsconfig; not run in verification."
+  ]
+}

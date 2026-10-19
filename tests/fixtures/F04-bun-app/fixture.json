@@ -1,0 +1,1 @@
+{"id":"F04","name":"bun-app","pm":"bun","install":["{TOOLS}/bun","install","--frozen-lockfile"],"typecheck":["{TOOLS}/bun","x","tsc","--noEmit"],"test":["{TOOLS}/bun","run","test"]}

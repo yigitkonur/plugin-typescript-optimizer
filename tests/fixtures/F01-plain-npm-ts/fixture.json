@@ -1,0 +1,1 @@
+{"id":"F01","name":"plain-npm-ts","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":["npm","test"]}

@@ -1,0 +1,36 @@
+{
+  "fixture": "F01",
+  "must_fire": [
+    {"rule":"reach-01","file":"src/orphan.ts","line":1,"what":"unreferenced file"},
+    {"rule":"reach-02","file":"src/barrel/index.ts","line":2,"what":"dead barrel re-export of deadHelper"},
+    {"rule":"reach-03","file":"src/testonly.ts","line":6,"what":"buildFixtureUser used only by test/testonly.test.ts (reported by knip --production only)"},
+    {"rule":"reach-04","file":"src/internal.ts","line":1,"what":"normalize exported but used only inside internal.ts"},
+    {"rule":"reach-05","file":"src/types.ts","line":1,"what":"unused exported interface UnusedConfig"},
+    {"rule":"reach-07","file":"package.json","line":16,"what":"unused dependency is-odd"},
+    {"rule":"type-01","file":"src/laundering.ts","line":7,"what":"JSON.parse(raw) as any"},
+    {"rule":"type-01","file":"src/laundering.ts","line":12,"what":"value as unknown as Settings"},
+    {"rule":"slop-01","file":"src/errors.ts","line":6,"what":"catch that only rethrows"},
+    {"rule":"slop-01","file":"src/errors.ts","line":14,"what":"blind swallow: console.log then return null"},
+    {"rule":"slop-03","file":"src/flags.ts","line":2,"what":"? true : false"},
+    {"rule":"slop-03","file":"src/flags.ts","line":6,"what":"if (flag === true) return true else return false"},
+    {"rule":"struct-07","file":"src/ui/cn.ts","line":1,"what":"duplicate cn (1 of 3)"},
+    {"rule":"struct-07","file":"src/forms/cn.ts","line":1,"what":"duplicate cn (2 of 3)"},
+    {"rule":"struct-07","file":"src/layout/cn.ts","line":1,"what":"duplicate cn (3 of 3, parameter renamed)"},
+    {"rule":"struct-03","file":"src/wrapper.ts","line":3,"what":"lengthOf forwards its parameter unchanged to slugLength; single consumer"}
+  ],
+  "must_not_fire": [
+    {"rule":"reach-01","file":"src/cli.ts","line":1,"why":"entry point via package.json bin"},
+    {"rule":"reach-01","file":"test/latest.test.ts","line":1,"why":"path contains 'test' inside 'latest'; a real test file, not an orphan"},
+    {"rule":"reach-02","file":"src/util/index.ts","line":2,"why":"index.ts that is a real module, not a barrel"},
+    {"rule":"reach-04","file":"src/internal.ts","line":5,"why":"slugLength is imported by src/wrapper.ts"},
+    {"rule":"reach-05","file":"src/types.ts","line":6,"why":"Settings is imported by src/laundering.ts"},
+    {"rule":"type-01","file":"src/laundering.ts","line":3,"why":"'as any' inside a comment"},
+    {"rule":"type-01","file":"src/laundering.ts","line":4,"why":"'as any' inside a string literal"},
+    {"rule":"type-05","file":"src/laundering.ts","line":18,"why":"optional chain on parsed external JSON"},
+    {"rule":"slop-01","file":"src/errors.ts","line":24,"why":"rethrows with context and cause"},
+    {"rule":"slop-01","file":"src/errors.ts","line":33,"why":"logs with context at an intentional boundary fallback"},
+    {"rule":"reach-06","file":"src/flags.ts","line":13,"why":"_-prefixed unused parameter is the intentional-unused contract"},
+    {"rule":"reach-06","file":"src/flags.ts","line":14,"why":"_-prefixed unused local"}
+  ],
+  "expect": {"typecheck":"pass","test":"pass"}
+}

@@ -1,0 +1,1 @@
+{"id":"F02","name":"pnpm-monorepo","pm":"pnpm","install":["pnpm","install","--frozen-lockfile"],"typecheck":["pnpm","exec","tsc","-b"],"test":["pnpm","test"]}

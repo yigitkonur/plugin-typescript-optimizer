@@ -1,0 +1,14 @@
+{
+  "name": "@f02/cli",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": { "typecheck": "tsc -b" },
+  "dependencies": { "@f02/core": "workspace:*", "@f02/utils": "workspace:*" }
+}

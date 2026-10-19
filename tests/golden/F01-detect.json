@@ -1,0 +1,111 @@
+{
+  "typescript": true,
+  "git": {
+    "repo": true,
+    "clean": true,
+    "branch": "main"
+  },
+  "pm": {
+    "name": "npm",
+    "version": null,
+    "source": "lockfile",
+    "pnp": false,
+    "exec": [
+      "npm",
+      "exec",
+      "--"
+    ],
+    "run": [
+      "npm",
+      "run"
+    ]
+  },
+  "workspaces": {
+    "sources": [],
+    "inferred": false,
+    "members": 0
+  },
+  "packages": [
+    {
+      "path": ".",
+      "name": "f01-plain-npm-ts",
+      "kind": "node",
+      "root_only": false,
+      "workspace_root": false,
+      "tsconfigs": [
+        {
+          "file": "tsconfig.json",
+          "class": "project",
+          "references": []
+        }
+      ],
+      "typecheck_set": [
+        {
+          "variant": "tsc",
+          "config": "tsconfig.json"
+        }
+      ],
+      "declaration_signal": false,
+      "scripts": {
+        "test": "vitest run",
+        "lint": "biome check src test",
+        "typecheck": "tsc --noEmit"
+      },
+      "workspace_deps": [],
+      "compilers": {
+        "kind": "js",
+        "version": "5.9.3",
+        "source": "project"
+      }
+    }
+  ],
+  "engines_project": {
+    "knip": {
+      "version": "6.42.1",
+      "works": true
+    },
+    "biome": {
+      "version": "2.5.15",
+      "works": true
+    },
+    "type-coverage": {
+      "version": "2.30.4",
+      "works": true
+    }
+  },
+  "lint": {
+    "engine": "biome",
+    "config": "biome.json"
+  },
+  "frameworks": [
+    "vitest"
+  ],
+  "packs": [],
+  "gate": {
+    "legs": [
+      {
+        "id": "typecheck",
+        "cwd": ".",
+        "variant": "tsc",
+        "config": "tsconfig.json"
+      },
+      {
+        "id": "test",
+        "cwd": ".",
+        "script": "test",
+        "argv": [
+          "npm",
+          "run",
+          "test"
+        ],
+        "runner": "vitest"
+      }
+    ],
+    "unavailable": [
+      {
+        "id": "build",
+        "reason": "no \"build\" script in the root or any TypeScript package"
+      }
+    ]
+  }
+}

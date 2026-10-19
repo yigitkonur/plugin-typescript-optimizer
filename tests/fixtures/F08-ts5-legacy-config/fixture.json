@@ -1,0 +1,1 @@
+{"id":"F08","name":"ts5-legacy-config","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":["npm","test"]}

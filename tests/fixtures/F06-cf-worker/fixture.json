@@ -1,0 +1,1 @@
+{"id":"F06","name":"cf-worker","pm":"npm","install":["node","install-all.mjs"],"typecheck":["node","run-all.mjs","typecheck"],"test":["node","run-all.mjs","test"]}

@@ -1,0 +1,14 @@
+{
+  "imports": {
+    "@lib/": "./lib/",
+    "@std/assert": "jsr:@std/assert@1.0.19"
+  },
+  "tasks": {
+    "start": "deno run main.ts",
+    "check": "deno check main.ts",
+    "test": "deno test"
+  },
+  "compilerOptions": {
+    "strict": true
+  }
+}

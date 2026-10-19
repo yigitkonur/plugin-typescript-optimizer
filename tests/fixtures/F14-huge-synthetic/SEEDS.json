@@ -1,0 +1,13 @@
+{
+  "fixture": "F14",
+  "generator": "generate.mjs",
+  "must_fire": [],
+  "must_not_fire": [],
+  "guaranteed_counts": {
+    "defaults": {"fileCount": 20000, "packages": 40, "barrels": 1000, "live_files": 17000, "entry_files": 40, "dead_files": 2000, "unused_exports": 2000, "import_edges": 36621},
+    "formulas": "packages = ceil(N/500); per package local index k (module = floor(k/20)): k%20==0 is a barrel (index.ts re-exporting the module's live files); k%10==7 (not a barrel) is a dead file (imported by nothing, not re-exported); the highest-k live file of each package is the entry (imported by nothing); every other file is imported at least once; live files with k%10==3 also export an unused const (unused_exports). Exact for N a multiple of 500; other N gets the same rules on a shorter last package -- generated.json in the output has the real counts.",
+    "expected_reach01_unreferenced_files": "dead_files + entry_files (2040 at N=20000) unless the entries are declared as Knip entry points"
+  },
+  "expect": {"typecheck": "pass", "generated_ts_files": 20000},
+  "notes": "Output is NOT committed. Deterministic (fixed PRNG seed): same N gives byte-identical output. 20000 files generate in ~2.5 s. Output contains package.json (typescript 5.9.3, no lockfile), tsconfig.json, generated.json and packages/pkg-NNN/src/mod-NN/*.ts. Used by build-plan rows 1.9 and 6.3 (tells-only scan, full scan timing/RSS)."
+}

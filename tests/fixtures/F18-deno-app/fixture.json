@@ -1,0 +1,1 @@
+{"id":"F18","name":"deno-app","pm":"deno","install":null,"typecheck":["deno","check","main.ts"],"test":["deno","test"]}

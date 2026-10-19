@@ -1,0 +1,13 @@
+{
+  "fixture": "F03",
+  "must_fire": [
+    {"rule":"reach-01","file":"src/orphan.ts","line":1,"what":"unreferenced file"},
+    {"rule":"reach-04","file":"src/greet.ts","line":7,"what":"unusedExport exported but never imported anywhere"},
+    {"rule":"type-01","file":"src/parse.ts","line":2,"what":"JSON.parse(raw) as any"}
+  ],
+  "must_not_fire": [
+    {"rule":"reach-07","file":"package.json","line":12,"why":"kleur is imported by src/greet.ts; resolved through PnP, no node_modules exists"},
+    {"rule":"reach-01","file":"src/index.test.ts","line":1,"why":"test file run by node --test"}
+  ],
+  "expect": {"typecheck":"pass","test":"pass","node_modules_absent":true}
+}

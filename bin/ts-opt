@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+// Thin launcher: CommonJS on purpose (an extensionless file cannot be ESM on Node 18/20).
+'use strict';
+const [major, minor] = process.versions.node.split('.').map(Number);
+if (major < 18 || (major === 18 && minor < 17)) {
+  process.stderr.write('ts-opt requires Node >= 18.17 (found ' + process.versions.node + ')\n');
+  process.exit(4);
+}
+const path = require('node:path');
+const { pathToFileURL } = require('node:url');
+import(pathToFileURL(path.join(__dirname, '..', 'lib', 'cli', 'main.mjs')).href)
+  .then((m) => m.main(process.argv.slice(2)))
+  .then((code) => { process.exitCode = code; })
+  .catch((e) => { process.stderr.write('ts-opt: ' + (e && e.stack || e) + '\n'); process.exit(70); });

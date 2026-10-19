@@ -1,0 +1,1 @@
+{"id":"F12","name":"mixed-js-ts","pm":"npm","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":["npm","test"]}

@@ -1,0 +1,16 @@
+{
+  "fixture": "F04",
+  "must_fire": [
+    {"rule":"reach-01","file":"src/dead.ts","line":1,"what":"unreferenced file"},
+    {"rule":"reach-05","file":"src/schema.ts","line":11,"what":"unused exported interface UnusedShape"},
+    {"rule":"slop-03","file":"src/todos.ts","line":8,"what":"redundant === true on a boolean"},
+    {"rule":"type-01","file":"src/todos.ts","line":18,"what":"data as unknown as Todo[] on an unvalidated JSON boundary"}
+  ],
+  "must_not_fire": [
+    {"rule":"type-03","file":"src/schema.ts","line":9,"why":"type derived with z.infer, no dual declaration"},
+    {"rule":"slop-01","file":"src/todos.ts","line":19,"why":".catch logs with context and returns a boundary fallback"},
+    {"rule":"reach-01","file":"test/todos.test.ts","line":1,"why":"bun test file"},
+    {"rule":"reach-07","file":"package.json","line":12,"why":"zod is imported by src/schema.ts"}
+  ],
+  "expect": {"typecheck":"pass","test":"pass","note":"test argv needs the bun binary on PATH because the script calls bun test"}
+}

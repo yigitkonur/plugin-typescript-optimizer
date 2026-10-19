@@ -1,0 +1,19 @@
+﻿// Base config shared by apps/web
+{
+  /* Visit https://aka.ms/tsconfig to read more about this file */
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext", // keep in sync with package.json "type"
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@app/*": ["./src/*"], // trailing comma below
+      "@glob/*": ["./src/**/*.ts", "/* not a comment */"],
+    },
+    "types": ["node",],
+    "outDir": "dist//out",
+  },
+  "include": ["src/**/*", "//weird"],
+  "exclude": ["node_modules", "dist"], // done
+}

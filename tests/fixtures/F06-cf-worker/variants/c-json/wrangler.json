@@ -1,0 +1,9 @@
+{
+  "name": "f06-c-json",
+  "main": "src/index.ts",
+  "vars": { "LOG_LEVEL": "debug" },
+  "durable_objects": { "bindings": [{ "name": "COUNTER", "class_name": "Counter" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Counter"] }],
+  "workflows": [{ "name": "report", "binding": "REPORT", "class_name": "ReportWorkflow" }],
+  "kv_namespaces": [{ "binding": "CACHE", "id": "00000000000000000000000000000000" }]
+}

@@ -1,0 +1,1 @@
+{"id":"F09","name":"polyglot","pm":"npm","cwd":"web","install":["npm","ci"],"typecheck":["npx","tsc","--noEmit"],"test":["npm","test"]}

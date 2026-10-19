@@ -1,0 +1,7 @@
+{
+  "workspaces": {
+    ".": { "entry": [] },
+    "apps/*": { "includeEntryExports": false },
+    "packages/*": { "includeEntryExports": true, "project": ["src/**/*.ts"] }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "fixture": "F13",
+  "must_fire": [
+    {"rule": "slop-01", "file": "src/parse.ts", "line": 10, "what": "catch (e) { throw e; } rethrow-only handler (try at line 7, rethrow at line 11)"},
+    {"rule": "reach-01", "file": "src/orphan.ts", "line": 1, "what": "file not imported by anything and not an entry point"}
+  ],
+  "must_not_fire": [],
+  "expect": {"typecheck": "pass", "test": "none"},
+  "notes": "No test script and no test files. Plan must state only waves B/4 are schedulable (doc 10 row 3.6); checking a wave-1 box must make 'plan lock' refuse."
+}

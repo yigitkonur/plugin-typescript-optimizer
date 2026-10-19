@@ -1,0 +1,211 @@
+{
+  "fixture": "F06",
+  "must_fire": [
+    {
+      "rule": "plat-01",
+      "file": "variants/a-jsonc/src/index.ts",
+      "line": 16,
+      "what": "process.env read in worker code",
+      "expected_severity": "adv",
+      "process_env_populated": "true",
+      "basis": "wrangler.jsonc: nodejs_compat flag + compatibility_date 2025-06-01 (>= 2025-04-01) => process_env_populated=true"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/a-jsonc/src/index.ts",
+      "line": 28,
+      "what": "un-awaited env.CACHE.put in a handler with an ExecutionContext param; needs ctx.waitUntil",
+      "expected_severity": "warn"
+    },
+    {
+      "rule": "plat-01",
+      "file": "variants/b-toml/src/index.ts",
+      "line": 16,
+      "what": "process.env read in worker code",
+      "expected_severity": "hard",
+      "process_env_populated": "false",
+      "basis": "wrangler.toml: compatibility_date 2024-09-01, no nodejs_compat => process_env_populated=false"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/b-toml/src/index.ts",
+      "line": 28,
+      "what": "un-awaited env.CACHE.put in a handler with an ExecutionContext param; needs ctx.waitUntil",
+      "expected_severity": "warn"
+    },
+    {
+      "rule": "plat-01",
+      "file": "variants/c-json/src/index.ts",
+      "line": 16,
+      "what": "process.env read in worker code",
+      "expected_severity": "hard",
+      "process_env_populated": "false",
+      "basis": "wrangler.json: no compatibility_date and no flags => process_env_populated=false (see notes: doc 10 s2.2 order implies warn/unknown may be accepted)"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/c-json/src/index.ts",
+      "line": 28,
+      "what": "un-awaited env.CACHE.put in a handler with an ExecutionContext param; needs ctx.waitUntil",
+      "expected_severity": "warn"
+    }
+  ],
+  "must_not_fire": [
+    {
+      "rule": "plat-02",
+      "file": "variants/a-jsonc/src/index.ts",
+      "line": 13,
+      "why": "ctx.waitUntil(logHit(...)) is protected"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/a-jsonc/src/index.ts",
+      "line": 24,
+      "why": "ctx.waitUntil(instance.status()) is protected"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/a-jsonc/worker-configuration.d.ts",
+      "line": 1,
+      "why": "generated ambient .d.ts named by tsconfig include; no import/export; protected"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/a-jsonc/src/counter.ts",
+      "line": 3,
+      "why": "Durable Object class bound in wrangler (durable_objects.bindings class_name Counter); re-exported from main"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/a-jsonc/src/report-workflow.ts",
+      "line": 7,
+      "why": "Workflow class bound in wrangler (workflows[].class_name ReportWorkflow)"
+    },
+    {
+      "rule": "reach-04",
+      "file": "variants/a-jsonc/src/index.ts",
+      "line": 4,
+      "why": "Counter/ReportWorkflow re-export is the RPC/binding contract with the runtime"
+    },
+    {
+      "rule": "reach-07",
+      "file": "variants/a-jsonc/package.json",
+      "line": 13,
+      "why": "@cloudflare/vitest-pool-workers is referenced from vitest.config.ts"
+    },
+    {
+      "rule": "reach-07",
+      "file": "variants/a-jsonc/package.json",
+      "line": 14,
+      "why": "@cloudflare/workers-types is referenced via tsconfig types"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/b-toml/src/index.ts",
+      "line": 13,
+      "why": "ctx.waitUntil(logHit(...)) is protected"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/b-toml/src/index.ts",
+      "line": 24,
+      "why": "ctx.waitUntil(instance.status()) is protected"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/b-toml/worker-configuration.d.ts",
+      "line": 1,
+      "why": "generated ambient .d.ts named by tsconfig include; no import/export; protected"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/b-toml/src/counter.ts",
+      "line": 3,
+      "why": "Durable Object class bound in wrangler (durable_objects.bindings class_name Counter); re-exported from main"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/b-toml/src/report-workflow.ts",
+      "line": 7,
+      "why": "Workflow class bound in wrangler (workflows[].class_name ReportWorkflow)"
+    },
+    {
+      "rule": "reach-04",
+      "file": "variants/b-toml/src/index.ts",
+      "line": 4,
+      "why": "Counter/ReportWorkflow re-export is the RPC/binding contract with the runtime"
+    },
+    {
+      "rule": "reach-07",
+      "file": "variants/b-toml/package.json",
+      "line": 13,
+      "why": "@cloudflare/vitest-pool-workers is referenced from vitest.config.ts"
+    },
+    {
+      "rule": "reach-07",
+      "file": "variants/b-toml/package.json",
+      "line": 14,
+      "why": "@cloudflare/workers-types is referenced via tsconfig types"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/c-json/src/index.ts",
+      "line": 13,
+      "why": "ctx.waitUntil(logHit(...)) is protected"
+    },
+    {
+      "rule": "plat-02",
+      "file": "variants/c-json/src/index.ts",
+      "line": 24,
+      "why": "ctx.waitUntil(instance.status()) is protected"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/c-json/worker-configuration.d.ts",
+      "line": 1,
+      "why": "generated ambient .d.ts named by tsconfig include; no import/export; protected"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/c-json/src/counter.ts",
+      "line": 3,
+      "why": "Durable Object class bound in wrangler (durable_objects.bindings class_name Counter); re-exported from main"
+    },
+    {
+      "rule": "reach-01",
+      "file": "variants/c-json/src/report-workflow.ts",
+      "line": 7,
+      "why": "Workflow class bound in wrangler (workflows[].class_name ReportWorkflow)"
+    },
+    {
+      "rule": "reach-04",
+      "file": "variants/c-json/src/index.ts",
+      "line": 4,
+      "why": "Counter/ReportWorkflow re-export is the RPC/binding contract with the runtime"
+    },
+    {
+      "rule": "reach-07",
+      "file": "variants/c-json/package.json",
+      "line": 13,
+      "why": "@cloudflare/vitest-pool-workers is referenced from vitest.config.ts"
+    },
+    {
+      "rule": "reach-07",
+      "file": "variants/c-json/package.json",
+      "line": 14,
+      "why": "@cloudflare/workers-types is referenced via tsconfig types"
+    }
+  ],
+  "expect": {
+    "typecheck": "pass",
+    "test": "pass"
+  },
+  "notes": [
+    "Three independent npm packages under variants/ (own package.json + package-lock.json). fixture.json install/typecheck/test run all three via install-all.mjs / run-all.mjs.",
+    "plat-01 severity per doc 06 s2.1 / doc 05 s6: hard if process_env_populated=false, warn if unknown, adv if true. a-jsonc => adv; b-toml => hard; c-json => hard (wrangler.json is readable but has no compat date or flags, so populated=false). Doc 10 test 2.2 lists the three severities as hard / warn / adv; if the pack treats a config without compatibility_date as unknown, c-json would be warn. Pack author decides; this file records the doc 05 literal reading.",
+    "process.env is read only on the /debug route (src/index.ts:16) so the runtime tests pass in all variants (process is undefined at runtime in b-toml and c-json, which is exactly the hard finding).",
+    "worker-configuration.d.ts is hand-written in wrangler-types style (not produced by running wrangler types); it has no import/export.",
+    "@cloudflare/vitest-pool-workers 0.23.0 prints a deprecation banner (renamed to @cloudflare/vitest-plugin); harmless.",
+    "Doc 10 test 3.13: staged deletion of worker-configuration.d.ts, removing a ctx.waitUntil( call (2 per variant, src/index.ts lines 13 and 24), or adding process.env in b-toml/c-json must exit 7."
+  ]
+}

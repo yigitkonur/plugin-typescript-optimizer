@@ -1,0 +1,19 @@
+{
+  "fixture": "F02",
+  "must_fire": [
+    {"rule":"reach-01","file":"packages/core/src/legacy-helpers.ts","line":1,"what":"unreferenced file"},
+    {"rule":"reach-02","file":"packages/utils/src/index.ts","line":2,"what":"dead barrel re-export of truncate"},
+    {"rule":"reach-04","file":"packages/core/src/internal.ts","line":1,"what":"checksum exported but used only inside internal.ts"},
+    {"rule":"struct-01","file":"packages/core/src/pricing.ts","line":3,"what":"module imports its sibling through its own directory barrel"},
+    {"rule":"struct-02","file":"packages/core/src/pricing.ts","line":3,"what":"value import cycle manufactured by the core barrel (index -> pricing -> index)"},
+    {"rule":"struct-02","file":"packages/core/src/orders.ts","line":2,"what":"value import cycle manufactured by the core barrel (index -> orders -> index)"}
+  ],
+  "must_not_fire": [
+    {"rule":"struct-02","file":"packages/types/src/user.ts","line":1,"why":"type-only cycle user.ts <-> order.ts (every edge is import type); must be dismissed"},
+    {"rule":"struct-02","file":"packages/types/src/order.ts","line":1,"why":"other half of the type-only cycle"},
+    {"rule":"reach-01","file":"packages/legacy/src/index.ts","line":1,"why":"packages/legacy is excluded from the workspace by the ! entry in pnpm-workspace.yaml"},
+    {"rule":"reach-02","file":"packages/ui/src/index.ts","line":1,"why":"single re-export consumed by apps/web through the package entry"},
+    {"rule":"reach-01","file":"apps/cli/src/index.test.ts","line":1,"why":"test file excluded from tsc but run by vitest"}
+  ],
+  "expect": {"typecheck":"pass","test":"pass","workspace_packages":7,"workspace_excluded":["packages/legacy"]}
+}

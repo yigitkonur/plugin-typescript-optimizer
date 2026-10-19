@@ -1,0 +1,5 @@
+{ "name": "H1 prints the resume pointer when a run is open", "handler": "session-start", "cwd": "{TMP}",
+  "tmp": { "files": { ".git": "gitdir: x\n", ".ts-optimize/state/open-run": "2026-10-19T1432Z-a1b2\n",
+    ".ts-optimize/runs/2026-10-19T1432Z-a1b2/run.json": "{\"state\":\"applying\",\"branch\":\"chore/ts-cleanup\",\"wave\":\"3\",\"finding_in_progress\":\"F-0014\"}" } },
+  "stdin": { "hook_event_name": "SessionStart", "source": "compact", "cwd": "{TMP}" },
+  "expect": { "exitCode": 0, "stdoutJson": { "hookSpecificOutput.hookEventName": "SessionStart" }, "stdoutMatches": "APPLYING on branch chore/ts-cleanup \\(wave 3; F-0014 in progress\\)", "maxMs": 250 } }

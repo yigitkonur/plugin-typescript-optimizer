@@ -1,0 +1,3 @@
+{ "name": "H1 silent in a repo with no TypeScript (F10)", "handler": "session-start", "cwd": "{WORK}/F10",
+  "stdin": { "hook_event_name": "SessionStart", "source": "startup", "cwd": "{WORK}/F10" },
+  "expect": { "exitCode": 0, "stdout": "", "maxMs": 50 } }

@@ -1,0 +1,12 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": ["apps/*", "packages/**", "!packages/legacy"],
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@cloudflare/workers-types": "workspace:*",
+    "internal": "catalog:",
+    "alias": "npm:typescript@^7",
+    "from-git": "github:user/repo#semver:^1.2.0"
+  }
+}

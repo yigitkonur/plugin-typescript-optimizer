@@ -1,0 +1,19 @@
+{
+  "fixture": "F12",
+  "must_fire": [
+    {"rule": "tc-09", "file": "src/color.js", "line": 4, "what": "@enum {string} (Closure enum semantics)"},
+    {"rule": "tc-09", "file": "src/color.js", "line": 13, "what": "Closure non-nullable type {!Object}"},
+    {"rule": "tc-09", "file": "src/color.js", "line": 14, "what": "Closure nullable type {?string}"},
+    {"rule": "tc-09", "file": "src/color.js", "line": 21, "what": "module.exports = {...} object form"},
+    {"rule": "tc-09", "file": "src/registry.js", "line": 4, "what": "@constructor on a constructor function (prototype-assigned methods)"},
+    {"rule": "tc-09", "file": "src/registry.js", "line": 26, "what": "Closure nullable type {?number}"},
+    {"rule": "tc-09", "file": "src/registry.js", "line": 33, "what": "@class tag on an ES class"},
+    {"rule": "tc-09", "file": "src/registry.js", "line": 45, "what": "module.exports = Registry mixed with module.exports.Counter (line 46) and exports.VERSION (line 47)"}
+  ],
+  "must_not_fire": [
+    {"rule": "tc-09", "file": "src/describe.ts", "line": 1, "what": "plain .ts file; tc-09 only scans JS files"},
+    {"rule": "tc-09", "file": "src/index.js", "line": 2, "what": "plain require() with no Closure/JSDoc semantics"}
+  ],
+  "expect": {"typecheck": "pass", "test": "pass"},
+  "notes": "allowJs+checkJs package, CommonJS. src/describe.ts consumes src/registry.js via import = require. tc-09 is flag-only (fix_mode flag); nothing here should be auto-fixed. Must not fire on F01."
+}

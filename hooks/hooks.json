@@ -1,0 +1,18 @@
+{
+  "description": "ts-optimize: resume pointer. Silent unless a run is open.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact|fork",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "command -v node >/dev/null || exit 0; d=$PWD; while :; do [ -f \"$d/.ts-optimize/state/open-run\" ] && break; [ -e \"$d/.git\" ] && exit 0; n=$(dirname \"$d\"); [ \"$n\" = \"$d\" ] && exit 0; d=$n; done; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/session-start.mjs\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
