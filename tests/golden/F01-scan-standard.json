@@ -1,0 +1,126 @@
+[
+  {
+    "rule": "reach-01",
+    "file": "src/orphan.ts",
+    "line": 1,
+    "symbol": null,
+    "engine": "knip@V:files",
+    "consumers": []
+  },
+  {
+    "rule": "reach-02",
+    "file": "src/barrel/index.ts",
+    "line": 2,
+    "symbol": "deadHelper",
+    "engine": "knip@V:exports",
+    "consumers": []
+  },
+  {
+    "rule": "reach-03",
+    "file": "src/testonly.ts",
+    "line": 6,
+    "symbol": "buildFixtureUser",
+    "engine": "knip@V:exports",
+    "consumers": [
+      "test/testonly.test.ts"
+    ]
+  },
+  {
+    "rule": "reach-04",
+    "file": "src/barrel/b.ts",
+    "line": 1,
+    "symbol": "deadHelper",
+    "engine": "knip@V:exports",
+    "consumers": [
+      "src/barrel/index.ts"
+    ]
+  },
+  {
+    "rule": "reach-04",
+    "file": "src/internal.ts",
+    "line": 1,
+    "symbol": "normalize",
+    "engine": "knip@V:exports",
+    "consumers": []
+  },
+  {
+    "rule": "reach-05",
+    "file": "src/types.ts",
+    "line": 1,
+    "symbol": "UnusedConfig",
+    "engine": "knip@V:types",
+    "consumers": []
+  },
+  {
+    "rule": "reach-07",
+    "file": "package.json",
+    "line": 16,
+    "symbol": "is-odd",
+    "engine": "knip@V:dependencies",
+    "consumers": []
+  },
+  {
+    "rule": "type-01",
+    "file": "src/laundering.ts",
+    "line": 7,
+    "symbol": null,
+    "engine": "astgrep:type-01-as-any",
+    "consumers": []
+  },
+  {
+    "rule": "type-01",
+    "file": "src/laundering.ts",
+    "line": 12,
+    "symbol": null,
+    "engine": "astgrep:type-01-double-cast",
+    "consumers": []
+  },
+  {
+    "rule": "type-06",
+    "file": "src/laundering.ts",
+    "line": 1,
+    "symbol": null,
+    "engine": "coverage:type-coverage@V",
+    "consumers": []
+  },
+  {
+    "rule": "type-09",
+    "file": "tsconfig.json",
+    "line": 1,
+    "symbol": null,
+    "engine": "tsconfig-health",
+    "consumers": []
+  },
+  {
+    "rule": "slop-01",
+    "file": "src/errors.ts",
+    "line": 6,
+    "symbol": null,
+    "engine": "astgrep:slop-01-catch-passthrough",
+    "consumers": []
+  },
+  {
+    "rule": "slop-01",
+    "file": "src/errors.ts",
+    "line": 14,
+    "symbol": null,
+    "engine": "astgrep:slop-01-catch-swallow",
+    "consumers": []
+  },
+  {
+    "rule": "slop-03",
+    "file": "src/flags.ts",
+    "line": 2,
+    "symbol": null,
+    "engine": "tells:t1",
+    "consumers": []
+  },
+  {
+    "rule": "slop-03",
+    "file": "src/flags.ts",
+    "line": 6,
+    "symbol": null,
+    "engine": "tells:t2",
+    "consumers": []
+  }
+]

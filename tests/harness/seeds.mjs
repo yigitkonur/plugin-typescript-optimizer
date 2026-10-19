@@ -2,11 +2,11 @@
 // Compare a run's candidates with a fixture's SEEDS.json: node tests/harness/seeds.mjs <Fxx> [runId]
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { DEV, fixtureDir } from './fixture.mjs';
+import { fixtureDir, workDir } from './fixture.mjs';
 
 export function compareSeeds(id, runId = null, { tolerance = 0 } = {}) {
   const seeds = JSON.parse(readFileSync(join(fixtureDir(id), 'SEEDS.json'), 'utf8'));
-  const work = join(DEV, 'work', id, '.ts-optimize', 'runs');
+  const work = join(workDir(id), '.ts-optimize', 'runs');
   const run = runId || readdirSync(work).sort().pop();
   const cands = readFileSync(join(work, run, 'raw', 'candidates.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
   const withheldFile = join(work, run, 'raw', 'withheld.jsonl');

@@ -20,6 +20,7 @@ tells:
   - {id: t2, regex: '\}\s*catch\s*\(\s*([\w$]+)\s*(?::[^)]*)?\)\s*\{\s*console\s*\.\s*\w+\s*\(\s*\1(?:\s*\.\s*(?:message|stack))?\s*\)\s*;?\s*return\s+(?:null|undefined|false)\s*;?\s*\}', scan: code, glob: ['**/*.{ts,tsx,mts,cts}'], exclude: ['**/*.d.ts', '**/generated/**']}
   - {id: t3, regex: '(?<!\/\/[^\n]*)\}\s*catch\s*(?:\([^)]*\)\s*)?\{\s*\}', scan: raw, glob: ['**/*.{ts,tsx,mts,cts}'], exclude: ['**/*.d.ts', '**/generated/**']}
 astgrep: ['astgrep/slop-01-catch-passthrough.yml']
+fix_mode_by_tell: {t2: assisted, t3: assisted, slop-01-catch-swallow: assisted, slop-01-catch-empty: assisted}
 downgrade_in: {tests: advisory}
 primary_over: []
 sources: ['CAT §2.1 A', 'CAT §3 step 1.7', 'LNT (noUselessCatch, no-useless-catch)', 'doc 06 §14']

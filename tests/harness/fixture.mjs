@@ -48,9 +48,25 @@ const git = (cwd, ...args) => run(['git', '-c', 'user.name=fixture', '-c', 'user
 
 const IGNORES = ['node_modules/', '.pnp.*', '.yarn/cache/', '.yarn/unplugged/', '.yarn/install-state.gz', 'dist/', '*.tsbuildinfo'];
 
+// Parallel test files must not share a work dir: TSOPT_NS=<name> gives each its own copy (cloned from the main one).
+export const workDir = (id) => join(DEV, 'work', id + (process.env.TSOPT_NS ? '@' + process.env.TSOPT_NS : ''));
+
 export function ensureFixture(id, { reset = false, clean = false } = {}) {
+  const ns = process.env.TSOPT_NS;
+  if (ns) {
+    const base = withoutNs(() => ensureFixture(id, {}));
+    const target = workDir(id);
+    const stampFile = join(DEV, 'work', `${id}.hash`); const nsStamp = join(DEV, 'work', `${id}@${ns}.hash`);
+    const want = existsSync(stampFile) ? readFileSync(stampFile, 'utf8') : '';
+    if (!existsSync(target) || (existsSync(nsStamp) ? readFileSync(nsStamp, 'utf8') : '') !== want) {
+      rmSync(target, { recursive: true, force: true });
+      cpSync(base, target, { recursive: true, verbatimSymlinks: true });
+      writeFileSync(nsStamp, want);
+    }
+    return resetWork(target, { reset, clean });
+  }
   const src = fixtureDir(id);
-  const work = join(DEV, 'work', id);
+  const work = workDir(id);
   const stamp = join(DEV, 'work', id + '.hash');
   const want = treeHash(src);
   const have = existsSync(stamp) ? readFileSync(stamp, 'utf8') : '';
@@ -67,16 +83,26 @@ export function ensureFixture(id, { reset = false, clean = false } = {}) {
     git(work, 'add', '-A');
     git(work, 'commit', '-m', `fixture ${id}`);
     writeFileSync(stamp, want);
-  } else if (reset || clean) {
-    git(work, 'reset', '--hard');
-    git(work, 'clean', '-fd');
-    if (clean) git(work, 'clean', '-fdx', '-e', 'node_modules', '-e', '.pnp.*', '-e', '.yarn');
-    rmSync(join(work, '.ts-optimize'), { recursive: true, force: true });
-    // fixtures may have moved branches/tags during a run: go back to main
-    git(work, 'checkout', '-f', 'main');
-    for (const b of run(['git', 'branch', '--format=%(refname:short)'], work).stdout.split('\n').filter((x) => x && x !== 'main')) git(work, 'branch', '-D', b);
-    for (const t of run(['git', 'tag', '-l'], work).stdout.split('\n').filter(Boolean)) git(work, 'tag', '-d', t);
-  }
+  } else return resetWork(work, { reset, clean });
+  return work;
+}
+
+function withoutNs(fn) {
+  const saved = process.env.TSOPT_NS; delete process.env.TSOPT_NS;
+  try { return fn(); } finally { process.env.TSOPT_NS = saved; }
+}
+
+function resetWork(work, { reset, clean }) {
+  if (!(reset || clean)) return work;
+  // back to the fixture's first commit: earlier runs may have committed on main
+  git(work, 'checkout', '-f', 'main');
+  const first = run(['git', 'rev-list', '--max-parents=0', 'main'], work).stdout.trim().split('\n').pop();
+  git(work, 'reset', '--hard', first);
+  git(work, 'clean', '-fd');
+  if (clean) git(work, 'clean', '-fdx', '-e', 'node_modules', '-e', '.pnp.*', '-e', '.yarn');
+  rmSync(join(work, '.ts-optimize'), { recursive: true, force: true });
+  for (const b of run(['git', 'branch', '--format=%(refname:short)'], work).stdout.split('\n').filter((x) => x && x !== 'main')) git(work, 'branch', '-D', b);
+  for (const t of run(['git', 'tag', '-l'], work).stdout.split('\n').filter(Boolean)) git(work, 'tag', '-d', t);
   return work;
 }
 

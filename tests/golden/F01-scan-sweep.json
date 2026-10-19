@@ -1,0 +1,42 @@
+[
+  {
+    "rule": "reach-01",
+    "file": "src/orphan.ts",
+    "line": 1,
+    "symbol": null,
+    "engine": "knip@V:files",
+    "consumers": []
+  },
+  {
+    "rule": "slop-01",
+    "file": "src/errors.ts",
+    "line": 6,
+    "symbol": null,
+    "engine": "astgrep:slop-01-catch-passthrough",
+    "consumers": []
+  },
+  {
+    "rule": "slop-01",
+    "file": "src/errors.ts",
+    "line": 14,
+    "symbol": null,
+    "engine": "astgrep:slop-01-catch-swallow",
+    "consumers": []
+  },
+  {
+    "rule": "slop-03",
+    "file": "src/flags.ts",
+    "line": 2,
+    "symbol": null,
+    "engine": "tells:t1",
+    "consumers": []
+  },
+  {
+    "rule": "slop-03",
+    "file": "src/flags.ts",
+    "line": 6,
+    "symbol": null,
+    "engine": "tells:t2",
+    "consumers": []
+  }
+]

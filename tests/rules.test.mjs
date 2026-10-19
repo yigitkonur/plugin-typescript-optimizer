@@ -1,13 +1,14 @@
 // Row 1.10: regex precision suite. For every tests/fixtures/rules/<id>/expect.json: each expected line fires (right tell), silent files stay silent.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { REPO } from './harness/fixture.mjs';
 import { loadRules } from '../lib/catalog/index.mjs';
 import { runTells } from '../lib/engines/tells.mjs';
 
 const RULES = loadRules();
+const walk = (dir, rel = '') => readdirSync(join(dir, rel)).flatMap((n) => (statSync(join(dir, rel, n)).isDirectory() ? walk(dir, rel ? `${rel}/${n}` : n) : [rel ? `${rel}/${n}` : n]));
 const DIR = join(REPO, 'tests', 'fixtures', 'rules');
 const ids = existsSync(DIR) ? readdirSync(DIR).filter((d) => existsSync(join(DIR, d, 'expect.json'))).sort() : [];
 
@@ -22,7 +23,7 @@ for (const id of ids) {
     const rule = RULES.get(exp.rule || id);
     assert.ok(rule, `rule ${id} missing from catalog`);
     const root = join(DIR, id);
-    const files = readdirSync(root).filter((f) => f !== 'expect.json');
+    const files = walk(root).filter((f) => f !== 'expect.json');
     const { candidates } = await runTells({ root, files, rules: [rule], packages: [], skipGenerated: false });
     const got = candidates.map((c) => `${c.file}:${c.line}`).sort();
     const want = (exp.fire || []).map((x) => `${x.file}:${x.line}`).sort();

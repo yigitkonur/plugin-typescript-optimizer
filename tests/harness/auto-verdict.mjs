@@ -4,10 +4,10 @@
 import { spawnSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { DEV, REPO, fixtureDir } from './fixture.mjs';
+import { REPO, fixtureDir, workDir } from './fixture.mjs';
 
 const id = process.argv[2];
-const work = join(DEV, 'work', id);
+const work = workDir(id);
 const runs = join(work, '.ts-optimize', 'runs');
 const run = process.argv[3] || readdirSync(runs).sort().pop();
 const seeds = JSON.parse(readFileSync(join(fixtureDir(id), 'SEEDS.json'), 'utf8'));

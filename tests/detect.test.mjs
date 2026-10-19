@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { REPO, ensureFixture } from './harness/fixture.mjs';
 import { normalize, stableDetect } from './harness/stable.mjs';
 
+process.env.TSOPT_NS = 'detect'; // own fixture copies: test files run in parallel
 const BIN = join(REPO, 'bin', 'ts-opt');
 const HOME = mkdtempSync(join(tmpdir(), 'tsopt-home-'));
 const cli = (args, cwd, env = {}) => spawnSync(process.execPath, [BIN, ...args], { cwd, encoding: 'utf8', env: { ...process.env, TS_OPT_HOME: HOME, ...env } });

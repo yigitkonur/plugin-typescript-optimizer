@@ -99,7 +99,7 @@
     "reach-05": "low",
     "reach-06": "low",
     "reach-07": "medium",
-    "reach-08": "low",
+    "reach-08": "medium",
     "reach-09": "low",
     "reach-10": "high",
     "reach-11": "high",
@@ -113,7 +113,7 @@
     "type-07": "medium",
     "type-08": "medium",
     "type-09": "low",
-    "type-10": "low",
+    "type-10": "medium",
     "type-11": "low",
     "struct-01": "medium",
     "struct-02": "medium",
@@ -146,7 +146,6 @@
   "placeholder_rules": {
     "note": "doc 06 lists fix risk as \"-\" for these flag-only rules (nothing is applied); a nominal value is recorded so rule files validate.",
     "rules": [
-      "reach-08",
       "type-06",
       "type-09",
       "struct-09",
@@ -171,8 +170,8 @@
     },
     {
       "rule": "type-10",
-      "when": "parallel representation or union restructuring",
-      "fix_risk": "medium"
+      "when": "identity alias or third-party rename alias tidy",
+      "fix_risk": "low"
     }
   ]
 }
