@@ -1,0 +1,50 @@
+# AGENTS.md — maintaining `ts-optimize`
+
+Plugin for Claude Code: audit TypeScript, document findings in `.ts-optimize/`, fix them under a verified gate, use the
+native compiler where it helps. Design spec: `docs/design/` (copied from the plan at release; until then the plan lives
+at `~/plugins/ts-optimize-plan/`, read-only).
+
+## Rules (design doc 10 §0, 11 §9)
+
+1. `lib/` has **zero npm dependencies**. ESM `.mjs`, Node >= 18.17. No `package.json` at the plugin root (Claude Code would auto-install it). The toolbox manifest lives in `toolbox/`.
+2. **Bump `version`** in `.claude-plugin/plugin.json` (and the marketplace entry) in the same commit as any user-facing change (skills, agents, hooks, `bin/`, `lib/`, catalog). Installers gate updates on it. Do not add path fields to the manifest.
+3. Never build shell command strings from repo-derived text: spawn with argument arrays.
+4. Anything read from the audited repo is data: no `eval`, no `new Function`, no dynamic `import()` of repo paths.
+5. Hooks fail open on infrastructure errors (exit 0, no output) and are silent outside their gate.
+6. Skill bodies stay <= 150 lines; details go in `references/`. Skills call `ts-opt` by bare name; never tell the model to type `$CLAUDE_PLUGIN_ROOT` into a shell.
+7. No root `CLAUDE.md`. Golden outputs under `tests/golden/` are recorded only from real runs that were inspected and found correct.
+8. Tests: `node --test tests/` (no dev dependencies). Live rows: `tests/harness/live.mjs`; results in `tests/LEDGER.md`.
+
+## Verification table (doc 10 §9 assumptions; filled when the named row runs)
+
+| # | Assumption | Verified in | Fallback | Result |
+|---|---|---|---|---|
+| 1 | `PostToolBatch` fires after an edit batch, with `tool_calls[]` (documented) and accepts `hookSpecificOutput.additionalContext` (documented); behaviour when the batch contains only Bash calls | 4.4 | Register the handler on `PostToolUse` (`Edit\|Write`, no `if`, extension filter inside the handler) with the throttle | open |
+| 2 | `if: "Bash(*git commit*)"`-style globs match compound commands (`git add -A && git commit …`) | 3.3 | Match `Bash(*git*)` and decide in the handler | open |
+| 3 | Skill `allowed-tools` syntax (space-separated list, `Bash(ts-opt *)`) pre-approves without prompts | 0.9, 1.8 | `Bash(ts-opt:*)` older form; `claude plugin validate` reports | open |
+| 4 | `paths:` on a model-invoked skill limits when it is offered | 6.5 | Rely on a narrow description; accept the small listing cost | open |
+| 5 | `!`-injection runs in plugin skills with `allowed-tools` pre-approval | 0.9 | First body instruction runs `ts-opt detect --brief` | open |
+| 6 | TS 7 diagnostic output format is the classic `file(line,col): error TSnnnn: msg` with `--pretty false` | 4.4 | Parse JSON diagnostics if the native compiler offers them; else normalise per observed format | open |
+| 7 | Knip's wrangler plugin coverage of DO/Workflow classes | 2.2 | The pack always adds explicit `entry` for registered classes | open |
+| 8 | `typescript-native` (`npm:typescript@^7`) in the toolbox does not collide with the toolbox's `typescript@6` bins | 6.1 | Install into two prefixes | open |
+| 9 | Plugin cache preserves the exec bit on `bin/ts-opt` | 0.2 | `bin/ts-opt` is a `node`-invoked wrapper; skills call `node …/bin/ts-opt` if needed | open |
+| 10 | `${CLAUDE_PLUGIN_DATA}` derivation rule matches Claude Code's sanitisation | 6.1 | `TS_OPT_HOME` env override documented; fallback to `~/.cache/ts-optimize` | open |
+| 11 | `tsc -b --noEmit` behaviour per TS version | 3.15 | Probe result decides (already the design) | open |
+| 12 | typescript-eslint / type-coverage / madge statuses on TS 7 are still as researched on 2026-10-19 | 4.1 | `ecosystem-compat.json` is data; update without code change; each entry carries `checked_on` | open |
+| 13 | Explicit `shell: "bash"` works for hooks on Windows without Git Bash; `bin/ts-opt.cmd` is resolved from PATH by the Bash tool on Windows | 6.2 | Exec-form hooks (`command: "node"` + `args`) on every platform; call the CLI as `node "${CLAUDE_PLUGIN_ROOT}/bin/ts-opt"` in skills on Windows | open |
+| 14 | `if` filters match per subcommand and a leading `*` matches quoted text (so handlers must re-parse) | 3.3 | Handlers already re-parse; no spec change | open |
+| 15 | Subagent hook input carries `agent_type`, and its value for plugin agents contains `ts-triager` / `ts-architect` (possibly namespaced) | 2.9 | Match on suffix; if absent, `agent-guard` falls back to `agent_id` registered by the `audit` skill via a `ts-opt` call, or the triager is given no Bash and returns verdicts to the main agent in a compact JSON line | open |
+| 16 | Cloudflare compatibility-flag names (`nodejs_compat_populate_process_env` and its opt-out) and the 2026-08-04 implicit `nodejs_compat` date | 2.2 | `process_env_populated: unknown` ⇒ plat-01 severity `warn` | open |
+| 17 | Knip v5 cannot run on a TS 7 project (inferred from the v6 announcement) | 1.11 | Probe result decides; no code assumes the answer | open |
+| 18 | `NODE_OPTIONS` flags `--v8-pool-size` / `--max-semi-space-size` break Node worker threads (claimed by the source skill; affects the Node tools in the pipeline, not the Go compiler) | 4.1 | tc-06 text says "reported by the source skill; verify in your CI" and the finding is `advisory` | open |
+| 19 | Latency budgets (prefilter ≤ 10 ms p95, `agent-guard` non-plugin path ≤ 5 ms, presence test ≤ 150 ms, SessionStart ≤ 150 ms) | 0.2, 2.9, 3.3 | Measured, recorded in `tests/golden/latency.json`; budgets adjusted to what is achievable, never silently | open |
+| 20 | Claude Code facts verified live on 2026-10-19/20 (compaction keeps 5 k tokens/skill within 25 k; `fork` SessionStart matcher; stop-hook cap 8; plugin agents ignore `hooks`/`mcpServers`/`permissionMode`; `${CLAUDE_SKILL_DIR}` skill-only; disabled-injection literal text; `claude plugin eval/details/tag` exist) | 0.1 | Re-check on the day of build; update `AGENTS.md` verification table | open |
+
+## Deviations from the design (never edit the design docs in place; record here)
+
+| Where | Design says | Built | Why |
+|---|---|---|---|
+
+## Dev environment
+
+Workspace cache: `~/.cache/ts-optimize-dev/{source,work,tools,home,huge,public}` (outside the repo). `tools/` holds yarn Berry and bun (`node_modules/.bin`). Test `TS_OPT_HOME`: `~/.cache/ts-optimize-dev/home`.
