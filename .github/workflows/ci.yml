@@ -18,8 +18,8 @@ jobs:
         with: { node-version: 22 }
       - name: Manifest and structure
         run: |
-          npm i -g @anthropic-ai/claude-code >/dev/null 2>&1 || true
-          if command -v claude >/dev/null; then claude plugin validate . --strict; fi
+          npm i -g @anthropic-ai/claude-code
+          claude plugin validate . --strict
           test ! -e package.json && test ! -e CLAUDE.md
           test "$(git ls-files -s bin/ts-opt | cut -c1-6)" = 100755
 

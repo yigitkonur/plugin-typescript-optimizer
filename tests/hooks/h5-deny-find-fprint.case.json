@@ -1,0 +1,21 @@
+{
+ "name": "H5 denies find -fprint (writes a file)",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "find . -name x -fprint out.txt"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "maxMs": 300
+ }
+}

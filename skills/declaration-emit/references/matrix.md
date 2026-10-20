@@ -12,7 +12,7 @@ Typical crash: `interface Opts {}` loses its `export` because nothing imports it
 
 ## 2. When it applies
 
-The gate's `declaration-emit` leg exists only when the package has a declaration signal: `declaration`, `composite`, `isolatedDeclarations` or `emitDeclarationOnly` true in the resolved tsconfig; or `package.json` has `types`, `typings` or `exports[*].types`; or `main`/`module`/`exports` point into `dist/`. With a signal, the check is mandatory for every export-pruning commit. With none, `tsc --noEmit` is enough. `ts-opt detect` reports `declaration_signal` per package; do not re-derive it by grep.
+The gate's `declaration-emit` leg exists only when the package has a declaration signal: `declaration`, `composite`, `isolatedDeclarations` or `emitDeclarationOnly` true in the resolved tsconfig; or `package.json` has `types`, `typings` or `exports[*].types`; or `main`/`module`/`exports` point into `dist/`. With a signal, the check is mandatory for every export-pruning commit. With none, `tsc --noEmit` is enough. `ts-opt detect --json` reports `declaration_signal` per package (the brief shows `declaration-emit: <dirs>` on its `gate:` line); do not re-derive it by grep.
 
 ## 3. Matrix
 
@@ -45,11 +45,10 @@ Fix choice for stripped exports:
 
 `<tsc>` is the project's own compiler resolved by the package manager (for example `pnpm exec tsc`, `yarn run tsc`, `bun x tsc`, `npm exec -- tsc`) or `node_modules/.bin/tsc`. Never bare `npx tsc`. On TypeScript 7 `tsc` is the native compiler and the commands are identical. Inside a run, prefer `ts-opt gate --legs declaration-emit`; it does all of this and records the result. Outside a run:
 
-Single project, emitting into a disposable directory (never into the source tree):
+Single project, emitting into a disposable directory (never into the source tree). Run emit, search and cleanup in one Bash call: a shell variable does not survive into the next call.
 
 ```
-D=$(mktemp -d)
-<tsc> -p tsconfig.json --declaration --emitDeclarationOnly --outDir "$D" --tsBuildInfoFile "$D/x"
+D=$(mktemp -d); <tsc> -p tsconfig.json --declaration --emitDeclarationOnly --outDir "$D" --tsBuildInfoFile "$D/x" --pretty false; rg -n "\bSYMBOL\b" "$D"; rm -rf "$D"
 ```
 
 - Add `--noEmit false` only if that tsconfig sets `noEmit: true`.
@@ -69,21 +68,19 @@ git status --porcelain
 
 Is `tsc -b --noEmit` allowed here? Do not guess from the version. If `<tsc> -b --noEmit` exits with `TS5094`, use the emit-then-clean form above; the gate records this once per run as the leg variant.
 
-List only the relevant diagnostics:
+List only the relevant diagnostics (same single call, same cleanup):
 
 ```
-<tsc> -p tsconfig.json --declaration --emitDeclarationOnly --outDir "$D" --tsBuildInfoFile "$D/x" --pretty false 2>&1 | rg 'TS(4023|4058|4060|4081|4082|2742|2883)' | sort -u
+D=$(mktemp -d); <tsc> -p tsconfig.json --declaration --emitDeclarationOnly --outDir "$D" --tsBuildInfoFile "$D/x" --pretty false 2>&1 | rg 'TS(4023|4058|4060|4081|4082|2742|2883)' | sort -u; rm -rf "$D"
 ```
-
-Remove `$D` afterwards (`rm -rf "$D"`).
 
 ## 5. Pre-un-export checklist (run for every type symbol before removing `export`)
 
 1. Exported signature in the same module names it? `rg -n --multiline "export[^\n]*\bSYMBOL\b" <file>` as a cheap pre-filter; the compiler is the authority.
 2. An exported symbol infers it? Un-annotated `export const` and `export function` leak inferred types grep cannot see. Annotate those first, then continue.
-3. Does it appear in the emitted declarations? Emit once into a temp directory (section 4) and `rg -n "\bSYMBOL\b" "$D"`. Any hit means it is part of the published surface: do not un-export; keep the export and register it as intentional public API.
+3. Does it appear in the emitted declarations? Emit once into a temp directory (section 4: the search is part of the same call). Any hit means it is part of the published surface: do not un-export; keep the export and register it as intentional public API.
 4. Strip the `export`.
-5. Re-run the full section 4 verification (or `ts-opt gate --legs declaration-emit`), plus the normal typecheck.
+5. Re-run the full section 4 verification (or the probe `ts-opt gate --wave 3 --legs declaration-emit`, which records nothing), plus the normal typecheck.
 6. On failure choose one remediation: restore the `export`, inline the structure, or add an explicit annotation. Do not commit while any step fails: a green `tsc --noEmit` beside a red `-b` means the regression is in the tree and will surface in consumer packages.
 
 ## 6. Never suppress

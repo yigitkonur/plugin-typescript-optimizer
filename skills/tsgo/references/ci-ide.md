@@ -1,6 +1,6 @@
 # CI, Containers, and IDE Alignment
 
-Loaded by the `tsgo` skill when adjusting CI files, Dockerfiles, or editor settings for the native compiler (findings tc-06, tc-07, tc-08).
+Loaded by the `tsgo` skill when adjusting CI files, Dockerfiles, or editor settings for the native compiler (findings tc-06, tc-07).
 
 Everything IDE-related below is advisory: re-verify against current editor documentation before changing a user's settings.
 
@@ -9,7 +9,7 @@ Everything IDE-related below is advisory: re-verify against current editor docum
 - `typescript@7` provides the native `tsc`. Keep scripts as `tsc --noEmit`; do not introduce `tsgo` script names.
 - `tsgo` exists only in `@typescript/native-preview` (nightlies on the `next` tag); use it only when the project deliberately tracks previews.
 - `--build`, `--watch`, `--project` work as in classic tsc.
-- Speed: vendor claims 8-12x; measure with `ts-opt fit`. Quote only measured numbers.
+- Speed: never quote vendor figures; measure with `ts-opt fit` and quote only measured numbers.
 
 ## NODE_OPTIONS sanitation (tc-06)
 

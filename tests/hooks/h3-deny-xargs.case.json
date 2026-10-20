@@ -1,0 +1,29 @@
+{
+ "name": "H3 denies xargs git commit",
+ "handler": "commit-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "gitdir: x\n",
+   "tsconfig.json": "{}",
+   ".ts-optimize/state/open-run": "R1\n",
+   ".ts-optimize/runs/R1/run.json": "{\"state\":\"applying\"}"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "echo m | xargs -I{} git commit -m {}"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "stdoutMatches": "ts-opt commit",
+  "maxMs": 250
+ }
+}

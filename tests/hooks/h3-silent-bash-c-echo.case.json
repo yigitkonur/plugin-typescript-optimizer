@@ -1,0 +1,26 @@
+{
+ "name": "H3 allows bash -c echo mentioning commit",
+ "handler": "commit-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "gitdir: x\n",
+   "tsconfig.json": "{}",
+   ".ts-optimize/state/open-run": "R1\n",
+   ".ts-optimize/runs/R1/run.json": "{\"state\":\"applying\"}"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "bash -c 'echo git commit'"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdout": "",
+  "maxMs": 250
+ }
+}

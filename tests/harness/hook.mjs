@@ -4,7 +4,7 @@
 // case: { name, handler:"session-start", event?, tmp?:{files:{path:content}}, cwd:"{WORK}/F10"|"{TMP}"|abs, stdin:{...}, env?:{},
 //         expect:{ stdout?:string, stdoutJson?:{...subset}, stdoutMatches?:regex, exitCode?:0, maxMs?:50 } }
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -24,9 +24,10 @@ export function runCase(path) {
   if (c.tmp) {
     tmp = mkdtempSync(join(tmpdir(), 'tsopt-hook-'));
     for (const [rel, content] of Object.entries(c.tmp.files || {})) { mkdirSync(dirname(join(tmp, rel)), { recursive: true }); writeFileSync(join(tmp, rel), content); }
+    for (const [rel, target] of Object.entries(c.tmp.symlinks || {})) { mkdirSync(dirname(join(tmp, rel)), { recursive: true }); symlinkSync(target, join(tmp, rel)); }
   }
   try {
-    const sub = (s) => String(s).replace('{WORK}', join(DEV, 'work')).replace('{TMP}', tmp || '').replace('{REPO}', REPO);
+    const sub = (s) => String(s).split('{WORK}').join(join(DEV, 'work')).split('{TMP}').join(tmp || '').split('{REPO}').join(REPO);
     const cwd = sub(c.cwd);
     const stdin = JSON.parse(sub(JSON.stringify(c.stdin || {})));
     const h = findCommand(c.handler);

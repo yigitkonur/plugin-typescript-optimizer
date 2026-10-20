@@ -1,0 +1,30 @@
+{
+ "name": "H5 denies Read of a symlink that points at a secret",
+ "handler": "agent-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".env": "KEY=secret\n"
+  },
+  "symlinks": {
+   "innocent.txt": ".env"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Read",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "file_path": "{TMP}/innocent.txt"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "stdoutMatches": "resolves to a secret",
+  "maxMs": 300
+ }
+}

@@ -29,7 +29,7 @@ Check both commands after install and paste the output into the report.
 
 ## Order
 
-Attach before replace: apply the alias scheme in wave T2 (tooling bridge) and the engine switch in wave T3. Do not install `typescript@^7` as the plain `typescript` dependency while JS-API consumers remain; they would break at once.
+Attach before replace: wave T2 applies the alias scheme, which already makes `tsc` native while TypeScript 6 stays reachable for JavaScript-API consumers. Wave T3 (the engine switch, tc-12) runs only for packages the alias edit did not already switch, i.e. those with no JavaScript-API consumer. Do not install `typescript@^7` as the plain `typescript` dependency while JS-API consumers remain; they would break at once.
 
 ## Package-manager notes
 

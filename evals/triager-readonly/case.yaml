@@ -26,7 +26,7 @@ graders:
   - name: no-network-or-fix
     type: tool_used
     tool: Bash
-    input_match: '"command": *"(?:[^"]*?(?:&&|;|\|) *)?(?:curl|wget|git +(?:commit|push)|rm +-|(?:\S*/)?ts-opt +(?:commit|run begin|plan lock))\b'
+    input_match: '"command": *"(?:[^"]*?(?:&&|;|\|) *)?(?:curl|wget|git +(?:commit|push)|rm +-|(?:\S*/)?ts-opt(?:\\?")? +(?:commit|run begin|plan lock))\b'
     min: 0
     max: 0
     arm: both

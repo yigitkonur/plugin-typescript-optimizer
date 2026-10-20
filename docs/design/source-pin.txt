@@ -1,0 +1,45 @@
+# Source pin for ts-optimize-plan/08-content-map.md
+# repo: yigitkonur/skills-by-yigitkonur   tree: 38c7138e5151510c5c8a43a4c60974c424a6a3bb (parent of cccf90aa, i.e. the state that was read on 2026-10-19)
+# format: <git blob sha>  <size>  <path relative to skills/>
+5b1f887a9138416870f64ba2fe21602e4a59cfa7  43  run-ts-cleanup/agents/openai.yaml
+8ecc18e738fa5bf1906e3333f4479f629d7caccc  4241  run-ts-cleanup/README.md
+f5d660ad25767c0a485eaf42f41f4d2f2406edcd  23583  run-ts-cleanup/references/detection/code-slop-catalog.md
+288ef0e1b933dcfd1a4b5aca81788cec59c0b8e6  23772  run-ts-cleanup/references/detection/false-positive-triage.md
+5e780ebc8a6352e77ae429bebf3901ab85e09ada  14736  run-ts-cleanup/references/detection/finding-classification.md
+c66bf6b758bf9760456648059a8f5cc4c8b30c71  16568  run-ts-cleanup/references/engines/analysis-engines.md
+297dcbccab63afbf243564442a990c9f38bb0942  16363  run-ts-cleanup/references/engines/engine-matrix.md
+9a3904e0f444077e941eba91459cba7047e342ee  33654  run-ts-cleanup/references/engines/knip-configuration.md
+5ca8217b2653fcce7014b5d1bb9a99bb29cf4200  11146  run-ts-cleanup/references/engines/lint-engines.md
+125d8e166f1b7962363942590cb698bd2a5a3452  10225  run-ts-cleanup/references/remediation/complexity-thresholds.md
+634cbf37ca80bd4e791646ca4181ee88ea43046b  33890  run-ts-cleanup/references/remediation/structural-refactor.md
+45ed2c1102d1ad06f9d41616307eb27fb12fb651  23660  run-ts-cleanup/references/remediation/waves.md
+9de9af66e0a39b625ea43946744e04d1e7cd8a08  15476  run-ts-cleanup/references/runtimes/cloudflare-workers.md
+fa1fdc77e44979455b5dfea158aede6dff375822  13197  run-ts-cleanup/references/types/declaration-emit.md
+baf32b8a9148a31dd7ce2ed83b75a2808173ad74  18638  run-ts-cleanup/references/types/strict-migration.md
+28876b0092257a7b3a26961efda1befdab1baab8  67440  run-ts-cleanup/scripts/audit-ts-health.py
+55c663a678913f5dab45828f877758529bb9127d  42858  run-ts-cleanup/scripts/batch-findings.py
+52899f79d2d0d21aa9341546b4dd7d9b753a2558  31289  run-ts-cleanup/scripts/init-knip-config.py
+be2aa137e4ac7919e327d5c3addd0e01d856f1d6  32515  run-ts-cleanup/SKILL.md
+5b1f887a9138416870f64ba2fe21602e4a59cfa7  43  upgrade-typescript-go/agents/openai.yaml
+5d455649dfefc3d015f2031d2a565ce24e9a1c26  2157  upgrade-typescript-go/references/breaking-changes/baseurl-and-paths-migration.md
+eeb7c3b580cc2d8a0db0eabdf176c2b320efe186  2533  upgrade-typescript-go/references/breaking-changes/compiler-api-strada.md
+669e3581a12a20c719fe4e0ea896e09478f8916d  1690  upgrade-typescript-go/references/breaking-changes/es5-deprecation-and-targets.md
+417e24253bd5128f14ace390163b7247fe4687f5  2357  upgrade-typescript-go/references/breaking-changes/module-resolution-modernization.md
+ed43a5e87c4c4dc8b01c7551cbe87022a734ccd9  2249  upgrade-typescript-go/references/breaking-changes/removed-compiler-options.md
+89a0079de18de78fe31dedf10b0c762649e36981  2473  upgrade-typescript-go/references/checklists/post-migration-verification-gate.md
+48eea110da5bd32f681ba6d67c883dba7bc127a2  1461  upgrade-typescript-go/references/checklists/preflight-audit-checklist.md
+9b9ec02a37d130be7263610e2388616f96167cf1  1434  upgrade-typescript-go/references/checklists/step-by-step-migration-guide.md
+e7e7835bbcc61130d844102257d8cd93dc2c7389  1358  upgrade-typescript-go/references/ecosystem/bundlers-and-transpilers.md
+1cc2aadff29e77a53535759f5d74cc5e1838e3ad  1963  upgrade-typescript-go/references/ecosystem/linters-and-ast-tools.md
+cf869a4eeb7a8aed6880d4703d6788e280f63882  1980  upgrade-typescript-go/references/ecosystem/monorepos-and-project-references.md
+6b14a4b9599e3e883978937980cdb5aaa684b634  2158  upgrade-typescript-go/references/ecosystem/nextjs-migration.md
+f425b3c54253e144e201f26c4c38652d5e251adb  1671  upgrade-typescript-go/references/ecosystem/vite-and-vitest.md
+7cae22160032efb6f4c16b73105119d80b1d3dce  1719  upgrade-typescript-go/references/toolchain/cicd-container-optimization.md
+d15c9de42b0ff92be4be5fba55b8df4fe2501ac6  1435  upgrade-typescript-go/references/toolchain/ide-and-lsp-configuration.md
+dd0d9847d41cd077589179da3b67ceab0c342eed  1695  upgrade-typescript-go/references/toolchain/tsgo-native-binary.md
+d6bb380c67d91fa762022bf852a3663c2e210b20  1824  upgrade-typescript-go/references/toolchain/typescript6-compat-bridge.md
+063a5310880abad4a4b4e1ccfcbdc617b9688afa  1705  upgrade-typescript-go/references/troubleshooting/common-migration-pitfalls.md
+3bf08bacf4b17f120d329ad34444e857c92126fb  1789  upgrade-typescript-go/references/troubleshooting/declaration-emit-failures.md
+5b12b7124e8a5c4cc63044ba20b6217da5abf089  1593  upgrade-typescript-go/references/troubleshooting/memory-and-oom-prevention.md
+e8bc822dcaff91efaa76011b4ed25d0d0859421a  1851  upgrade-typescript-go/references/troubleshooting/type-error-triage.md
+bc197b8bd70075019155feecf1fe883acaf9577f  11786  upgrade-typescript-go/SKILL.md

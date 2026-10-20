@@ -1,0 +1,30 @@
+{
+ "name": "H5 denies Read of a symlink that points outside the repository",
+ "handler": "agent-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   "a.txt": "x\n"
+  },
+  "symlinks": {
+   "out.txt": "/etc/hosts"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Read",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "file_path": "{TMP}/out.txt"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "stdoutMatches": "outside the repository",
+  "maxMs": 300
+ }
+}

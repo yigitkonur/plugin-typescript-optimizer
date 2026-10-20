@@ -2,12 +2,12 @@
 name: doctor
 description: "Show what ts-optimize can do in this repository: packages, compilers, engines, gate commands, degradations and the action that fixes each. Read-only."
 disable-model-invocation: true
-allowed-tools: Read Grep Glob Bash(ts-opt *)
+allowed-tools: Read Grep Glob Bash(ts-opt doctor *) Bash(ts-opt detect *)
 ---
 
 !`ts-opt detect --brief 2>&1 || true`
 
-If the block above is missing, empty, or contains `[shell command execution disabled by policy]`, run `ts-opt detect --brief` yourself. If `ts-opt` is not found, use `node ${CLAUDE_PLUGIN_ROOT}/bin/ts-opt` instead.
+If the block above is missing, empty, or contains `[shell command execution disabled by policy]`, run `ts-opt detect --brief` yourself. If `ts-opt` is not found, use `node "${CLAUDE_PLUGIN_ROOT}/bin/ts-opt"` instead (it asks for permission once).
 
 # /ts-optimize:doctor
 
@@ -25,4 +25,4 @@ Read-only health report. Change nothing.
 4. For every degradation, print the single action that fixes it, exactly as `ts-opt doctor` gives it. Do not invent fixes.
 5. End with the next step: `/ts-optimize:audit` when nothing blocks it, otherwise the first blocking action.
 
-Never install anything, edit files, or run an engine yourself; if the user wants the toolbox, tell them `ts-opt toolbox install --yes` is run by `/ts-optimize:tsgo` after they consent.
+Never install anything, edit files, or run an engine yourself; if the user wants the toolbox, tell them to run the `fix:` line from the doctor output (`ts-opt toolbox install --yes`): it installs per machine and needs their consent.

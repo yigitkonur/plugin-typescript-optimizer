@@ -1,0 +1,18 @@
+schema_version: "1.1"
+name: ts7-compat-quiet
+description: An ordinary ESLint question does not bring in the ts7-compat knowledge skill.
+tags: [skills, triggers, negative]
+runs: 3
+execution:
+  prompt: "ESLint's no-unused-vars flags a type-only import that I do use in a type position. How do I stop the false report?"
+  max_turns: 6
+  timeout_seconds: 240
+  allowed_tools: [Read, Glob, Grep, Skill]
+graders:
+  - name: skill-stayed-quiet
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?ts7-compat"'
+    min: 0
+    max: 0
+    arm: both

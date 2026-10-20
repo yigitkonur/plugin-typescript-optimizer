@@ -1,0 +1,30 @@
+{
+ "name": "H5 denies a symlink that points at a secret",
+ "handler": "agent-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".env": "KEY=secret\n",
+   "src/real.txt": "x\n"
+  },
+  "symlinks": {
+   "src/innocent.txt": "../.env"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "head src/innocent.txt"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "maxMs": 300
+ }
+}

@@ -1,0 +1,3 @@
+* text=auto eol=lf
+*.cmd text eol=crlf
+tests/corpora/tsconfig.bom-crlf-comments.json -text

@@ -9,14 +9,14 @@ Pick the mode with `ts-opt scan --mode sweep|standard|deep|tsgo`. The mode fixes
 | `sweep` | reach-01, slop-01, slop-03; plat-* report-only if a worker pack is active | R0, 1 |
 | `standard` (default) | platform (report-only); reachability all except reach-10 and reach-11; type-01, 02, 04, 06, 07, 08, 10, 11; struct-01, 02; slop-01, 03, 04 | R0, 1, 2, 3, B, 4, 5 |
 | `deep` | everything in standard plus type-03, type-05, reach-10, reach-11, all structure rules (struct-10 and struct-11 via `ts-architect`), all slop rules, platform rules actionable | R0, R, 1, 2, 3, B, 4, 5 |
-| `tsgo` (the `tsgo` command, not `audit`) | toolchain rules tc-01 to tc-11 only | T1-T4 |
+| `tsgo` (the `tsgo` command, not `audit`) | toolchain rules tc-01 to tc-12 only | T1-T4 |
 
 When to use which:
 
 - `sweep`: quick, low-risk. Unreferenced files and mechanical lint slop; suitable for a first look or a large repo with a thin test suite.
 - `standard`: the normal full cleanup.
 - `deep`: only when the user wants structure work (shallow wrappers, ghost interfaces, duplicate utilities, zombie features, dual abstractions). Needs `ts-architect` and more triage.
-- A repo with no test script or zero collected tests can only schedule waves `B` and `4`, whatever the mode (see `references/gate-spec.md`).
+- A repo with no test script or zero collected tests can only schedule waves `B` and `4`, whatever the mode (see `${CLAUDE_PLUGIN_ROOT}/references/gate-spec.md`).
 
 ## 2. Wave order and meaning
 
@@ -71,12 +71,12 @@ After `R0`, after `R`, and after waves 1 to 3, `ts-opt rescan --wave <id>` re-ru
 
 | Batch | Blast radius | Rollback | Leg that catches a mistake |
 |---|---|---|---|
-| 2 files | high | `git checkout <file>` | typecheck, test, build; but NOT a dynamically or framework-routed file: a green gate proves static death, never runtime death, so quarantine or verify in a preview deployment |
-| 3 barrels | high | `git diff` | typecheck |
+| 2 files | high | `ts-opt revert F-…` | typecheck, test, build; but NOT a dynamically or framework-routed file: a green gate proves static death, never runtime death, so quarantine or verify in a preview deployment |
+| 3 barrels | high | `ts-opt revert F-…` | typecheck |
 | 9 cycles | high | structural | test, build |
 | 4 test leaks | medium | easy | test |
 | 5 internal exports | low | easiest | typecheck |
 | 7 locals | low | easiest | typecheck |
 | 6 unused types | lowest | easiest | typecheck, declaration-emit |
 | 8 type safety | low | easiest | declaration-emit, coverage delta |
-| 1 dependencies | medium | `git checkout package.json <lockfile>` and reinstall | build |
+| 1 dependencies | medium | `ts-opt revert F-…`, then `ts-opt pm install` | build |

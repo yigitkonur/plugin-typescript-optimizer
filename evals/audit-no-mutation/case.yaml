@@ -14,7 +14,7 @@ graders:
   - name: scanned-through-ts-opt
     type: tool_used
     tool: Bash
-    input_match: 'ts-opt scan'
+    input_match: 'ts-opt(?:\\?")? +scan'
   - name: no-edit
     type: tool_used
     tool: Edit
@@ -30,7 +30,7 @@ graders:
   - name: never-fixes
     type: tool_used
     tool: Bash
-    input_match: '"command": *"(?:[^"]*?(?:&&|;|\|) *)?(?:(?:\S*/)?ts-opt +(?:commit|run begin|plan lock)|(?:\S+ +)?knip +--fix|git +commit)\b'
+    input_match: '"command": *"(?:[^"]*?(?:&&|;|\|) *)?(?:(?:\S*/)?ts-opt(?:\\?")? +(?:commit|run begin|plan lock)|(?:\S+ +)?knip +--fix|git +commit)\b'
     min: 0
     max: 0
     arm: both
