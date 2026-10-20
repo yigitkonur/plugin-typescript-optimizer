@@ -1,0 +1,23 @@
+{
+ "name": "H3 is silent without an open run",
+ "handler": "commit-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "x"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "git commit -m y"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdout": "",
+  "maxMs": 250
+ }
+}

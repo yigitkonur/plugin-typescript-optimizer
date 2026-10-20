@@ -1,0 +1,28 @@
+{
+ "name": "H2 denies an all-in-one knip --fix while a run is applying",
+ "handler": "cmd-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "gitdir: x\n",
+   "tsconfig.json": "{}",
+   ".ts-optimize/state/open-run": "R1\n",
+   ".ts-optimize/runs/R1/run.json": "{\"state\":\"applying\"}"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "knip --fix"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "maxMs": 250
+ }
+}

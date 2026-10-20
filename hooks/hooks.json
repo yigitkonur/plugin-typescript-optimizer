@@ -1,5 +1,5 @@
 {
-  "description": "ts-optimize: resume pointer, plugin-subagent guard, audit-surface pre-approval. Silent unless a run is open, a plugin subagent acts, or the model runs a ts-opt audit command.",
+  "description": "ts-optimize: resume pointer, command guard, commit guard, plugin-subagent guard, audit-surface pre-approval. Silent unless a run is open, a guarded command is typed, a plugin subagent acts, or the model runs a ts-opt audit command.",
   "hooks": {
     "SessionStart": [
       {
@@ -24,6 +24,48 @@
             "if": "Bash(ts-opt *)",
             "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cli-allow.mjs\"",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "shell": "bash",
+            "if": "Bash(*knip*--fix*)",
+            "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "shell": "bash",
+            "if": "Bash(*knip *-f *)",
+            "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "shell": "bash",
+            "if": "Bash(npx tsc *)",
+            "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "shell": "bash",
+            "if": "Bash(*dlx tsc *)",
+            "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "shell": "bash",
+            "if": "Bash(bunx tsc *)",
+            "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "shell": "bash",
+            "if": "Bash(*git *commit*)",
+            "command": "command -v node >/dev/null || exit 0; d=$PWD; while :; do [ -f \"$d/.ts-optimize/state/open-run\" ] && break; [ -e \"$d/.git\" ] && exit 0; n=$(dirname \"$d\"); [ \"$n\" = \"$d\" ] && exit 0; d=$n; done; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/commit-guard.mjs\"",
+            "timeout": 10
           }
         ]
       },

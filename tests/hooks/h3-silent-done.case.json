@@ -1,0 +1,26 @@
+{
+ "name": "H3 allows git commit after the run is done",
+ "handler": "commit-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "gitdir: x\n",
+   "tsconfig.json": "{}",
+   ".ts-optimize/state/open-run": "R1\n",
+   ".ts-optimize/runs/R1/run.json": "{\"state\":\"done\"}"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "git commit -m y"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdout": "",
+  "maxMs": 250
+ }
+}

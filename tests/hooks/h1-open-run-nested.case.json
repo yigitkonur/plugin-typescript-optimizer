@@ -1,0 +1,5 @@
+{ "name": "H1 reads the nested applying{} shape that run.mjs writes", "handler": "session-start", "cwd": "{TMP}",
+  "tmp": { "files": { ".git": "gitdir: x\n", ".ts-optimize/state/open-run": "2026-10-19T1432Z-a1b2\n",
+    ".ts-optimize/runs/2026-10-19T1432Z-a1b2/run.json": "{\"state\":\"applying\",\"applying\":{\"branch\":\"ts-optimize/2026-10-19T1432Z-a1b2\",\"wave\":\"2\",\"pass\":2,\"finding\":\"F-0009\"}}" } },
+  "stdin": { "hook_event_name": "SessionStart", "source": "resume", "cwd": "{TMP}" },
+  "expect": { "exitCode": 0, "stdoutJson": { "hookSpecificOutput.hookEventName": "SessionStart" }, "stdoutMatches": "APPLYING on branch ts-optimize/2026-10-19T1432Z-a1b2 \\(wave 2, pass 2; F-0009 in progress\\)", "maxMs": 250 } }

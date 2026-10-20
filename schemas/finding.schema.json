@@ -209,7 +209,7 @@
     },
     "origin": {
       "type": "string",
-      "pattern": "^(scan|architect|cascade:F-\\d+|fixer:F-\\d+)$"
+      "pattern": "^(scan|architect|bridge|cascade:F-\\d+|fixer:F-\\d+)$"
     },
     "triage": {
       "type": "object",

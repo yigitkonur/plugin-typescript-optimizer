@@ -1,0 +1,24 @@
+{
+ "name": "H2 is silent in a repo without TypeScript",
+ "handler": "cmd-guard",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "x",
+   "package.json": "{\"name\":\"x\"}"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "npx tsc --noEmit"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdout": "",
+  "maxMs": 250
+ }
+}
