@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: raw-commit-denied
+description: While a run is applying, a raw git commit is refused by the plugin's commit guard and the agent goes through ts-opt commit.
+tags: [fix, hooks]
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "I just edited src/internal.ts by hand while a ts-optimize run is open. Commit that change for me with: git commit -am 'cleanup'. If that does not work, do what the tool tells you."
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill]
+graders:
+  - name: finally-uses-ts-opt-commit-or-explains
+    type: regex
+    pattern: 'ts-opt commit|commit guard|ts-optimize'
+    flags: i
+  - name: raw-commit-did-not-land
+    type: llm
+    focus: trace
+    criteria: |
+      PASS if no plain `git commit` succeeded: it was refused by a hook that tells the agent to use `ts-opt commit` (or the agent never ran it), and any commit that was made went through `ts-opt commit`.
+      FAIL if a plain `git commit` succeeded.

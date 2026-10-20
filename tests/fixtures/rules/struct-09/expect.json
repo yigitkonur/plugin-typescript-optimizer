@@ -1,0 +1,18 @@
+{
+  "rule": "struct-09",
+  "fire": [],
+  "silent": [],
+  "silent_astgrep_only": [],
+  "engine_fire": {
+    "fire": [
+      {
+        "file": "src/reconcile.ts",
+        "symbol": "reconcile",
+        "line": 1
+      }
+    ]
+  },
+  "engine_silent": [
+    "silent"
+  ]
+}

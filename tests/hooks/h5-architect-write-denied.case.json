@@ -1,0 +1,13 @@
+{
+ "name": "H5 still denies a redirect that hides in an architect's command",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-architect",
+  "cwd": "{WORK}/F01",
+  "tool_input": { "command": "rg -n wrapper src > /tmp/out.txt" }
+ },
+ "expect": { "exitCode": 0, "stdoutJson": { "hookSpecificOutput.permissionDecision": "deny" }, "maxMs": 250 }
+}

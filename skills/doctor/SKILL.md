@@ -1,11 +1,11 @@
 ---
 name: doctor
-description: Show what ts-optimize can and cannot do in this repository - detected TypeScript packages, package manager, compilers, engines (Knip, ast-grep, type-coverage, lint), gate commands, degradations and the one action that fixes each. Read-only. Use before a first audit or when a /ts-optimize command reports something unavailable.
+description: "Show what ts-optimize can do in this repository: packages, compilers, engines, gate commands, degradations and the action that fixes each. Read-only."
 disable-model-invocation: true
 allowed-tools: Read Grep Glob Bash(ts-opt *)
 ---
 
-!`ts-opt detect --brief`
+!`ts-opt detect --brief 2>&1 || true`
 
 If the block above is missing, empty, or contains `[shell command execution disabled by policy]`, run `ts-opt detect --brief` yourself. If `ts-opt` is not found, use `node ${CLAUDE_PLUGIN_ROOT}/bin/ts-opt` instead.
 

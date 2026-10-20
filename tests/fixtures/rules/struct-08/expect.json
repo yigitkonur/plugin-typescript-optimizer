@@ -1,0 +1,18 @@
+{
+  "rule": "struct-08",
+  "fire": [],
+  "silent": [],
+  "silent_astgrep_only": [],
+  "engine_fire": {
+    "deep-fire": [
+      "src/features"
+    ],
+    "micro-fire": [
+      "src/hooks"
+    ]
+  },
+  "engine_silent": [
+    "shallow-silent",
+    "micro-two-importers-silent"
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 name: ts-triager
-description: Verifies candidate findings from `ts-opt scan` by reading the code and applying the Three-Question Test; records one verdict per candidate with `ts-opt verdict add`. Read-only. Dispatched by /ts-optimize:audit, not for general review.
+description: Verifies candidate findings of `ts-opt scan` by reading the code and records one verdict each with `ts-opt verdict add`. Read-only. Dispatched by /ts-optimize:audit.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 effort: high

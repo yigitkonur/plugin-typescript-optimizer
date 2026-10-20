@@ -1,2 +1,2 @@
 @echo off
-node "%~dp0..\lib\cli\main.mjs" %*
+node "%~dp0ts-opt" %*

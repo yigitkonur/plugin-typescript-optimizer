@@ -1,0 +1,37 @@
+export function leaf(input: number): number {
+  const v0 = input + 0;
+  const v1 = input + 1;
+  const v2 = input + 2;
+  const v3 = input + 3;
+  const v4 = input + 4;
+  const v5 = input + 5;
+  const v6 = input + 6;
+  const v7 = input + 7;
+  const v8 = input + 8;
+  const v9 = input + 9;
+  const v10 = input + 10;
+  const v11 = input + 11;
+  const v12 = input + 12;
+  const v13 = input + 13;
+  const v14 = input + 14;
+  const v15 = input + 15;
+  const v16 = input + 16;
+  const v17 = input + 17;
+  const v18 = input + 18;
+  const v19 = input + 19;
+  const v20 = input + 20;
+  const v21 = input + 21;
+  const v22 = input + 22;
+  const v23 = input + 23;
+  const v24 = input + 24;
+  const v25 = input + 25;
+  const v26 = input + 26;
+  const v27 = input + 27;
+  const v28 = input + 28;
+  const v29 = input + 29;
+  const v30 = input + 30;
+  const v31 = input + 31;
+  const v32 = input + 32;
+  const v33 = input + 33;
+  return input;
+}

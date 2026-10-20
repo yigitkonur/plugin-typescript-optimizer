@@ -18,7 +18,7 @@
     },
     "id": {
       "type": "string",
-      "pattern": "^C\\d+$"
+      "pattern": "^[CS]\\d+$"
     },
     "run": {
       "type": "string",
@@ -44,7 +44,7 @@
         "type": "string",
         "pattern": "^c-\\d{4,}$"
       },
-      "minItems": 1
+      "minItems": 0
     },
     "context": {
       "type": "object",
@@ -79,6 +79,12 @@
     },
     "protocol": {
       "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "verify",
+        "structure"
+      ]
     }
   },
   "additionalProperties": true

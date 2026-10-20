@@ -1,12 +1,12 @@
 ---
 name: tsgo
-description: Check whether a TypeScript project can move to the native TypeScript 7 compiler (tsgo), and migrate it step by step - config modernisation, tooling bridge, engine switch, CI. check and status change nothing; adopt works on a branch with one commit per finding and a six-tier gate.
+description: Check whether a TypeScript project can move to the native TypeScript 7 compiler (tsgo) and migrate it step by step. check and status change nothing; adopt works on a branch.
 argument-hint: "[check|adopt|status]"
 disable-model-invocation: true
 allowed-tools: Read Grep Glob Edit Write Bash(ts-opt *) Bash(git status *) Bash(git diff *) Bash(git log *)
 ---
 
-!`ts-opt detect --brief`
+!`ts-opt detect --brief 2>&1 || true`
 
 If the block above is missing, empty, or contains `[shell command execution disabled by policy]`, run `ts-opt detect --brief` yourself. If `ts-opt` is not found, use `node ${CLAUDE_PLUGIN_ROOT}/bin/ts-opt` instead.
 

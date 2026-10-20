@@ -1,12 +1,12 @@
 ---
 name: fix
-description: Apply the approved findings of a ts-optimize audit wave by wave. One commit per finding, a gate after every wave, automatic bisect and revert when a gate goes red. Use after /ts-optimize:audit and after ticking plan.md.
+description: "Apply the approved findings of a ts-optimize audit wave by wave: one commit per finding, a gate after every wave, bisect and revert on red. Use after /ts-optimize:audit."
 argument-hint: "[run-id|latest] [--waves <csv>] [--approve-low]"
 disable-model-invocation: true
 allowed-tools: Read Grep Glob Edit Write Bash(ts-opt *) Bash(git status *) Bash(git diff *) Bash(git log *)
 ---
 
-!`ts-opt detect --brief`
+!`ts-opt detect --brief 2>&1 || true`
 
 If the block above is missing, empty, or contains `[shell command execution disabled by policy]`, run `ts-opt detect --brief` yourself. If `ts-opt` is not found, use `node ${CLAUDE_PLUGIN_ROOT}/bin/ts-opt` instead.
 

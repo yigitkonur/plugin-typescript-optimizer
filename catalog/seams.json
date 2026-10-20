@@ -53,5 +53,10 @@
     "primary": "tc-01",
     "superseded": "tc-02",
     "when": "the tsconfig `baseUrl` line is both a removed option (tc-01) and the anchor of the paths migration (tc-02); one finding removes it. The tc-02 import rewrites stay separate and run first (tc-01 depends on them)"
+  },
+  {
+    "primary": "struct-07",
+    "superseded": "struct-08",
+    "when": "the same file is a duplicate utility and a micro-file: consolidating the duplicates removes it, one finding"
   }
 ]

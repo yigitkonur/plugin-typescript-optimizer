@@ -1,0 +1,39 @@
+schema_version: "1.1"
+name: audit-no-mutation
+description: /ts-optimize:audit on a plain npm TypeScript project writes only .ts-optimize/ and changes no source file.
+tags: [audit, safety]
+runs: 3
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "/ts-optimize:audit"
+  max_turns: 60
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Skill, Agent]
+graders:
+  - name: scanned-through-ts-opt
+    type: tool_used
+    tool: Bash
+    input_match: 'ts-opt scan'
+  - name: no-edit
+    type: tool_used
+    tool: Edit
+    min: 0
+    max: 0
+    arm: both
+  - name: no-write
+    type: tool_used
+    tool: Write
+    min: 0
+    max: 0
+    arm: both
+  - name: never-fixes
+    type: tool_used
+    tool: Bash
+    input_match: '"command": *"(?:[^"]*?(?:&&|;|\|) *)?(?:(?:\S*/)?ts-opt +(?:commit|run begin|plan lock)|(?:\S+ +)?knip +--fix|git +commit)\b'
+    min: 0
+    max: 0
+    arm: both
+  - name: summary-written
+    type: file_exists
+    path: ".ts-optimize/runs/*/SUMMARY.md"

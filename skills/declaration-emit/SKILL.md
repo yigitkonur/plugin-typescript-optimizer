@@ -1,6 +1,6 @@
 ---
 name: declaration-emit
-description: Fix or prevent declaration-emit failures - TS4023, TS4058, TS4060, TS4081, TS4082, TS2742, TS2883, "cannot be named", "inferred type of ... cannot be named without a reference", "has or is using private name". Also use before removing an export from a package that publishes .d.ts files.
+description: "Fix or prevent declaration-emit failures: TS4023, TS4058, TS4060, TS4081, TS4082, TS2742, TS2883, \"cannot be named\". Also use before removing an export from a package that publishes .d.ts files."
 allowed-tools: Read Grep Glob Edit Bash(ts-opt *)
 ---
 

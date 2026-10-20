@@ -52,7 +52,7 @@ test('struct-07: identical copies share one body hash, diverging ones do not; ev
   const cands = await runEngine(join(DIR, 'struct-07'), ['struct-07']);
   const slug = cands.filter((c) => c.symbol === 'slugify');
   assert.equal(new Set(slug.map((c) => c.body_hash)).size, 1);
-  assert.deepEqual(slug[0].members, ['a/slugify.ts:1', 'b/slugify.ts:2']);
+  assert.deepEqual(slug[0].copies, ['a/slugify.ts:1', 'b/slugify.ts:2']);
   const clamp = cands.filter((c) => c.symbol === 'clamp');
   assert.equal(new Set(clamp.map((c) => c.body_hash)).size, 2);
   assert.ok(clamp.every((c) => c.confidence_hint === 'likely'));

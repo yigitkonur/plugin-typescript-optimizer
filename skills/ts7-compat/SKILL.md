@@ -1,6 +1,6 @@
 ---
 name: ts7-compat
-description: TypeScript 7 / tsgo compatibility knowledge - what breaks (the JavaScript compiler API is absent until 7.1, removed options, new defaults), which tools fail (typescript-eslint, ts-morph, ts-node, ts-jest, type-coverage, Knip v5) and the alias scheme with @typescript/typescript6 and tsc6. Use for "does not support TS 7", "TypeScript 7", "tsgo", "native-preview", ERESOLVE typescript, "Cannot find module 'typescript'" after an upgrade.
+description: "TypeScript 7 / tsgo compatibility knowledge: what breaks (no JS compiler API before 7.1, removed options), which tools fail (typescript-eslint, ts-morph, ts-node), the tsc6 alias scheme. Use for \"does not support TS 7\", tsgo, native-preview, ERESOLVE typescript."
 allowed-tools: Read Grep Glob
 ---
 

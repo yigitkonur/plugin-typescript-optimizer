@@ -1,0 +1,22 @@
+{
+  "rule": "reach-11",
+  "fire": [],
+  "silent": [],
+  "silent_astgrep_only": [],
+  "engine_fire": {
+    "axios-ky-fire": [
+      "axios+ky"
+    ],
+    "lodash-pair-fire": [
+      "lodash+lodash-es"
+    ],
+    "shadow-dirs-fire": [
+      "v1+v2"
+    ]
+  },
+  "engine_silent": [
+    "axios-alone-silent",
+    "ky-unused-silent",
+    "shadow-dirs-silent"
+  ]
+}

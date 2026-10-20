@@ -1,0 +1,15 @@
+{
+ "name": "H5 lets ts-architect record a proposal with an inline Mermaid diagram (arrows and newlines inside quotes)",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-architect",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "ts-opt proposal add --origin architect --rule struct-03 --file src/wrapper.ts --line 3 --recommendation STRONG --deletion-test \"delete it: the complexity vanishes\" --seam-test \"one adapter\" --touch src/wrapper.ts --plan-step \"inline lengthOf into its single caller\" --mermaid \"flowchart TD\\n  subgraph Before\\n    A[index] --> B[wrapper] --> C[internal]\\n  end\\n  subgraph After\\n    A2[index] --> C2[internal]\\n  end\""
+  }
+ },
+ "expect": { "exitCode": 0, "stdoutJson": { "hookSpecificOutput.permissionDecision": "allow" }, "maxMs": 250 }
+}
