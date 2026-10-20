@@ -377,3 +377,45 @@ test('3.9 resume: after a session dies mid-wave, H1 points at the open run and r
   edit(work, 'src/barrel/index.ts', (t) => t.replace('export { deadHelper } from "./b.ts";\n', ''));
   ok(T(work, 'commit', left[0], '-m', 'internalize deadHelper'));
 });
+
+test('review fixes: finish needs a green post-flight at the current worktree; a recovered (reverted) run finishes; abort never deletes a branch the user owned', () => {
+  // (a) revert recovery reaches the end: P accounts for the Reverts-Finding commit, finish records the final gate
+  seedBreaker('F01');
+  const work = auditFixture('F01', { reset: false });
+  const runId = latestRun(work);
+  git(work, 'config', 'user.name', 'fixture'); git(work, 'config', 'user.email', 'fixture@example.invalid'); git(work, 'config', 'commit.gpgsign', 'false');
+  startWave(work, runId, 'reach-04', '3');
+  const f7 = idOf(work, runId, 'reach-04', 'src/barrel/b.ts');
+  const f8 = idOf(work, runId, 'reach-04', 'src/internal.ts');
+  edit(work, 'src/barrel/b.ts', (t) => t.replace('export function deadHelper', 'function deadHelper') + 'export const marker = 1;\n');
+  edit(work, 'src/barrel/index.ts', (t) => t.replace('export { deadHelper } from "./b.ts";\n', ''));
+  ok(T(work, 'commit', f7, '-m', 'internalize deadHelper'));
+  edit(work, 'src/internal.ts', (t) => t.replace('export function normalize', 'function normalize'));
+  ok(T(work, 'commit', f8, '-m', 'internalize normalize'));
+  exit(T(work, 'gate', '--wave', '3'), 6);
+  ok(T(work, 'revert', f8, '--reason', 'dynamic consumer'));
+  ok(T(work, 'gate', '--wave', '3')); ok(T(work, 'run', 'wave', 'end', '3'));
+  exit(T(work, 'run', 'finish'), 5, /needs a green post-flight/);
+  // the cascade of f7 (b.ts orphaned) must be accounted for before P can be green: skip it, like a user declining the cascade
+  const rs = ok(T(work, 'rescan', '--wave', '3'));
+  for (const c of rs.json.result.new_cascades) ok(T(work, 'findings', 'skip', c, '--reason', 'declined'));
+  const p = T(work, 'gate', '--wave', 'P');
+  assert.equal(p.status, 0, p.text.slice(0, 1500));
+  assert.equal(p.json.result.legs['diff-accounting'].status, 'pass', 'the revert commit is accounted for');
+  // code changes after the green post-flight: finish refuses
+  edit(work, 'src/flags.ts', (t) => t + '\n// touched after the gate\n');
+  exit(T(work, 'run', 'finish'), 5, /different worktree/);
+  git(work, 'checkout', '--', 'src/flags.ts');
+  ok(T(work, 'run', 'finish'), 'finish at the verified state');
+  assert.match(readFileSync(join(work, '.ts-optimize', 'runs', runId, 'SUMMARY.md'), 'utf8'), /final gate \(P\): passed — typecheck pass/);
+
+  // (b) abort leaves a branch the run did not create
+  const w2 = audited('F01');
+  git(w2.work, 'checkout', '-q', '-b', 'feature/mine');
+  writeFileSync(join(w2.work, 'NOTES.txt'), 'mine\n'); commitDirty(w2.work, 'my own work');
+  ok(T(w2.work, 'run', 'begin'));
+  assert.equal(gout(w2.work, 'rev-parse', '--abbrev-ref', 'HEAD'), 'feature/mine');
+  const ab = ok(T(w2.work, 'run', 'abort'));
+  assert.equal(gout(w2.work, 'branch', '--list', 'feature/mine').trim().replace('* ', ''), 'feature/mine', 'the user branch still exists');
+  assert.match(ab.text, /was yours before this run/);
+});
