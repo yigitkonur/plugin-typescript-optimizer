@@ -49,7 +49,7 @@ child.stderr.on('data', (d) => { last = Date.now(); stderr += d; });
 child.on('close', (code) => {
   clearInterval(wd);
   if (buf) lines.push(buf);
-  const scrub = (s) => s.split(homedir()).join('~');
+  const scrub = (s) => s.split(homedir()).join('~').replace(/\/Users\/[A-Za-z0-9_.-]*…/g, '~/…');
   writeFileSync(join(outDir, `${row}.jsonl`), scrub(lines.join('\n')) + '\n');
   const md = condense(lines, { row, fixture, prompt, code, killed, ms: Date.now() - t0, stderr });
   writeFileSync(join(outDir, `${row}.md`), scrub(md));
