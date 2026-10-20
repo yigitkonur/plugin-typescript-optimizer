@@ -1,0 +1,12 @@
+name: win-debug
+on: workflow_dispatch
+jobs:
+  win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: git config --global user.email ci@example.invalid && git config --global user.name ci
+      - run: node tests/harness/ci.mjs prepare
+      - run: node --test --test-name-pattern="^3\.19" tests/fix.test.mjs
