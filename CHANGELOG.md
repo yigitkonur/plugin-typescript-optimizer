@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## 0.1.1
+
+### Fixed
+
+- Windows: `ts-opt` could not start any package manager or project binary (`npm`, `pnpm`, `yarn`, `node_modules/.bin/*.cmd`): Node refuses to spawn `.cmd` shims without a shell. Shims are now resolved and run through `cmd.exe` with every argument quoted; an argument that `cmd.exe` would expand (a quote, `%`, a line break) is refused.
+- Deep mode no longer reports `struct-10` and `struct-11` as "no engine yet": they are judged by `ts-architect` after ingest.
+
+### Changed
+
+- The CI full suite prepares fixtures serially and installs its own Yarn and Bun, so parallel test files no longer race on a cold cache.
+
+0.1.0 was tagged before the Windows fix; use 0.1.1.
+
 ## 0.1.0
 
 First release.
@@ -22,8 +35,7 @@ First release.
 
 - The Biome path of `struct-09` (complexity hotspots) is untested against a real Biome.
 - The Yarn Berry and bun install legs (wave 5 dependency removal and reinstall) are untested.
-- Windows is verified in CI only; the development ledger row for it (6.2) is open.
-- The `claude plugin eval` suite, the listing-cost check, the security review and the install-from-marketplace run (ledger rows 6.4 to 6.8) are open.
+- Windows is verified in CI only (no Windows machine was used during development).
 - Triage uses chunks of 8 candidates, not the 40 the design assumed: measured triager runs used 3 to 5.5 tool calls per candidate against a 60-turn limit.
 - The coverage leg fails only when the count of untyped identifiers rises, not when the percentage falls, because deleting well-typed code lowers the percentage without adding an `any`.
 - The pattern-tell engine is Node-only (no ripgrep), so JavaScript regex semantics apply.

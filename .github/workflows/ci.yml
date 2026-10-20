@@ -56,7 +56,8 @@ jobs:
       - uses: pnpm/action-setup@v4
         with: { version: 10 }
       - uses: oven-sh/setup-bun@v2
-      - run: corepack enable || npm i -g yarn
+      - name: ripgrep
+        run: command -v rg || (sudo apt-get install -y ripgrep || brew install ripgrep)
       - run: git config --global user.email ci@example.invalid && git config --global user.name ci
       - run: node tests/harness/ci.mjs prepare
       - run: node tests/harness/ci.mjs full

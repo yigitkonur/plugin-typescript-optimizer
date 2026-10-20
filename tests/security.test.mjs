@@ -26,7 +26,8 @@ test('rg-secrets.rc is exactly what secret-paths.json says', () => {
   assert.deepEqual(rc, globs.map((g) => `--glob=!${g}`));
 });
 
-test('rg with the rc never reports a hit inside a secret path', () => {
+const HAS_RG = spawnSync('rg', ['--version'], { stdio: 'ignore' }).status === 0;
+test('rg with the rc never reports a hit inside a secret path', { skip: !HAS_RG && 'ripgrep is not installed' }, () => {
   const d = mkdtempSync(join(tmpdir(), 'tsopt-sec-'));
   try {
     mkdirSync(join(d, 'src')); mkdirSync(join(d, 'certs'));
