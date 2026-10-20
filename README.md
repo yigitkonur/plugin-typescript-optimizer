@@ -2,7 +2,7 @@
 
 A Claude Code plugin that audits a TypeScript codebase for dead code, unused dependencies, AI-written slop, weak types, tangled imports and native-compiler (TypeScript 7 / tsgo) readiness. It writes the findings to `.ts-optimize/` as reviewable Markdown, waits for you to approve them, then applies the approved ones in waves. Each finding becomes one commit and a verification gate runs after every wave. It stays silent in repositories without TypeScript.
 
-<!-- CI-STATUS -->
+[![ci](https://github.com/yigitkonur/plugin-typescript-optimizer/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/yigitkonur/plugin-typescript-optimizer/actions/workflows/ci.yml) Tested on Linux, macOS and Windows with Node 18.17, 22 and 26.
 
 ## Install
 
