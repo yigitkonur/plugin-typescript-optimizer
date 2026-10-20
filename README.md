@@ -159,6 +159,17 @@ rm -rf "$TS_OPT_HOME"                  # the toolbox and detection cache
 
 Commits and branches created by a run stay in git history; delete the `chore/ts-cleanup...` branch yourself if you do not want it.
 
+## Development
+
+```
+claude plugin validate . --strict
+node tests/harness/ci.mjs prepare && node tests/harness/ci.mjs core     # what CI runs on every OS and Node version
+node --test tests/*.test.mjs tests/unit/*.test.mjs                      # everything: Node 20.19+, with pnpm, yarn and bun on PATH
+claude plugin eval . --runs 3 --threshold 1.0 --scaffold --allow-tools Bash
+```
+
+`tests/LEDGER.md` lists every acceptance row with the command that was run and what it printed. `docs/design/` is the original plan; `docs/design/DEVIATIONS.md` lists where the build differs from it. `AGENTS.md` holds the maintenance rules.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
