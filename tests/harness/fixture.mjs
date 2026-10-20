@@ -39,7 +39,9 @@ function treeHash(dir) {
 
 function run(argv, cwd, timeoutMs = 300_000) {
   const [cmd, ...args] = argv.map((a) => a.replace('{TOOLS}', TOOLS));
-  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', timeout: timeoutMs, env: { ...process.env, CI: '1', NO_COLOR: '1' } });
+  // Windows: npm is a .cmd shim, which Node refuses to spawn without a shell (arguments here are fixed words, no spaces)
+  const shell = process.platform === 'win32' && ['npm', 'npx', 'pnpm'].includes(cmd);
+  const r = spawnSync(cmd, args, { cwd, encoding: 'utf8', timeout: timeoutMs, shell, env: { ...process.env, CI: '1', NO_COLOR: '1' } });
   if (r.status !== 0) throw new Error(`${argv.join(' ')} failed (exit ${r.status}${r.error ? ', ' + r.error.message : ''})\n${(r.stdout || '').slice(-800)}\n${(r.stderr || '').slice(-800)}`);
   return r;
 }
