@@ -166,3 +166,20 @@ test('4.9 F12 (allowJs/checkJs): the native compiler\'s JS differences are found
   const res = compareSeeds('F12');
   assert.deepEqual([res.missing.length, res.wrongLine.length, res.violations.length], [0, 0, 0], JSON.stringify(res.violations));
 });
+
+test('tc-12 (T3 engine switch): reported for a ready JavaScript-compiler package with nothing needing the API; silent with a tc-04 hit or a native compiler', async () => {
+  const { candidatesFromFit } = await import('../lib/engines/fit.mjs');
+  const { loadRules } = await import('../lib/catalog/index.mjs');
+  const rules = loadRules();
+  const pkg = (over = {}) => ({ path: '.', verdict: 'ready', authoritative: { kind: 'js', version: '5.9.3' }, declares_typescript: { file: 'package.json', line: 12, field: 'devDependencies', range: '^5.9.3' }, removed_options: [], paths_issues: [], baseurl_imports: [], default_exposure: [], only_native: [], only_authoritative: [], ...over });
+  const fitOf = (p, ecosystem = []) => ({ packages: [p], ecosystem, ci: [], editor: [], references: null });
+  const rulesOf = (fit) => candidatesFromFit(fit, rules).map((c) => c.rule);
+  const hit = candidatesFromFit(fitOf(pkg()), rules).filter((c) => c.rule === 'tc-12');
+  assert.equal(hit.length, 1);
+  assert.deepEqual([hit[0].file, hit[0].line, hit[0].package], ['package.json', 12, '.']);
+  assert.match(hit[0].snippet, /"typescript": "\^5\.9\.3" resolves to 5\.9\.3/);
+  assert.ok(!rulesOf(fitOf(pkg(), [{ broken: true, rule: 'tc-04', package: '.', evidence: [] }])).includes('tc-12'), 'the alias scheme (tc-04) already performs the switch');
+  assert.ok(!rulesOf(fitOf(pkg({ authoritative: { kind: 'native', version: '7.0.2' } }))).includes('tc-12'));
+  assert.ok(!rulesOf(fitOf(pkg({ verdict: 'blocked' }))).includes('tc-12'));
+  assert.ok(!rulesOf(fitOf(pkg({ declares_typescript: null }))).includes('tc-12'), 'no typescript line to edit');
+});

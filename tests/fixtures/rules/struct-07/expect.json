@@ -1,0 +1,12 @@
+{
+  "rule": "struct-07",
+  "fire": [],
+  "silent": [],
+  "symbols_fire": [
+    {"file": "a/slugify.ts", "line": 1, "symbol": "slugify", "identical": true},
+    {"file": "b/slugify.ts", "line": 2, "symbol": "slugify", "identical": true},
+    {"file": "d/clamp.ts", "line": 1, "symbol": "clamp", "identical": false},
+    {"file": "e/clamp.ts", "line": 1, "symbol": "clamp", "identical": false}
+  ],
+  "symbols_silent": ["c/slugifyFilename.ts", "f/note.ts", "g/sleep.ts", "h/capitalize.ts"]
+}

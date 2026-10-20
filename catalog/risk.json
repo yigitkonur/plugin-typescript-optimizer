@@ -141,7 +141,8 @@
     "tc-08": "medium",
     "tc-09": "medium",
     "tc-10": "medium",
-    "tc-11": "low"
+    "tc-11": "low",
+    "tc-12": "medium"
   },
   "placeholder_rules": {
     "note": "doc 06 lists fix risk as \"-\" for these flag-only rules (nothing is applied); a nominal value is recorded so rule files validate.",

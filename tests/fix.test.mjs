@@ -306,7 +306,7 @@ test('3.2 seeded breaker: the wave gate goes red on a test typecheck cannot see;
   assert.equal(red.json.result.passed, false);
   assert.equal(red.json.result.legs.typecheck.status, 'pass');
   assert.equal(red.json.result.legs.test.status, 'fail');
-  assert.match(red.json.result.legs.test.tail, /loader finds its helper|normalize|not a function|AssertionError/i);
+  assert.match(red.json.result.legs.test.tail, /keeps its public surface|toHaveLength|expected/i);
   exit(T(work, 'run', 'wave', 'end', '3'), 5, /gate/);
   const bi = ok(T(work, 'bisect', '--wave', '3'), 'bisect');
   assert.equal(bi.json.result.culprit, f8);

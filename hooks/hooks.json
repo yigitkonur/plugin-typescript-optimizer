@@ -1,5 +1,5 @@
 {
-  "description": "ts-optimize: resume pointer, command guard, commit guard, plugin-subagent guard, audit-surface pre-approval. Silent unless a run is open, a guarded command is typed, a plugin subagent acts, or the model runs a ts-opt audit command.",
+  "description": "ts-optimize: resume pointer, command guard, commit guard, fast typecheck after edit batches, plugin-subagent guard, audit-surface pre-approval. Silent unless a run is open, a guarded command is typed, a plugin subagent acts, or the model runs a ts-opt audit command.",
   "hooks": {
     "SessionStart": [
       {
@@ -77,6 +77,18 @@
             "shell": "bash",
             "command": "command -v node >/dev/null || exit 0; i=$(cat); case \"$i\" in *agent_type*ts-triager*|*agent_type*ts-architect*) printf '%s' \"$i\" | node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/agent-guard.mjs\";; esac; exit 0",
             "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolBatch": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "command -v node >/dev/null || exit 0; d=$PWD; while :; do [ -f \"$d/.ts-optimize/state/open-run\" ] && break; [ -e \"$d/.git\" ] && exit 0; n=$(dirname \"$d\"); [ \"$n\" = \"$d\" ] && exit 0; d=$n; done; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/fast-check.mjs\"",
+            "timeout": 30
           }
         ]
       }

@@ -345,7 +345,8 @@
       "name": "Engine switch",
       "batches": [],
       "rules": [
-        "tc-10"
+        "tc-10",
+        "tc-12"
       ],
       "gate": [
         "typecheck",

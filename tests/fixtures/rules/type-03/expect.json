@@ -1,0 +1,10 @@
+{
+  "rule": "type-03",
+  "fire": [],
+  "silent": [],
+  "symbols_fire": [
+    {"file": "src/user.ts", "line": 3, "symbol": "UserSchema"},
+    {"file": "src/item.ts", "line": 3, "symbol": "ItemSchema"}
+  ],
+  "symbols_silent": ["src/order.ts", "src/account.ts", "src/profile.ts", "src/tag.ts"]
+}

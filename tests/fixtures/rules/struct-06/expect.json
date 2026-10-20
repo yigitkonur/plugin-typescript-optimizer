@@ -1,0 +1,11 @@
+{
+  "rule": "struct-06",
+  "fire": [],
+  "silent": [],
+  "symbols_fire": [
+    {"file": "src/utils/formatTag.ts", "line": 1, "symbol": "formatTag", "consumers": ["src/feature/card.ts"]},
+    {"file": "src/shared/mixed.ts", "line": 1, "symbol": "onlyCard", "consumers": ["src/feature/card.ts"]}
+  ],
+  "symbols_silent": ["src/utils/pad.ts", "src/utils/big.ts", "src/utils/onlyTested.ts", "src/utils/unused.ts", "src/feature/localThing.ts", "src/helpers/viaBarrel.ts"],
+  "symbols_silent_symbols": ["src/shared/mixed.ts:usedTwice"]
+}

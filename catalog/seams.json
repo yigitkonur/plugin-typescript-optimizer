@@ -48,5 +48,10 @@
     "primary": "type-11",
     "superseded": "type-01",
     "when": "catch-variable widening on the same line (`(err as any).message` inside a catch): the catch-specific recipe is the more precise one"
+  },
+  {
+    "primary": "tc-01",
+    "superseded": "tc-02",
+    "when": "the tsconfig `baseUrl` line is both a removed option (tc-01) and the anchor of the paths migration (tc-02); one finding removes it. The tc-02 import rewrites stay separate and run first (tc-01 depends on them)"
   }
 ]
