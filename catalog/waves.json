@@ -274,7 +274,7 @@
       "needs": [
         "typecheck"
       ],
-      "blast": "none: verification only (cycles no new fingerprints, coverage not below baseline, knip zero remaining in scope, diff accounting)"
+      "blast": "none: verification only (cycles no new fingerprints, untyped-identifier count not above baseline, knip zero remaining in scope, diff accounting)"
     },
     {
       "id": "T1",

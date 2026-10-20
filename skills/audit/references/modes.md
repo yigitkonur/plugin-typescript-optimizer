@@ -34,7 +34,7 @@ Order is causal, not stylistic:
 | B | unused locals and dangling imports left by wave 3 | reach-06 (created at wave start) |
 | 4 | unused types/enums, type safety, declaration-emit failures | reach-05, type-01, 02, 04, 06, 07, 08, 10, 11 |
 | 5 | unused dependencies | reach-07 |
-| P | post-flight: all legs, Knip zero, diff accounting | none |
+| P | post-flight: all legs, Knip zero, diff accounting | type-06 (any-creep ratchet; also scheduled in wave 4) |
 
 Why that order:
 

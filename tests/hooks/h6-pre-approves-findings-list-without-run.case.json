@@ -1,0 +1,25 @@
+{
+ "name": "H6 pre-approves ts-opt findings list with no run open",
+ "handler": "cli-allow",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "x"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "ts-opt findings list --json"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "maxMs": 250,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "allow"
+  }
+ }
+}

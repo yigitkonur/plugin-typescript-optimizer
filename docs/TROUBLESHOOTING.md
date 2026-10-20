@@ -7,7 +7,7 @@ Every `ts-opt` command ends with an exit code. The skills read it and tell you w
 | Code | Meaning | What to do |
 |---|---|---|
 | 0 | ok | Nothing. |
-| 2 | usage error | Check the flags (`ts-opt --help`, or the argument hint of the skill). A rejected call writes nothing. |
+| 2 | usage error | Check the flags: `ts-opt <command> --help` lists a command's flags without running it, and a rejected call prints its usage line and writes nothing. |
 | 3 | nothing to do | No TypeScript under the root, or no matching run. Check `ts-opt detect --brief`; run `/ts-optimize:audit` first if there is no run. |
 | 4 | capability missing | A required tool is unavailable (for example no native compiler for `tsgo check`). The output names the one action that fixes it, such as `ts-opt toolbox install --yes`. Some read-only commands still print their result. |
 | 5 | precondition failed | Dirty working tree, red baseline, stale findings, lock held by another process, not a git repo, or another run is open. Fix the cause listed; do not work around it. |
@@ -25,7 +25,7 @@ Each degradation line ends with `fix:` and one action. Examples: a missing engin
 ## Resume or abort a run
 
 - Resume: run `/ts-optimize:fix` again. It reads `ts-opt run status` and continues at the first unfinished wave; committed findings are not redone. After `/clear`, compaction or a crash, the SessionStart hook (H1) prints a pointer to the open run. An interrupted audit is resumed by running `/ts-optimize:audit` again.
-- Abort: `ts-opt run abort`. It returns to the original branch when nothing was committed, clears the open-run pointer and keeps `.ts-optimize/` valid for inspection.
+- Abort: `ts-opt run abort`. When the run created its work branch and nothing was committed on it, it switches back to the default branch and deletes the branch; otherwise it stays where it is. It clears the open-run pointer and keeps `.ts-optimize/` valid for inspection.
 - An open run blocks a new `ts-opt scan` (exit 5). Finish or abort it, or pass `--abandon-open` if you are sure it is dead.
 
 ## Red baseline
@@ -45,7 +45,7 @@ Nothing is staged or committed when it refuses. The message names the rule and t
 | `semantic-invariance` | A refactor changed a test assertion, added control flow, or touched more than 5 files | Restore the test; split the refactor into sequential findings. |
 | `suppression` | The edit adds `@ts-ignore`, `eslint-disable` and similar | Remove them and fix the cause. |
 | `risk-evidence` | A high-risk finding lacks all three triage answers or evidence | Re-triage the finding. |
-| `precondition` | No applying run, no wave in progress, wrong granularity, earlier wave not green, or the fast check is missing or reports new errors | Follow the message (`ts-opt run wave begin`, `ts-opt check`, and so on). |
+| `precondition` | No applying run, no wave in progress, wrong granularity, earlier wave not green, or the fast check is missing or reports new errors | Follow the message (`ts-opt run wave begin <W>`, `ts-opt check`, and so on). |
 
 A failing repo `pre-commit` hook is a different case: exit 6 with the hook output. Fix what the hook reports. `--no-verify` is used only if `commit.no_verify` is set in your config.
 
@@ -68,6 +68,6 @@ With no run open: `rm -rf .ts-optimize .quarantine`. If a run is open, `ts-opt r
 
 ## Environment variables
 
-- `TS_OPT_HOME`: where the toolbox, consent record and detection cache live. If unset, it is derived from the plugin data directory under `~/.claude/plugins/data/`, falling back to an XDG or temp cache. Delete it to remove everything the plugin installed.
-- `TS_OPTIMIZE_HOOKS=off`: turns off the fast-typecheck hook only. The command, commit and subagent guards stay on.
+- `TS_OPT_HOME`: where the toolbox, consent record and detection cache live. Resolution order: `TS_OPT_HOME`, then `CLAUDE_PLUGIN_DATA` (set by Claude Code for an installed plugin), then the data directory under `~/.claude/plugins/data/` derived from the plugin's install path, then an XDG or temp cache. Delete it to remove everything the plugin installed.
+- `TS_OPTIMIZE_HOOKS=off`, or `hooks.enabled: false` / `hooks.fast_check: false` in `.ts-optimize/config.json`: turn off the fast-typecheck hook only. The command, commit and subagent guards stay on.
 - `TS_OPT_DEBUG=1`: print a stack trace for internal errors.

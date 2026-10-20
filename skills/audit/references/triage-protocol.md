@@ -103,7 +103,7 @@ Stop after the last candidate. Reply with exactly one line in this format and no
 
 `Cnn: <n> confirmed · <n> false-positive · <n> deferred`
 
-for example `C03: 31 confirmed · 7 false-positive · 2 deferred`. The three numbers must add up to the chunk's candidate count.
+for example `C03: 5 confirmed · 2 false-positive · 1 deferred` (a chunk holds at most 8 candidates by default). The three numbers must add up to the chunk's candidate count.
 
 ## 8. Background by rule family
 

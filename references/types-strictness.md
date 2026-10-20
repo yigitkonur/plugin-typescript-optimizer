@@ -6,7 +6,7 @@ Backs rules type-01, 02, 04, 06, 08, 09, 10, 11. Wave 4 (types) runs the declara
 
 - `any` disables checking across every downstream call site: it infects variables assigned from it, permits arbitrary member access and silently bypasses signature contracts. Dead-code analysis also cannot follow reachability through it.
 - Cleanup passes manufacture `any`: internalising an export tempts a model to degrade a parameter to `any` to silence a local mismatch. That turns static dead code into a runtime defect, which is worse than leaving the export.
-- Measure with the ratchet metric recorded in `baseline.json` (`type-coverage@<v>`, or the proxy `escape-hatch@1` when type-coverage cannot run on the project's TypeScript). The wave passes if the metric of the same id is not below baseline. Judge the delta, not an absolute number. Deleting well-typed code while `any`-heavy code remains lowers the ratio without adding an `any`: a real signal, investigate the remainder.
+- Measure with the ratchet metric recorded in `baseline.json` (`type-coverage@<v>`, or the proxy `escape-hatch@1` when type-coverage cannot run on the project's TypeScript). The gate fails only if the count of untyped identifiers of the same metric id rises above the baseline; the percentage is reported. Judge the delta, not an absolute number. Deleting well-typed code while `any`-heavy code remains lowers the ratio without adding an `any`: not a failure, but look at what remains.
 - Exclude code nobody owns from the metric (generated clients, vendored code, route type artefacts, fixtures, `catch` bindings via the engine's ignore flags), pinned in the project's own config so local and CI score the same file set.
 
 ## 2. Replacement ladder (type-01)

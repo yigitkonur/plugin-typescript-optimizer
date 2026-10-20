@@ -42,21 +42,21 @@
           {
             "type": "command",
             "shell": "bash",
-            "if": "Bash(npx tsc *)",
+            "if": "Bash(*npx *tsc*)",
             "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
             "timeout": 5
           },
           {
             "type": "command",
             "shell": "bash",
-            "if": "Bash(*dlx tsc *)",
+            "if": "Bash(*dlx *tsc*)",
             "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
             "timeout": 5
           },
           {
             "type": "command",
             "shell": "bash",
-            "if": "Bash(bunx tsc *)",
+            "if": "Bash(*bunx *tsc*)",
             "command": "command -v node >/dev/null || exit 0; exec node \"${CLAUDE_PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"",
             "timeout": 5
           },

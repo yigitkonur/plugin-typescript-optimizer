@@ -1,0 +1,22 @@
+{
+ "name": "H5 denies ts-opt verdict add for ts-architect (triager only)",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-architect",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "ts-opt verdict add --candidate c-0001 --verdict confirmed"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "maxMs": 300,
+  "stdoutMatches": "allowed: ts-opt proposal add"
+ }
+}

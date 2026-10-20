@@ -1,0 +1,22 @@
+{
+ "name": "H5 denies ts-opt proposal add for ts-triager (architect only)",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "ts-opt proposal add --origin architect --rule struct-03 --file src/a.ts --line 1 --recommendation SPECULATIVE"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "maxMs": 300,
+  "stdoutMatches": "allowed: ts-opt verdict add"
+ }
+}

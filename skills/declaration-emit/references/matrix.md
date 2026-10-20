@@ -43,7 +43,7 @@ Fix choice for stripped exports:
 
 ## 4. Verification commands
 
-`<tsc>` is the project's own compiler resolved by the package manager (for example `pnpm exec tsc`, `yarn run tsc`, `bun x tsc`, `npm exec -- tsc`) or `node_modules/.bin/tsc`. Never bare `npx tsc`. On TypeScript 7 `tsc` is the native compiler and the commands are identical. Inside a run, prefer `ts-opt gate --legs declaration-emit`; it does all of this and records the result. Outside a run:
+`<tsc>` is the project's own compiler resolved by the package manager (for example `pnpm exec tsc`, `yarn run tsc`, `bun x tsc`, `npm exec -- tsc`) or `node_modules/.bin/tsc`. Never bare `npx tsc`. On TypeScript 7 `tsc` is the native compiler and the commands are identical. Inside a run, prefer `ts-opt gate --wave 3 --legs declaration-emit` (wave 4 or `P` as appropriate); it does all of this as a probe: it is logged but never stands in for the wave's own gate record. Outside a run:
 
 Single project, emitting into a disposable directory (never into the source tree). Run emit, search and cleanup in one Bash call: a shell variable does not survive into the next call.
 
@@ -80,7 +80,7 @@ D=$(mktemp -d); <tsc> -p tsconfig.json --declaration --emitDeclarationOnly --out
 2. An exported symbol infers it? Un-annotated `export const` and `export function` leak inferred types grep cannot see. Annotate those first, then continue.
 3. Does it appear in the emitted declarations? Emit once into a temp directory (section 4: the search is part of the same call). Any hit means it is part of the published surface: do not un-export; keep the export and register it as intentional public API.
 4. Strip the `export`.
-5. Re-run the full section 4 verification (or the probe `ts-opt gate --wave 3 --legs declaration-emit`, which records nothing), plus the normal typecheck.
+5. Re-run the full section 4 verification (or the probe `ts-opt gate --wave 3 --legs declaration-emit`, which is logged but never stands in for the wave's gate record), plus the normal typecheck.
 6. On failure choose one remediation: restore the `export`, inline the structure, or add an explicit annotation. Do not commit while any step fails: a green `tsc --noEmit` beside a red `-b` means the regression is in the tree and will surface in consumer packages.
 
 ## 6. Never suppress

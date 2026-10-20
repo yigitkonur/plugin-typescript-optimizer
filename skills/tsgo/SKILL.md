@@ -18,8 +18,8 @@ Exit codes of any `ts-opt` call: 2 → fix the arguments from the usage line and
 
 ## Steps
 
-1. Read the detect block. `typescript: none` → "No TypeScript found; nothing to do." and stop. the `compilers:` line shows `(native)` → say "already native: `tsc` is the native compiler", and continue as `check` (only the tooling and CI parts apply).
-2. Say in three lines what the modes do: `check` and `status` never change the repository; `adopt` migrates on a branch (`chore/upgrade-typescript-go`) under the same approval and commit discipline as `/ts-optimize:fix`; the project's own compiler stays the authority until the switch.
+1. Read the detect block. `typescript: none` → "No TypeScript found; nothing to do." and stop. The `compilers:` line shows `(native)` → say "already native: `tsc` is the native compiler", and continue as `check` (only the tooling and CI parts apply).
+2. Say in three lines what the modes do: `check` and `status` edit no source (`check` writes only the gitignored `.ts-optimize/fit/`); `adopt` migrates on a branch (`chore/upgrade-typescript-go`) under the same approval and commit discipline as `/ts-optimize:fix`; the project's own compiler stays the authority until the switch.
 3. (`check` and `adopt` only.) The `compilers:` line shows `fast: none` and the toolbox is not installed: ask (AskUserQuestion) — *Install the isolated toolbox (pinned TypeScript 7 in the plugin's own directory; your project is not changed)* / *Use the compiler already in my project only* / *Cancel*. Yes → `ts-opt toolbox install --native --yes`.
 4. `ts-opt fit --json`. Present the verdict, per-package timings (both compilers, measured), blockers with `file:line` and the rule that fixes each, tooling hits, CI findings. `check` stops here with the `next_actions` line. `status` runs `ts-opt fit --status` and, when an adoption run is open, `ts-opt run status`. Never quote vendor benchmark numbers; only measured ones.
 5. `adopt`:

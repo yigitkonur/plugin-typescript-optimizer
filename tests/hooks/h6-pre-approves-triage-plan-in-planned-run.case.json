@@ -1,0 +1,26 @@
+{
+ "name": "H6 pre-approves ts-opt triage plan --kind structure on a planned (deep) audit run",
+ "handler": "cli-allow",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "x",
+   ".ts-optimize/runs/2026-10-20T1200Z-ab12/run.json": "{\"state\":\"planned\"}"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "ts-opt triage plan --kind structure"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "maxMs": 250,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "allow"
+  }
+ }
+}

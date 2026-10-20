@@ -45,7 +45,7 @@ Flag-only; suggested output, never applied. Report the top files and the pinned 
 Raise the floor only after a wave improves the number; never lower it to turn CI green. Each hotspot in `{{file}}` ({{members}}) points at the type-01/02/11 findings that remove it.
 
 ## Verification
-Wave 4 and post-flight `coverage` leg: ratio >= baseline for the same metric id; the baseline is `type_soundness` in the run record. After a human raises the floor, re-run the same command.
+Wave 4 and post-flight `coverage` leg: the count of untyped identifiers (total minus covered) does not rise above the baseline for the same metric id; the ratio is reported; the baseline is `type_soundness` in the run record. After a human raises the floor, re-run the same command.
 
 ## Pitfalls
 - The percentage is a ratio; deleting typed code lowers it without adding any `any`.

@@ -1,7 +1,7 @@
 ---
 name: declaration-emit
 description: "Use for declaration-emit (.d.ts) failures: TS4023, TS4058, TS4060, TS4081, TS4082, TS2742, TS2883, \"has or is using private name\", \"cannot be named\", isolatedDeclarations errors; and before removing or un-exporting a type from a library that emits .d.ts (declaration, composite or a types field). Not for ordinary type errors."
-allowed-tools: Read Grep Glob Edit Bash(ts-opt gate *) Bash(ts-opt detect *)
+allowed-tools: Read Grep Glob Bash(ts-opt gate *) Bash(ts-opt detect *)
 ---
 
 # Declaration emit

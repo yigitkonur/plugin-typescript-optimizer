@@ -1,0 +1,24 @@
+{
+ "name": "H6 stays silent for ts-opt verdict while a fix run is applying",
+ "handler": "cli-allow",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "x",
+   ".ts-optimize/runs/2026-10-20T1200Z-ab12/run.json": "{\"state\":\"applying\"}"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "ts-opt verdict status"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdout": "",
+  "maxMs": 250
+ }
+}

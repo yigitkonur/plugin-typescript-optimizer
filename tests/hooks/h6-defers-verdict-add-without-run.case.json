@@ -1,0 +1,23 @@
+{
+ "name": "H6 stays silent for ts-opt verdict add with no run in the repository",
+ "handler": "cli-allow",
+ "cwd": "{TMP}",
+ "tmp": {
+  "files": {
+   ".git": "x"
+  }
+ },
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "cwd": "{TMP}",
+  "tool_input": {
+   "command": "ts-opt verdict add --candidate c-0001 --verdict confirmed"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdout": "",
+  "maxMs": 250
+ }
+}

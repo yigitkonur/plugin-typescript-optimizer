@@ -16,7 +16,7 @@ The gate is the verification barrier run after every wave and before the wave is
 | `lint` | Only in tsgo adoption tiers and when the project has a `lint` script. |
 | `test` | The project's `test` script. Root script when the root `package.json` defines it; otherwise one leg per package defining it, in workspace-topological order. |
 | `build` | Same rule as `test` with the `build` script. |
-| post-flight extras | `cycles` (no new fingerprints), `coverage` (>= baseline for the same metric id), `knip` (zero remaining in the run's scope). |
+| post-flight extras | `cycles` (no new fingerprints), `coverage` (the count of untyped identifiers for the same metric id does not rise above the baseline; the percentage is reported, not gated), `knip` (zero remaining in the run's scope). |
 
 `declaration_signal` is true when any of `declaration`, `composite`, `isolatedDeclarations`, `emitDeclarationOnly` is true in the resolved tsconfig, or the package's `package.json` has `types`/`typings`/`exports[*].types`, or `main`/`module`/`exports` point into `dist/**`.
 
@@ -27,7 +27,7 @@ The gate is the verification barrier run after every wave and before the wave is
 | R0, R, 1, 2 | typecheck, test, build (wave 2 also: cycles no-new) |
 | 3 | typecheck, test, build, declaration-emit (if signal) |
 | B | typecheck, test, build |
-| 4 | typecheck, test, build, declaration-emit (if signal), coverage no-regress |
+| 4 | typecheck, test, build, declaration-emit (if signal), coverage (untyped count does not rise) |
 | 5 | typecheck, test, build, install-frozen sanity (lockfile-frozen install in a no-op check, via the detected package manager) |
 | P (post-flight) | all of the above plus knip zero plus diff accounting |
 | T1-T4 | the six tsgo tiers: `typecheck`, `build-refs`, `declaration-emit`, `lint`, `test`, `build` (a leg that does not apply is recorded as such with the reason) |

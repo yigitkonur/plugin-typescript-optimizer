@@ -46,6 +46,49 @@
       },
       "minItems": 0
     },
+    "records": {
+      "type": "array",
+      "description": "One compact record per candidate (same order as candidates), so a triager needs no lookup in the gitignored raw/ directory",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "rule",
+          "file"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^c-\\d{4,}$"
+          },
+          "rule": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "line": {
+            "type": "integer"
+          },
+          "symbol": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "snippet": {
+            "type": "string"
+          },
+          "consumers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
     "context": {
       "type": "object",
       "required": [],
