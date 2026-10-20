@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## 0.1.2
+
+Found by auditing three public repositories (`t3-oss/t3-env`, `shadcn-ui/taxonomy`, `shuaiplus/nodewarden`) with the marketplace install.
+
+### Fixed
+
+- `ts-opt validate` rejected a run in a repository that has a folder with a `tsconfig.json` but no `package.json` (its package has no name).
+- Triage subagents wasted calls on `cd` and `for` loops. The guard now says that commands already run in the repository root and points at `rg`/`find`, and `cut` and `tr` are allowed as stdin filters.
+
 ## 0.1.1
 
 ### Fixed

@@ -1,0 +1,22 @@
+{
+ "name": "H5 denies cd and says commands already run at the repository root",
+ "handler": "agent-guard",
+ "cwd": "{WORK}/F01",
+ "stdin": {
+  "hook_event_name": "PreToolUse",
+  "tool_name": "Bash",
+  "agent_type": "ts-optimize:ts-triager",
+  "cwd": "{WORK}/F01",
+  "tool_input": {
+   "command": "cd src && rg normalize"
+  }
+ },
+ "expect": {
+  "exitCode": 0,
+  "stdoutJson": {
+   "hookSpecificOutput.permissionDecision": "deny"
+  },
+  "maxMs": 300,
+  "stdoutMatches": "already run in the repository root"
+ }
+}

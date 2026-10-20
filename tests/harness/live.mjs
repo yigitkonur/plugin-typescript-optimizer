@@ -17,19 +17,20 @@ const all = (name) => args.flatMap((a, i) => (a === '--' + name ? [args[i + 1]] 
 const fixture = opt('fixture');
 const prompt = opt('prompt');
 const row = opt('row', 'adhoc');
-if (!fixture || !prompt) { console.error('usage: live.mjs --fixture Fxx --prompt "<text>" --row <id> [...]'); process.exit(2); }
+if ((!fixture && !opt('cwd')) || !prompt) { console.error('usage: live.mjs (--fixture Fxx | --cwd <dir> --installed) --prompt "<text>" --row <id> [...]'); process.exit(2); }
 const maxTurns = opt('max-turns', '40');
 const timeoutMs = Number(opt('timeout', '1200')) * 1000;
 const silenceMs = Number(opt('silence', '120')) * 1000;
 const model = opt('model', 'sonnet');
 
-const cwd = ensureFixture(fixture, { reset: !flag('no-reset') });
-const home = join(DEV, 'home');
+// --cwd + --installed: run in an arbitrary checkout with the plugin loaded from the marketplace install (no --plugin-dir), under a throwaway TS_OPT_HOME
+const cwd = opt('cwd') || ensureFixture(fixture, { reset: !flag('no-reset') });
+const home = opt('home') || join(DEV, 'home');
 mkdirSync(home, { recursive: true });
 const outDir = join(REPO, 'tests', 'transcripts');
 mkdirSync(outDir, { recursive: true });
 
-const cargs = ['-p', prompt, '--plugin-dir', REPO, '--model', model, '--setting-sources', 'project',
+const cargs = ['-p', prompt, ...(flag('installed') ? [] : ['--plugin-dir', REPO]), '--model', model, '--setting-sources', opt('sources', 'project'),
   '--output-format', 'stream-json', '--verbose', '--max-turns', maxTurns];
 for (const a of all('allow')) cargs.push('--allowedTools', a);
 if (opt('perm')) cargs.push('--permission-mode', opt('perm'));

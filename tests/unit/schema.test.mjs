@@ -241,7 +241,9 @@ const CASES = {
     'missing findings': mut(INDEX, (c) => { delete c.findings; }), 'bad entry state': mut(INDEX, (c) => { c.findings[0].state = 'x'; }),
     'total is string': mut(INDEX, (c) => { c.counts.total = '212'; }), 'higher schema': higher(INDEX, 'findings-index'),
   } },
-  run: { valid: [RUN, mut(RUN, (c) => { c.state = 'aborted'; c.abort_reason = 'superseded'; })], invalid: {
+  run: { valid: [RUN, mut(RUN, (c) => { c.state = 'aborted'; c.abort_reason = 'superseded'; }),
+    // a folder with a tsconfig.json but no package.json is a package without a name (found on a public repo: nodewarden/webapp)
+    mut(RUN, (c) => { c.env.packages.push({ path: 'webapp', name: null }); })], invalid: {
     'missing state': mut(RUN, (c) => { delete c.state; }), 'bad state': mut(RUN, (c) => { c.state = 'running'; }),
     'repo.git string': mut(RUN, (c) => { c.repo.git = 'yes'; }), 'bad wave status': mut(RUN, (c) => { c.waves[0].status = 'done'; }),
     'higher schema': higher(RUN, 'run'),
