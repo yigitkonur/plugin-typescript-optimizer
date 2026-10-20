@@ -46,7 +46,7 @@ function run(argv, cwd, timeoutMs = 300_000) {
   return r;
 }
 
-const git = (cwd, ...args) => run(['git', '-c', 'user.name=fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgsign=false', ...args], cwd);
+const git = (cwd, ...args) => run(['git', '-c', 'user.name=fixture', '-c', 'user.email=fixture@example.invalid', '-c', 'commit.gpgsign=false', '-c', 'core.autocrlf=false', ...args], cwd);
 
 const IGNORES = ['node_modules/', '.pnp.*', '.yarn/cache/', '.yarn/unplugged/', '.yarn/install-state.gz', 'dist/', '*.tsbuildinfo'];
 
@@ -82,6 +82,7 @@ export function ensureFixture(id, { reset = false, clean = false } = {}) {
     const prev = existsSync(gi) ? readFileSync(gi, 'utf8') : '';
     writeFileSync(gi, prev + (prev && !prev.endsWith('\n') ? '\n' : '') + IGNORES.filter((l) => !prev.includes(l)).join('\n') + '\n');
     git(work, 'init', '-b', 'main');
+    git(work, 'config', 'core.autocrlf', 'false'); // Windows default is true: checkouts would turn the fixture's LF files into CRLF and the tests' string edits would miss
     git(work, 'add', '-A');
     git(work, 'commit', '-m', `fixture ${id}`);
     writeFileSync(stamp, want);
