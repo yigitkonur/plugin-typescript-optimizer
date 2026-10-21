@@ -143,7 +143,7 @@ auditing runs the project's own tools too: knip loads the project's config files
 
 - node >= 18.17 and git.
 - audited projects need typescript >= 4.9.
-- windows: ci runs the unit tests, an entry-point smoke test (`bin\ts-opt.cmd` and the hook handlers) and a full audit-and-fix lifecycle on windows. the hooks themselves need `bash` and haven't been run inside claude code on windows yet.
+- windows: ci runs the unit tests, an entry-point smoke test (`bin\ts-opt.cmd --version` and the hook handlers started directly) and a full audit-and-fix lifecycle on windows. the hooks themselves need `bash` and haven't been run inside claude code on windows yet.
 
 ## support matrix
 

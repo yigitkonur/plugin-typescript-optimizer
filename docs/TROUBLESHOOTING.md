@@ -68,6 +68,6 @@ With no run open: `rm -rf .ts-optimize .quarantine`. If a run is open, `ts-opt r
 
 ## Environment variables
 
-- `TS_OPT_HOME`: where the toolbox, consent record and detection cache live. Resolution order: `TS_OPT_HOME`, then `CLAUDE_PLUGIN_DATA` (set by Claude Code for an installed plugin), then the data directory under `~/.claude/plugins/data/` derived from the plugin's install path, then an XDG or temp cache. Delete it to remove everything the plugin installed.
+- `TS_OPT_HOME`: where the toolbox, consent record and detection cache live. Resolution order: `TS_OPT_HOME`; then `CLAUDE_PLUGIN_DATA`, but only when it names this plugin's own data dir (`ts-optimize-…`; another plugin's value in the environment is ignored); then `~/.claude/plugins/data/ts-optimize-<marketplace>/`, derived from the install path; then an XDG or temp cache. `claude plugin uninstall` deletes the data dir unless you pass `--keep-data`; a `TS_OPT_HOME` you set yourself you delete yourself.
 - `TS_OPTIMIZE_HOOKS=off`, or `hooks.enabled: false` / `hooks.fast_check: false` in `.ts-optimize/config.json`: turn off the fast-typecheck hook only. The command, commit and subagent guards stay on.
 - `TS_OPT_DEBUG=1`: print a stack trace for internal errors.

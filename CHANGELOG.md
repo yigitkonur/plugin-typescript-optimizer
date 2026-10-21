@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## 0.1.5 - 2026-10-21
+
+### Fixed
+
+- `TS_OPT_HOME` trusted any `CLAUDE_PLUGIN_DATA`. A Bash environment can carry another plugin's value (seen live: the Codex plugin's data dir), so the toolbox and detection cache could land in that plugin's directory, and uninstalling ts-optimize would leave them behind. The variable now counts only when it names this plugin's own data dir (`ts-optimize-<marketplace>`, or `ts-optimize-inline` under `--plugin-dir`). Otherwise the dir derived from the install path is used. Claude Code uses exactly that name and deletes it on `claude plugin uninstall`, as verified.
+
+0.1.4 was on `main` for an hour and was never tagged; use 0.1.5.
+
 ## 0.1.4 - 2026-10-21
 
 Found by running the paths 0.1.3 still listed as untested.
