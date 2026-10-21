@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## 0.1.4 - 2026-10-21
+
+Found by running the paths 0.1.3 still listed as untested.
+
+### Fixed
+
+- Yarn Berry: `ts-opt pm install` could not update `yarn.lock`. `ts-opt` runs every child with `CI=1`, and Yarn Berry then turns on immutable installs (`YN0028 … lockfile would have been modified`). It now passes `--no-immutable`.
+- Yarn Berry: the gate's install leg ran `yarn install --immutable --mode=update-lockfile`, which Yarn 4 rejects (`--immutable … cannot be used with --mode=update-lockfile`). It now runs `yarn install --immutable --mode=skip-build`. Wave 5 on a Yarn PnP project now passes end to end.
+- Subagent guard on Windows: the handler checked it was the main module by splitting `argv[1]` on `/`, which never matches a Windows path, so the guard would never have acted. Both guard handlers now compare real paths.
+- `struct-09` through Biome 2: the finding had no function name, because Biome 2 reports start and end columns instead of a byte span. The name is now read from those columns.
+
+### Changed
+
+- README rewritten (same facts, lowercase), with a one-command install: `claude plugin install ts-optimize --marketplace yigitkonur/plugin-typescript-optimizer`.
+- CI runs an entry-point smoke test on every OS and Node version: the hook handlers started as `node <file>`, and `bin\ts-opt.cmd --version` on Windows.
+
 ## 0.1.3 - 2026-10-21
 
 Found by reading the documentation and the code against each other, then confirmed with real runs.

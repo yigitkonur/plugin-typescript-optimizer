@@ -1,7 +1,7 @@
 {
   "name": "ts-optimize",
   "description": "Audit TypeScript for dead code, AI slop, weak types and tsgo readiness; write reviewable findings; fix them under a verified, traceable gate. Silent in repos without TypeScript.",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
   "homepage": "https://github.com/yigitkonur/plugin-typescript-optimizer",
   "repository": "https://github.com/yigitkonur/plugin-typescript-optimizer",

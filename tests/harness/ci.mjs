@@ -20,6 +20,7 @@ if (mode === 'prepare') {
 } else if (mode === 'core') {
   // unit tests, hook goldens (bash hooks are inactive on Windows: doc 03), and one full F01 run through the CLI
   sh(process.execPath, ['--test', ...list('tests/unit'), ...(win ? [] : ['tests/hooks.test.mjs'])]);
+  sh(process.execPath, [join('tests', 'harness', 'entry-smoke.mjs')]); // hook handlers started as `node <file>`, and bin\ts-opt.cmd on Windows
   // the fixture's own tools (vitest 5, Knip 6) need Node >= 20.19: on older Node the plugin code is covered by the unit tests and hook goldens above
   const [maj, min] = process.versions.node.split('.').map(Number);
   if (maj > 20 || (maj === 20 && min >= 19)) sh(process.execPath, ['--test', '--test-name-pattern=^3\\.19', 'tests/fix.test.mjs']);
