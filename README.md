@@ -45,7 +45,15 @@ claude plugin disable ts-optimize@claude-ts-optimize-plugin --scope project
 
 enable and disable take effect on the next claude code start. the `.claude/settings.json` it creates is a normal project file: commit it to share the setup, or leave it untracked.
 
-updating later:
+auto-update: claude code only auto-updates marketplaces you switch on (third-party ones are off by default). turn it on in `/plugin` → marketplaces → enable auto-update, or in `~/.claude/settings.json`:
+
+```json
+{ "extraKnownMarketplaces": { "claude-ts-optimize-plugin": { "source": { "source": "github", "repo": "yigitkonur/plugin-typescript-optimizer" }, "autoUpdate": true } } }
+```
+
+every push to `main` that changes something users get (and passes ci) is released automatically: version bump in `plugin.json` and `marketplace.json`, changelog section, git tag and github release. claude code then picks the new version up on its own, a few minutes after your next session starts.
+
+updating by hand:
 
 ```
 claude plugin marketplace update claude-ts-optimize-plugin
