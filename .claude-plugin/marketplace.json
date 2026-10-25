@@ -3,13 +3,13 @@
   "owner": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
   "metadata": {
     "description": "Audit, document and safely fix TypeScript: dead code, AI slop, weak types, tsgo readiness.",
-    "version": "0.1.5"
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "ts-optimize",
       "description": "Audit TypeScript for dead code, AI slop, weak types and tsgo readiness; write reviewable findings; fix them under a verified, traceable gate. Silent in repos without TypeScript.",
-      "version": "0.1.5",
+      "version": "0.2.0",
       "author": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
       "source": "."
     }
