@@ -28,6 +28,23 @@ or from inside a claude code session:
 
 want it for one project only? add `--scope project` (shared through `.claude/settings.json`) or `--scope local` (just you, just this repo) to the install command. restart claude code afterwards so the skills and hooks load.
 
+want it sitting in a project but switched off until you need it? install at project scope, then disable it there (verified: `.claude/settings.json` gets `"ts-optimize@claude-ts-optimize-plugin": false`, and nothing is written to your user settings):
+
+```
+claude plugin marketplace add yigitkonur/plugin-typescript-optimizer --scope project
+claude plugin install ts-optimize@claude-ts-optimize-plugin --scope project
+claude plugin disable ts-optimize@claude-ts-optimize-plugin --scope project
+```
+
+flip it on whenever you want, and off again after:
+
+```
+claude plugin enable ts-optimize@claude-ts-optimize-plugin --scope project
+claude plugin disable ts-optimize@claude-ts-optimize-plugin --scope project
+```
+
+enable and disable take effect on the next claude code start. the `.claude/settings.json` it creates is a normal project file: commit it to share the setup, or leave it untracked.
+
 updating later:
 
 ```
