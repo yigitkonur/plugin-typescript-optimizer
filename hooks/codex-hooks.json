@@ -1,0 +1,15 @@
+{
+  "description": "ts-optimize for Codex: resume pointer, tsc/knip command guard, commit guard. Silent unless a run is open or a guarded command is typed.",
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "command -v node >/dev/null || exit 0; d=$PWD; while :; do [ -f \"$d/.ts-optimize/state/open-run\" ] && break; [ -e \"$d/.git\" ] && exit 0; n=$(dirname \"$d\"); [ \"$n\" = \"$d\" ] && exit 0; d=$n; done; exec node \"${PLUGIN_ROOT}/lib/hooks/session-start.mjs\"", "timeout": 5 } ] }
+    ],
+    "PreToolUse": [
+      { "matcher": "^Bash$",
+        "hooks": [
+          { "type": "command", "command": "command -v node >/dev/null || exit 0; exec node \"${PLUGIN_ROOT}/lib/hooks/cmd-guard.mjs\"", "timeout": 5 },
+          { "type": "command", "command": "command -v node >/dev/null || exit 0; d=$PWD; while :; do [ -f \"$d/.ts-optimize/state/open-run\" ] && break; [ -e \"$d/.git\" ] && exit 0; n=$(dirname \"$d\"); [ \"$n\" = \"$d\" ] && exit 0; d=$n; done; exec node \"${PLUGIN_ROOT}/lib/hooks/commit-guard.mjs\"", "timeout": 10 }
+        ] }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "ts-optimize",
+  "version": "0.1.5",
+  "description": "Audit TypeScript for dead code, AI slop, weak types and tsgo readiness; write reviewable findings; fix them under a verified, traceable gate. Silent in repos without TypeScript.",
+  "author": { "name": "yigitkonur", "url": "https://github.com/yigitkonur" },
+  "homepage": "https://github.com/yigitkonur/plugin-typescript-optimizer",
+  "repository": "https://github.com/yigitkonur/plugin-typescript-optimizer",
+  "license": "MIT",
+  "keywords": ["typescript", "tsgo", "knip", "dead-code", "refactor", "audit", "ai-slop"],
+  "interface": {
+    "displayName": "ts-optimize",
+    "shortDescription": "Audit and safely fix TypeScript",
+    "longDescription": "Audit a TypeScript codebase for dead code, unused dependencies, AI slop, weak types and tsgo readiness. Findings are written to .ts-optimize/ as reviewable files; fixes run wave by wave under a typecheck, test and build gate with a traceable commit per change. Silent in repos without TypeScript.",
+    "developerName": "yigitkonur",
+    "category": "Developer Tools",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://github.com/yigitkonur/plugin-typescript-optimizer"
+  },
+  "skills": "./skills/",
+  "hooks": "./hooks/codex-hooks.json"
+}

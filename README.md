@@ -28,22 +28,46 @@ or from inside a claude code session:
 
 want it for one project only? add `--scope project` (shared through `.claude/settings.json`) or `--scope local` (just you, just this repo) to the install command. restart claude code afterwards so the skills and hooks load.
 
-want it sitting in a project but switched off until you need it? install at project scope, then disable it there (verified: `.claude/settings.json` gets `"ts-optimize@claude-ts-optimize-plugin": false`, and nothing is written to your user settings):
+### installed everywhere, on only where you need it (recommended)
+
+install once at user scope and keep it off, so it costs no tokens in unrelated chats. (the manifest says `defaultEnabled: false`, so a fresh install is already off; the `disable` line makes sure.)
 
 ```
-claude plugin marketplace add yigitkonur/plugin-typescript-optimizer --scope project
-claude plugin install ts-optimize@claude-ts-optimize-plugin --scope project
-claude plugin disable ts-optimize@claude-ts-optimize-plugin --scope project
+claude plugin marketplace add yigitkonur/plugin-typescript-optimizer
+claude plugin install ts-optimize@claude-ts-optimize-plugin -s user
+claude plugin disable ts-optimize@claude-ts-optimize-plugin -s user
 ```
 
-flip it on whenever you want, and off again after:
+switch it on for one project (run inside that project, then restart claude there) and off again after:
 
 ```
 claude plugin enable ts-optimize@claude-ts-optimize-plugin --scope project
 claude plugin disable ts-optimize@claude-ts-optimize-plugin --scope project
 ```
 
-enable and disable take effect on the next claude code start. the `.claude/settings.json` it creates is a normal project file: commit it to share the setup, or leave it untracked.
+the project value wins over the user value. it lands in that project's `.claude/settings.json`: commit it to share the setup, or leave it untracked.
+
+### codex
+
+same plugin, same `ts-optimize@claude-ts-optimize-plugin` id. install globally and switch it off (codex has no `plugin enable/disable`, so the helper in `scripts/` edits the config for you):
+
+```
+curl -fsSL https://raw.githubusercontent.com/yigitkonur/plugin-typescript-optimizer/main/scripts/codex-plugin-project.sh -o ~/.local/bin/codex-plugin-project.sh && chmod +x ~/.local/bin/codex-plugin-project.sh
+codex plugin marketplace add yigitkonur/plugin-typescript-optimizer
+codex plugin add ts-optimize@claude-ts-optimize-plugin
+codex-plugin-project.sh global-off ts-optimize@claude-ts-optimize-plugin
+```
+
+switch it on for one project (run inside it) and off again:
+
+```
+codex-plugin-project.sh on ts-optimize@claude-ts-optimize-plugin . --trust
+codex-plugin-project.sh off ts-optimize@claude-ts-optimize-plugin
+```
+
+`--trust` is needed because codex ignores a project's `.codex/config.toml` until the project is trusted, and trusting a project also turns on its hooks and rules, so only use it on projects you own. check with `codex plugin list` (`installed, enabled` inside the project, `installed, disabled` elsewhere). update: `codex plugin marketplace upgrade claude-ts-optimize-plugin`, then start a new session. the first time, codex asks you to review the plugin's hooks: trust them.
+
+what differs in codex: the skills and the `ts-opt` cli are the same (`audit`, `fix`, `doctor`, `tsgo`; the skills tell codex where `bin/ts-opt` lives). there are no plugin subagents, so triage runs inline and deep mode has codex play the architect itself. two hooks run (the `tsc`/`knip --fix` command guard and the commit guard, plus the resume pointer); the subagent guard, the audit pre-approval and the after-edit fast check are claude-only. `ts-opt` is not put on PATH by codex.
 
 auto-update: claude code only auto-updates marketplaces you switch on (third-party ones are off by default). turn it on in `/plugin` → marketplaces → enable auto-update, or in `~/.claude/settings.json`:
 

@@ -10,6 +10,8 @@ allowed-tools: Read Grep Glob Edit Write Bash(ts-opt *) Bash(git status *) Bash(
 
 If the block above is missing, empty, or contains `[shell command execution disabled by policy]`, run `ts-opt detect --brief` yourself. If `ts-opt` is not found, use `node "${CLAUDE_PLUGIN_ROOT}/bin/ts-opt"` instead (it asks for permission once).
 
+In Codex the block above is never filled in and the `CLAUDE_*` variables are unset: run `ts-opt detect --brief` yourself; if `ts-opt` is not on PATH use `node <two folders up from this SKILL.md>/bin/ts-opt`. Read `${CLAUDE_PLUGIN_ROOT}` as those two folders up and `${CLAUDE_SKILL_DIR}` as this file's folder.
+
 # /ts-optimize:fix
 
 Arguments: `$ARGUMENTS` — `[run-id|latest] [--waves <csv>] [--approve-low]`. Unknown flags: show the argument hint and stop.

@@ -10,6 +10,8 @@ allowed-tools: Read Grep Glob Agent Bash(ts-opt detect *) Bash(ts-opt scan *) Ba
 
 If the block above is missing, empty, or contains `[shell command execution disabled by policy]`, run `ts-opt detect --brief` yourself. If `ts-opt` is not found, use `node "${CLAUDE_PLUGIN_ROOT}/bin/ts-opt"` instead (it asks for permission once).
 
+In Codex the block above is never filled in and the `CLAUDE_*` variables are unset: run `ts-opt detect --brief` yourself; if `ts-opt` is not on PATH use `node <two folders up from this SKILL.md>/bin/ts-opt`. Read `${CLAUDE_PLUGIN_ROOT}` as those two folders up and `${CLAUDE_SKILL_DIR}` as this file's folder. There are no plugin subagents in Codex: use `--triage inline`, and in deep mode read `agents/ts-architect.md` and do the architect's job yourself.
+
 # /ts-optimize:audit
 
 Arguments: `$ARGUMENTS` — `[path] [--mode sweep|standard|deep] [--domains <csv>] [--diff[=<base>]] [--triage auto|inline|agents] [--chunk-size <n>]`. Default mode `standard`, `--triage auto`, chunk size 8. Unknown flags: show the argument hint and stop.

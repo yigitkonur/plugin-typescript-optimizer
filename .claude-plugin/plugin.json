@@ -6,5 +6,6 @@
   "homepage": "https://github.com/yigitkonur/plugin-typescript-optimizer",
   "repository": "https://github.com/yigitkonur/plugin-typescript-optimizer",
   "license": "MIT",
+  "defaultEnabled": false,
   "keywords": ["typescript", "tsgo", "knip", "dead-code", "refactor", "audit", "ai-slop"]
 }
