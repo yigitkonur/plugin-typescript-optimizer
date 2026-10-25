@@ -39,6 +39,7 @@ if thdr in t:
 elif trust:
     open(cfg, "a").write(("\n" if t and not t.endswith("\n") else "") + "\n" + thdr + '\ntrust_level = "trusted"\n')
     print("trusted", d, "in", cfg)
+    print("NOTE: the first codex session here may say 'plugin contents changed; hook approval required' and skip the plugin's hooks: open /hooks and press t once.")
 else:
     print("NOTE: %s is not trusted, so Codex ignores this file. Re-run with --trust or add:\n  %s\n  trust_level = \"trusted\"" % (d, thdr))
 PY
