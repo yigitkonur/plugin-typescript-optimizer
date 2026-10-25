@@ -36,7 +36,7 @@ Resolve every `paths` value relative to the tsconfig, with a leading `./`. Then 
 ```
 
 - Monorepo package mappings: map both the bare name and the subpath: `"@org/core": ["./packages/core/src/index.ts"]`, `"@org/core/*": ["./packages/core/src/*"]`.
-- Bare imports that resolved only through `baseUrl` (`import x from "utils/format"` with `baseUrl: ./src`): find them with `git grep -nE "from ['\"](utils|components)/"` (adapt names to the top-level folders of the old base). Fix by either rewriting to an `@/` alias or adding an explicit wildcard, `"utils/*": ["./src/utils/*"]`. Prefer the alias; bare wildcards re-create the old clash with npm package names.
+- Bare imports that resolved only through `baseUrl` (`import x from "utils/format"` with `baseUrl: ./src`): find them with `git grep -nE "from .(utils|components)/"` (adapt names to the top-level folders of the old base). Fix by either rewriting to an `@/` alias or adding an explicit wildcard, `"utils/*": ["./src/utils/*"]`. Prefer the alias; bare wildcards re-create the old clash with npm package names.
 - Bundlers and test runners keep their own alias config (Vite, Webpack, Jest `moduleNameMapper`); update them to match, since they no longer inherit `baseUrl`.
 
 ## module / moduleResolution matrix

@@ -6,83 +6,79 @@ a claude code plugin that goes through your typescript codebase looking for dead
 
 ## install
 
-one command, from any shell:
+<!-- kit:install:start -->
+## install
 
-```
-claude plugin install ts-optimize --marketplace yigitkonur/plugin-typescript-optimizer
-```
+Every plugin of ours is installed **once, globally, and off**, then **turned on per project**. Nothing runs and no tokens are spent in chats that don't switch it on. It works the same in Claude Code and Codex.
 
-that adds the marketplace (`claude-ts-optimize-plugin`) to your user settings and installs the plugin in one go. if you'd rather do it in two steps:
+### 1. install it globally
 
-```
+**Claude Code**
+
+```sh
 claude plugin marketplace add yigitkonur/plugin-typescript-optimizer
-claude plugin install ts-optimize@claude-ts-optimize-plugin
+claude plugin install ts-optimize@claude-ts-optimize-plugin -s user          # stays off: defaultEnabled is false in the manifest
 ```
 
-or from inside a claude code session:
+**Codex** (0.163+)
 
-```
-/plugin marketplace add yigitkonur/plugin-typescript-optimizer
-/plugin install ts-optimize@claude-ts-optimize-plugin
-```
-
-want it for one project only? add `--scope project` (shared through `.claude/settings.json`) or `--scope local` (just you, just this repo) to the install command. restart claude code afterwards so the skills and hooks load.
-
-### installed everywhere, on only where you need it (recommended)
-
-install once at user scope and keep it off, so it costs no tokens in unrelated chats. (the manifest says `defaultEnabled: false`, so a fresh install is already off; the `disable` line makes sure.)
-
-```
-claude plugin marketplace add yigitkonur/plugin-typescript-optimizer
-claude plugin install ts-optimize@claude-ts-optimize-plugin -s user
-claude plugin disable ts-optimize@claude-ts-optimize-plugin -s user
-```
-
-switch it on for one project (run inside that project, then restart claude there) and off again after:
-
-```
-claude plugin enable ts-optimize@claude-ts-optimize-plugin --scope project
-claude plugin disable ts-optimize@claude-ts-optimize-plugin --scope project
-```
-
-the project value wins over the user value. it lands in that project's `.claude/settings.json`: commit it to share the setup, or leave it untracked.
-
-### codex
-
-same plugin, same `ts-optimize@claude-ts-optimize-plugin` id. install globally and switch it off (codex has no `plugin enable/disable`, so the helper in `scripts/` edits the config for you):
-
-```
-curl -fsSL https://raw.githubusercontent.com/yigitkonur/plugin-typescript-optimizer/main/scripts/codex-plugin-project.sh -o ~/.local/bin/codex-plugin-project.sh && chmod +x ~/.local/bin/codex-plugin-project.sh
+```sh
 codex plugin marketplace add yigitkonur/plugin-typescript-optimizer
 codex plugin add ts-optimize@claude-ts-optimize-plugin
-codex-plugin-project.sh global-off ts-optimize@claude-ts-optimize-plugin
+codex-plugin-project.sh global-off ts-optimize@claude-ts-optimize-plugin     # Codex has no enable/disable command; this keeps it off everywhere
 ```
 
-switch it on for one project (run inside it) and off again:
+All our plugins, both hosts, plus the `plugin` command and the 6-hourly update job, in one line:
 
-```
-codex-plugin-project.sh on ts-optimize@claude-ts-optimize-plugin . --trust
-codex-plugin-project.sh off ts-optimize@claude-ts-optimize-plugin
-```
-
-`--trust` is needed because codex ignores a project's `.codex/config.toml` until the project is trusted, and trusting a project also turns on its hooks and rules, so only use it on projects you own. check with `codex plugin list` (`installed, enabled` inside the project, `installed, disabled` elsewhere). update: `codex plugin marketplace upgrade claude-ts-optimize-plugin`, then start a new session. the first time, codex asks you to review the plugin's hooks: trust them (if a hook says `plugin contents changed; hook approval required`, open `/hooks` and press `t` once; it sticks after that).
-
-what differs in codex: the skills and the `ts-opt` cli are the same. call a skill by name, e.g. `$ts-optimize:doctor`, `$ts-optimize:audit` (verified: codex loads it from the plugin and runs `bin/ts-opt` from the plugin folder; if your codex config has `include_instructions = false` it won't list skills on its own, so name them). there are no plugin subagents, so triage runs inline and deep mode has codex play the architect itself. two hooks run (the `tsc`/`knip --fix` command guard and the commit guard, plus the resume pointer); the subagent guard, the audit pre-approval and the after-edit fast check are claude-only. `ts-opt` is not put on PATH by codex.
-
-auto-update: claude code only auto-updates marketplaces you switch on (third-party ones are off by default). turn it on in `/plugin` → marketplaces → enable auto-update, or in `~/.claude/settings.json`:
-
-```json
-{ "extraKnownMarketplaces": { "claude-ts-optimize-plugin": { "source": { "source": "github", "repo": "yigitkonur/plugin-typescript-optimizer" }, "autoUpdate": true } } }
+```sh
+curl -fsSL https://raw.githubusercontent.com/yigitkonur/plugin-kit/main/install.sh | sh -s -- --all
 ```
 
-every push to `main` that changes something users get (and passes ci) is released automatically: version bump in `plugin.json` and `marketplace.json`, changelog section, git tag and github release. claude code then picks the new version up on its own, a few minutes after your next session starts.
+### 2. turn it on in a project
 
-updating by hand:
+```sh
+cd your-project
+plugin on ts-optimize    # Claude Code and Codex, this folder only
+plugin off ts-optimize   # undo
+plugin                   # or pick from a list (TUI)
+```
 
+By hand, without the `plugin` command:
+
+```sh
+claude plugin enable ts-optimize@claude-ts-optimize-plugin --scope project      # undo: claude plugin disable ts-optimize@claude-ts-optimize-plugin --scope project
+codex-plugin-project.sh on ts-optimize@claude-ts-optimize-plugin . --trust      # undo: codex-plugin-project.sh off ts-optimize@claude-ts-optimize-plugin
 ```
-claude plugin marketplace update claude-ts-optimize-plugin
-claude plugin update ts-optimize@claude-ts-optimize-plugin
+
+Restart `claude` / `codex` in that folder afterwards.
+Codex reads a folder's `.codex/config.toml` only when the folder is trusted; `--trust` adds that, and it also enables the folder's hooks and rules, so use it for your own projects only. `plugin` and `codex-plugin-project.sh` come from [plugin-kit](https://github.com/yigitkonur/plugin-kit) (the one-line installer above).
+
+### 3. updates
+
+A plugin updates only when its `version` changes, and this repo's `release` workflow bumps it on every shipped change. Machines pick it up with `plugin update`, or by themselves with the 6-hourly job (`plugin autoupdate install`). By hand:
+
+```sh
+claude plugin marketplace update claude-ts-optimize-plugin && claude plugin update ts-optimize@claude-ts-optimize-plugin
+codex plugin marketplace upgrade claude-ts-optimize-plugin        # then start a new session
 ```
+
+No GitHub SSH key on the machine? `export CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` (`plugin install` sets it in Claude's settings for you).
+
+### 4. uninstall
+
+```sh
+claude plugin uninstall ts-optimize@claude-ts-optimize-plugin -s user
+claude plugin marketplace remove claude-ts-optimize-plugin
+codex plugin remove ts-optimize@claude-ts-optimize-plugin
+codex plugin marketplace remove claude-ts-optimize-plugin
+```
+<!-- kit:install:end -->
+
+### codex differences
+
+the skills and the `ts-opt` cli are the same. call a skill by name, e.g. `$ts-optimize:doctor`, `$ts-optimize:audit` (verified: codex loads it from the plugin and runs `bin/ts-opt` from the plugin folder; if your codex config has `include_instructions = false` it won't list skills on its own, so name them). there are no plugin subagents, so triage runs inline and deep mode has codex play the architect itself. two hooks run (the `tsc`/`knip --fix` command guard and the commit guard, plus the resume pointer); the subagent guard, the audit pre-approval and the after-edit fast check are claude-only. `ts-opt` is not put on PATH by codex.
+
+the first time, codex asks you to review the plugin's hooks: trust them (if a hook says `plugin contents changed; hook approval required`, open `/hooks` and press `t` once; it sticks after that).
 
 ## commands
 
@@ -219,11 +215,11 @@ filled only from `tests/LEDGER.md`. each cell says what a passing ledger row act
 
 known gaps live in [CHANGELOG.md](CHANGELOG.md). problems and exit codes: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
 
-## uninstall and cleanup
+## cleanup
+
+removing the plugin itself is covered in the install block above. what ts-optimize leaves behind in a project you audited:
 
 ```
-claude plugin uninstall ts-optimize@claude-ts-optimize-plugin    # also deletes the plugin's data dir (toolbox, detection cache) unless you pass --keep-data
-claude plugin marketplace remove claude-ts-optimize-plugin
 rm -rf .ts-optimize .quarantine                                  # in each project you audited
 ```
 
