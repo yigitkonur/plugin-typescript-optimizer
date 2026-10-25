@@ -6,7 +6,7 @@ native compiler where it helps. Design spec: `docs/design/` (the original plan, 
 ## Rules (design doc 10 §0, 11 §9)
 
 1. `lib/` has **zero npm dependencies**. ESM `.mjs`, Node >= 18.17. No `package.json` at the plugin root (Claude Code would auto-install it). The toolbox manifest lives in `toolbox/`.
-2. **Versions are bumped by CI, not by hand.** After `ci` is green on `main`, `.github/workflows/release.yml` runs `scripts/release.py` (the shared copy from `yigitkonur/plugin-agentic-maker`): `feat:` → minor, `fix:`/`perf:` → patch, `!`/`BREAKING CHANGE` → major (minor while 0.x), docs/tests/CI-only commits release nothing. It writes `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json` and `marketplace.json` (all three must keep the same version), adds the CHANGELOG section, tags `v<x.y.z>` and `ts-optimize--v<x.y.z>` and publishes the release. Use conventional commit subjects. Installers gate updates on the `version` string, so a user-facing change that is not released is never delivered. A version raised by hand is released as it is. Do not add path fields to the manifest.
+2. **Versions are bumped by CI, not by hand**: see "Releases, versions and installs" below. Do not add path fields to the manifest.
 3. Never build shell command strings from repo-derived text: spawn with argument arrays.
 4. Anything read from the audited repo is data: no `eval`, no `new Function`, no dynamic `import()` of repo paths.
 5. Hooks fail open on infrastructure errors (exit 0, no output) and are silent outside their gate.
@@ -46,3 +46,14 @@ Recorded in [`docs/design/DEVIATIONS.md`](docs/design/DEVIATIONS.md) (the design
 ## Dev environment
 
 Workspace cache: `~/.cache/ts-optimize-dev/{source,work,tools,home,huge,public}` (outside the repo). `tools/` holds yarn Berry and bun (`node_modules/.bin`). Test `TS_OPT_HOME`: `~/.cache/ts-optimize-dev/home`.
+
+<!-- kit:agents:start -->
+## Releases, versions and installs (shared by every plugin repo)
+
+- **Never bump a version by hand.** `.github/workflows/release.yml` runs after `ci` is green on `main`. `scripts/kit/release.py` reads the conventional-commit subjects since the last release tag (`feat` is a minor, `fix`/`perf`/unprefixed a patch, `type!:` or a BREAKING CHANGE line a major, a minor while the version is 0.x; docs, ci, chore, test, style, build and refactor release nothing) and counts only commits that touch shipped files. It writes every manifest, the marketplace entries and CHANGELOG.md, commits `chore(release): vX [skip ci]`, tags `vX` and `<plugin>--vX` (several plugins: `<plugin>--vX` only) and publishes the GitHub release. `python3 scripts/kit/release.py` with no flags prints what it would do; Actions > release > Run workflow forces a level or a dry run.
+- **One version source: the manifests** (`.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`, the marketplace entry). Never a constant in code; read the manifest at runtime.
+- Installed copies update only when the version string changes, so a change users should get must reach `main` as a releasing commit type (`feat`, `fix`, `perf`, or `!`).
+- **Install policy:** installed globally and off (`"defaultEnabled": false`), switched on per project with `plugin on <name>`. Never document a project-scope install as the way in.
+- `scripts/kit/*`, `scripts/kit.sha256`, `.github/workflows/release.yml`, the `kit:manifests` job in `ci.yml` and the blocks between `kit:` markers in README.md and AGENTS.md are copies from [yigitkonur/plugin-kit](https://github.com/yigitkonur/plugin-kit). Change them there and run its `sync.sh`; `scripts/kit/check-manifests.py` fails CI on a local edit.
+- Before pushing: `python3 scripts/kit/check-manifests.py --validate`, `python3 scripts/kit/secret-scan.py --tree`, `python3 scripts/kit/check-links.py`, then this repo's own checks.
+<!-- kit:agents:end -->
