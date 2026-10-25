@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## 0.2.1 - 2026-10-25
+
+- fix: codex-plugin-project.sh on --trust says how to approve the plugin's hooks the first time (c865da1)
+
 ## 0.2.0 - 2026-10-25
 
 - feat: run in Codex too, installed globally and off by default (4d514eb)
