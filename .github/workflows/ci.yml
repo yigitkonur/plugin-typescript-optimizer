@@ -61,3 +61,21 @@ jobs:
       - run: git config --global user.email ci@example.invalid && git config --global user.name ci
       - run: node tests/harness/ci.mjs prepare
       - run: node tests/harness/ci.mjs full
+
+  # every green push to main that changed something user-facing becomes a release: version bump, changelog, tag, GitHub release
+  release:
+    name: release
+    needs: [validate, core, full]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'chore(release)')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: git config user.name "github-actions[bot]" && git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - run: node .github/scripts/release.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}

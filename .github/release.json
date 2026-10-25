@@ -1,0 +1,6 @@
+{
+  "plugin": "ts-optimize",
+  "tagPrefix": "ts-optimize--v",
+  "manifests": [".claude-plugin/plugin.json", ".claude-plugin/marketplace.json"],
+  "ignore": []
+}
